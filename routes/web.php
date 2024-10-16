@@ -35,4 +35,8 @@ Route::get('/dashboard', function () {
 // route charitable donations
 Route::get('/master/charitable-donations', function () {
     return view('dashboard.charitable-donations.index');
-})->name('charitable-donations.index');
+})->name('master.charitable-donations.index');
+
+Route::get('/master/users', function () {
+    return view('dashboard.users.index');
+})->name('master.users.index');

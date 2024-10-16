@@ -34,7 +34,7 @@
                     <ul class="nav ms-4">
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('master/charitable-donations*') ? 'active' : '' }}"
-                               href="{{ route('charitable-donations.index') }}">
+                               href="{{ route('master.charitable-donations.index') }}">
                                 <span class="sidenav-normal">Infaq</span>
                             </a>
                         </li>
@@ -45,8 +45,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
+                            <a class="nav-link {{ Request::is('master/users*') ? 'active' : '' }}"
+                               href="{{ route('master.users.index') }}">
                                 <span class="sidenav-normal">User</span>
                             </a>
                         </li>
