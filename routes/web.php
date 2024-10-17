@@ -20,11 +20,11 @@ Route::get('/', function () {
 // route authentication - can't be accessed yet
 Route::get('/login', function () {
     return view('auth.login');
-});
+})->name('login');
 
 Route::get('/register', function () {
     return view('auth.register');
-});
+})->name('register');
 
 // route dashboard
 Route::get('/dashboard', function () {
