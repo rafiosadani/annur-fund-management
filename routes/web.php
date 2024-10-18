@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,11 +21,16 @@ Route::get('/', function () {
 // route authentication - can't be accessed yet
 Route::get('/login', function () {
     return view('auth.login');
-})->name('login');
+})->name('web.login')->middleware('guest');
 
 Route::get('/register', function () {
     return view('auth.register');
-})->name('register');
+})->name('web.register')->middleware('guest');
+
+Route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate')->middleware('guest');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+Route::post('/register', [AuthController::class, 'register'])->name('register')->middleware('guest');
 
 // route dashboard
 Route::get('/dashboard', function () {
