@@ -22,6 +22,9 @@
 
     {{-- CSS Files --}}
     <link id="pagestyle" href="{{ asset('css/argon-dashboard.css?v=2.0.4') }}" rel="stylesheet"/>
+
+    {{--  My CSS --}}
+    <link id="pagestyle" href="{{ asset('css/style.css') }}" rel="stylesheet"/>
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">

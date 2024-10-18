@@ -11,19 +11,18 @@
                     </p>
                 </div>
                 <div class="card-body pb-3">
-                    <form role="form" action="" method="post">
+                    <form role="form" action="{{ route('register') }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-12 col-lg-6">
                                 <label for="name" class="required">Nama Lengkap</label>
                                 <div class="mb-3">
-{{--                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Name" value="{{ old('name') }}" />--}}
-{{--                                    @error('name')--}}
-{{--                                    <div class="invalid-feedback text-xs">--}}
-{{--                                        {{ $message }}--}}
-{{--                                    </div>--}}
-{{--                                    @enderror--}}
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Name" />
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Nama lengkap" value="{{ old('name') }}" />
+                                    @error('name')
+                                    <div class="invalid-feedback text-xs">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-12 col-lg-6">
@@ -41,8 +40,8 @@
                         <div class="row">
                             <div class="col-12 col-lg-6">
                                 <div class="form-group">
-                                    <label for="exampleFormControlSelect1">Jenis Kelamin</label>
-                                    <select class="form-control" id="exampleFormControlSelect1">
+                                    <label for="gender">Jenis Kelamin</label>
+                                    <select class="form-control @error('gender') is-invalid @enderror" name="gender" id="gender">
                                         <option value="">-- Pilih Jenis Kelamin --</option>
                                         @if(old('gender') == "laki-laki")
                                             <option value="laki-laki" selected>Laki-laki</option>
@@ -55,13 +54,31 @@
                                             <option value="perempuan">Perempuan</option>
                                         @endif
                                     </select>
+                                    @error('gender')
+                                    <div class="invalid-feedback text-xs">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-12 col-lg-6">
                                 <label for="phone" class="required">No Hp</label>
                                 <div class="mb-3">
-                                    <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" placeholder="No Hp" />
-                                    @error('nim')
+                                    <input type="text" class="form-control @error('phone') is-invalid @enderror inputNumberOnly" id="phone" name="phone" placeholder="No Hp" />
+                                    @error('phone')
+                                    <div class="invalid-feedback text-xs">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="address" class="required">Alamat</label>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address" placeholder="Alamat" />
+                                    @error('address')
                                     <div class="invalid-feedback text-xs">
                                         {{ $message }}
                                     </div>
@@ -102,7 +119,7 @@
                 </div>
                 <div class="card-footer text-center pt-0 px-sm-4 px-1">
                     <p class="mb-4 text-sm mx-auto">
-                        Already have an account? <a href="{{ route('login') }}" class="text-primary opacity-9 font-weight-bold">Sign in</a >
+                        Already have an account? <a href="{{ route('web.login') }}" class="text-primary opacity-9 font-weight-bold">Sign in</a >
                     </p>
                 </div>
             </div>
@@ -110,7 +127,7 @@
         <div class="col-5 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
             <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-ill.jpg'); background-size: cover;">
                 <span class="mask bg-primary opacity-4"></span>
-{{--                <img src="{{ asset('img/logo/logo-vocational-reading-room-dark.png') }}" class="z-index-3" alt="Logo Ruang Baca Vokasi UB">--}}
+                {{--                <img src="{{ asset('img/logo/logo-vocational-reading-room-dark.png') }}" class="z-index-3" alt="Logo Ruang Baca Vokasi UB">--}}
                 <h4 class="mt-5 text-white font-weight-bolder position-relative">Your journey starts here</h4>
                 <p class="text-white position-relative">Just as it takes a company to sustain a product, it takes a community to sustain a protocol.</p>
             </div>
