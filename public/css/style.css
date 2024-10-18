@@ -22,3 +22,8 @@
 .dropdown-profile:hover {
     cursor: pointer;
 }
+
+.parent-button {
+    display: flex;
+    justify-content: flex-end;
+}

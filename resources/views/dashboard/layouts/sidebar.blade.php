@@ -47,7 +47,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('master/users*') ? 'active' : '' }}"
-                               href="{{ route('master.users.index') }}">
+                               href="{{ route('users.index') }}">
                                 <span class="sidenav-normal">User</span>
                             </a>
                         </li>
