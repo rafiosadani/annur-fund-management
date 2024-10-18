@@ -14,7 +14,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::with(['dibuat'])
+            ->where('deleted_at', null)
+            ->orderBy('created_at', 'desc')
+            ->orderBy('user_code', 'desc')
+            ->filter(request(['search']))->paginate(5)->withQueryString();
+
+        return view('dashboard.users.index', [
+            'users' => $users
+        ]);
     }
 
     /**

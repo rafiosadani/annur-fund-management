@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +44,8 @@ Route::get('/master/charitable-donations', function () {
     return view('dashboard.charitable-donations.index');
 })->name('master.charitable-donations.index');
 
-Route::get('/master/users', function () {
-    return view('dashboard.users.index');
-})->name('master.users.index');
+//Route::get('/master/users', function () {
+//    return view('dashboard.users.index');
+//})->name('master.users.index');
+
+Route::resource('/master/users', UserController::class);
