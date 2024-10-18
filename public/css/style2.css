@@ -19,16 +19,16 @@
     margin: 0;
   }
   
-  .table-responsive {
+  .table2-responsive {
     margin-top: 20px;
   }
   
-  .table thead th {
+  .table2 thead th {
     text-align: center;
     background-color: #f8f9fa;
   }
   
-  .table td {
+  .table2 td {
     text-align: center;
     vertical-align: middle;
   }

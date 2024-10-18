@@ -14,8 +14,8 @@
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Tambah</button>
             </div>
             <div class="card2-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered">
+                <div class="table2-responsive">
+                    <table class="table2 table2-bordered">
                         <thead>
                             <tr>
                                 <th>No</th>
