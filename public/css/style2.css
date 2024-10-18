@@ -6,7 +6,7 @@
     margin-bottom: 20px;
     background-color: #fff;
   }
-  
+
   .card2-header {
     display: flex;
     justify-content: space-between;
@@ -14,7 +14,7 @@
     padding-bottom: 15px;
     border-bottom: 1px solid #ddd;
   }
-  
+
   .card2-header h4 {
     margin: 0;
   }
@@ -32,21 +32,21 @@
     text-align: center;
     vertical-align: middle;
   }
-  
+
   .btn {
     border-radius: 4px;
   }
-  
+
   .pagination {
     margin: 0;
   }
-  
+
   .page-item.active .page-link {
     background-color: #007bff;
     border-color: #007bff;
     color: white;
   }
-  
+
   .page-item .page-link {
     color: #007bff;
   }
@@ -55,18 +55,18 @@
   .modal-header {
     border-bottom: 1px solid #ddd;
   }
-  
+
   .modal-body {
     padding-top: 20px;
   }
-  
+
   .modal-footer {
     border-top: 1px solid #ddd;
     padding-top: 15px;
   }
-  
+
   .btn {
     border-radius: 4px;
   }
-  
+
   /* Modal end*/
