@@ -1,0 +1,24 @@
+.required::after {
+    content: " *";
+    color: #f5365c !important;
+}
+
+/* sidebar */
+.navbar-vertical .navbar-expand-xs {
+    z-index: 100;
+}
+
+.navbar-vertical.bg-white .navbar-nav .nav-item .nav-link:hover {
+    background-color: #f6f9fc;
+    box-shadow: none;
+}
+
+.navbar-sidebar .nav-item i {
+    height: 12px;
+    width: 12px;
+}
+
+/* header */
+.dropdown-profile:hover {
+    cursor: pointer;
+}
