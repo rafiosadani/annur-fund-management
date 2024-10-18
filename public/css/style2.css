@@ -1,5 +1,5 @@
-/* Card start */
-.card {
+/* card2 start */
+.card2 {
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
@@ -7,7 +7,7 @@
     background-color: #fff;
   }
   
-  .card-header {
+  .card2-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15,7 +15,7 @@
     border-bottom: 1px solid #ddd;
   }
   
-  .card-header h4 {
+  .card2-header h4 {
     margin: 0;
   }
   
@@ -50,7 +50,7 @@
   .page-item .page-link {
     color: #007bff;
   }
-  /* Card end */
+  /* card2 end */
   /* Modal start */
   .modal-header {
     border-bottom: 1px solid #ddd;

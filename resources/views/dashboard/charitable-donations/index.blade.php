@@ -7,13 +7,13 @@
 @section('content')
 <div class="row">
     <div class="col-md-12">
-        <!-- Card Wrapper -->
-        <div class="card">
-            <div class="card-header">
+        <!-- card2 Wrapper -->
+        <div class="card2">
+            <div class="card2-header">
                 <h4>Charitable Donations Data</h4>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Tambah</button>
             </div>
-            <div class="card-body">
+            <div class="card2-body">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
