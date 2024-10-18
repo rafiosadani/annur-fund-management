@@ -57,6 +57,44 @@
 {{-- JQuery --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
 {{--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>--}}
+
+{{-- SweetAlert2 --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{{--  Custom SweetAlert Notification  --}}
+@if(session('loginError'))
+    <script>
+        Swal.fire({
+            title: "Login Gagal!",
+            text: "{{ session('loginError') }}",
+            icon: "error",
+            timer: 2500
+        });
+    </script>
+@endif
+
+@if(session('logoutSuccess'))
+    <script>
+        Swal.fire({
+            title: "Berhasil!",
+            text: "{{ session('logoutSuccess') }}",
+            icon: "success"
+        });
+    </script>
+@endif
+
+@if(session('registerSuccess'))
+    <script>
+        setTimeout(function () {
+            Swal.fire({
+                title: "Berhasil!",
+                text: "{{ session('registerSuccess') }}",
+                icon: "success",
+                timer: 3000
+            });
+        }, 20);
+    </script>
+@endif
 </body>
 
 </html>

@@ -9,22 +9,38 @@
                     <p class="mb-0">Enter your email and password to sign in</p>
                 </div>
                 <div class="card-body">
-                    <form role="form">
+                    <form role="form" action="{{ route('authenticate') }}" method="post">
+                        @csrf
                         <div class="mb-3">
-                            <input type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email">
+                            <input type="text"
+                                class="form-control form-control-lg @error('email') is-invalid @enderror"
+                                name="email" placeholder="Email" aria-label="Email" value="{{ old('email') }}">
+                            @error('email')
+                                <div class="invalid-feedback text-xs">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="mb-3">
-                            <input type="email" class="form-control form-control-lg" placeholder="Password" aria-label="Password">
+                            <input type="password"
+                                class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                name="password"
+                                placeholder="Password" aria-label="Password">
+                            @error('password')
+                                <div class="invalid-feedback text-xs">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="text-center">
-                            <button type="button" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
+                            <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
                         </div>
                     </form>
                 </div>
                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                     <p class="mb-4 text-sm mx-auto">
                         Don't have an account?
-                        <a href="{{ route('register') }}" class="text-primary text-gradient font-weight-bold">Sign up</a>
+                        <a href="{{ route('web.register') }}" class="text-primary text-gradient font-weight-bold">Sign up</a>
                     </p>
                 </div>
             </div>

@@ -107,5 +107,83 @@
 </script>
 <!-- Github buttons -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+
 <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="{{ asset('js/argon-dashboard.min.js?v=2.0.4') }}"></script>
+
+{{-- JQuery --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+{{--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>--}}
+
+{{-- SweetAlert2 --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{{-- My JS --}}
+<script src="{{ asset('js/script.js') }}"></script>
+
+{{-- Custom SweetAlert Notifikasi --}}
+@if(session('loginSuccess'))
+    <script>
+        setTimeout(function () {
+            Swal.fire({
+                title: "Berhasil!",
+                text: "Anda berhasil login!",
+                icon: "success",
+                timer: 3000
+            });
+        }, 100);
+    </script>
+@endif
+
+@if(session('success'))
+    <script>
+        setTimeout(function () {
+            Swal.fire({
+                title: "Berhasil!",
+                text: "{{ session('success') }}",
+                icon: "success",
+                timer: 3000
+            });
+        }, 100);
+    </script>
+@endif
+
+<script type="text/javascript">
+    $('.show-logout-header').click(function (event) {
+        event.preventDefault();
+        var form = $(this).closest("form");
+        Swal.fire({
+            title: "Apakah kamu yakin?",
+            text: "Ingin keluar dari aplikasi ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#5e72e4",
+            cancelButtonColor: "#f5365c",
+            confirmButtonText: "Ya, saya yakin!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+
+    $('.show-logout-sidebar').click(function (event) {
+        event.preventDefault();
+        var form = $(this).closest("form");
+        Swal.fire({
+            title: "Apakah kamu yakin?",
+            text: "Ingin keluar dari aplikasi ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#5e72e4",
+            cancelButtonColor: "#f5365c",
+            confirmButtonText: "Ya, saya yakin!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+</script>

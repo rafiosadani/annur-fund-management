@@ -168,6 +168,12 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        // Spatie
+        Spatie\Permission\PermissionServiceProvider::class,
+
+        // HasHashid
+        Vinkla\Hashids\HashidsServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -183,6 +189,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'HasHashid' => Vinkla\Hashids\Facades\Hashids::class,
     ])->toArray(),
 
 ];
