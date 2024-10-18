@@ -3083,78 +3083,6 @@ textarea.form-control-lg {
   pointer-events: none;
 }
 
-/* Card start */
-.card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  background-color: #fff;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #ddd;
-}
-
-.card-header h4 {
-  margin: 0;
-}
-
-.table-responsive {
-  margin-top: 20px;
-}
-
-.table thead th {
-  text-align: center;
-  background-color: #f8f9fa;
-}
-
-.table td {
-  text-align: center;
-  vertical-align: middle;
-}
-
-.btn {
-  border-radius: 4px;
-}
-
-.pagination {
-  margin: 0;
-}
-
-.page-item.active .page-link {
-  background-color: #007bff;
-  border-color: #007bff;
-  color: white;
-}
-
-.page-item .page-link {
-  color: #007bff;
-}
-/* Card end */
-/* Modal start */
-.modal-header {
-  border-bottom: 1px solid #ddd;
-}
-
-.modal-body {
-  padding-top: 20px;
-}
-
-.modal-footer {
-  border-top: 1px solid #ddd;
-  padding-top: 15px;
-}
-
-.btn {
-  border-radius: 4px;
-}
-
-/* Modal end*/
 .btn-check[disabled]+.btn,
 .btn-check:disabled+.btn {
   pointer-events: none;
@@ -4598,16 +4526,6 @@ fieldset:disabled .btn {
   color: var(--bs-nav-link-color);
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
-nav-item .dropdown-toggle {
-  margin: 0;
-  padding: 10px 15px;
-}
-
-/* Optional: Remove the dropdown caret if not needed */
-.nav-item .dropdown-toggle::after {
-  display: none;
-}
-
 
 @media (prefers-reduced-motion: reduce) {
   .nav-link {
