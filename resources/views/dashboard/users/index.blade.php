@@ -16,23 +16,23 @@
                             </div>
                             <div class="col-lg-8 col-12 parent-button">
                                 <div>
-{{--                                    @if(request()->has('view_deleted'))--}}
-{{--                                        <a href="{{ route('users.index') }}"--}}
-{{--                                           class="btn bg-gradient-info btn-sm mb-0 btn-action">--}}
-{{--                                            <i class="fa fa-list"></i> &nbsp; View All Users--}}
-{{--                                        </a>--}}
-{{--                                        @if($users->total() < 1)--}}
-{{--                                            <a href="{{ url('/master/users/restoreAll') }}"--}}
-{{--                                               class="btn bg-gradient-primary btn-sm mb-0 disabled btn-action show-confirm-restore-all">--}}
-{{--                                                <i class="fa fa-undo"></i> &nbsp; Restore All--}}
-{{--                                            </a>--}}
-{{--                                        @else--}}
-{{--                                            <a href="{{ url('/master/users/restoreAll') }}"--}}
-{{--                                               class="btn bg-gradient-primary btn-sm mb-0 btn-action show-confirm-restore-all">--}}
-{{--                                                <i class="fa fa-undo"></i> &nbsp; Restore All--}}
-{{--                                            </a>--}}
-{{--                                        @endif--}}
-{{--                                    @else--}}
+                                    @if(request()->has('view_deleted'))
+                                        <a href="{{ route('users.index') }}"
+                                           class="btn bg-gradient-info btn-sm mb-0 btn-action">
+                                            <i class="fa fa-list"></i> &nbsp; View All Users
+                                        </a>
+                                        @if($users->total() < 1)
+                                            <a href="{{ route('users.restore.all') }}"
+                                               class="btn bg-gradient-primary btn-sm mb-0 disabled btn-action show-confirm-restore-all">
+                                                <i class="fa fa-undo"></i> &nbsp; Restore All
+                                            </a>
+                                        @else
+                                            <a href="{{ route('users.restore.all') }}"
+                                               class="btn bg-gradient-primary btn-sm mb-0 btn-action show-confirm-restore-all">
+                                                <i class="fa fa-undo"></i> &nbsp; Restore All
+                                            </a>
+                                        @endif
+                                    @else
 {{--                                        <a href="{{ url('/master/users/generate-pdf-users?search=' . request('search')) }}"--}}
 {{--                                           class="btn bg-gradient-danger btn-sm mb-0 btn-action {{ $users->total() < 1 ? 'disabled-link' : '' }}" target="_blank">--}}
 {{--                                            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>--}}
@@ -43,21 +43,21 @@
 {{--                                            <i class="fa fa-file-excel-o" aria-hidden="true"></i>--}}
 {{--                                            &nbsp; Export Excel--}}
 {{--                                        </a>--}}
-{{--                                        <a href="{{ route('users.index', ['view_deleted' => 'DeletedRecords']) }}"--}}
-{{--                                           class="btn bg-gradient-info btn-sm mb-0 btn-action">--}}
-{{--                                            <i class="fas fa-trash-restore"></i> &nbsp; View Delete Records--}}
-{{--                                        </a>--}}
-                                        <a href="{{ url('/master/users/create') }}"
-                                           class="btn bg-gradient-primary btn-sm mb-0 btn-action">
+                                        <a href="{{ route('users.index', ['view_deleted' => 'DeletedRecords']) }}"
+                                           class="btn bg-gradient-info btn-sm mb-0 btn-action">
+                                            <i class="fas fa-trash-restore"></i> &nbsp; View Delete Records
+                                        </a>
+                                        <a href="javascript:void(0);"
+                                           class="btn bg-gradient-primary btn-sm mb-0 btn-action" data-bs-toggle="modal" data-bs-target="#create-user-modal-form">
                                             +&nbsp; Tambah User
                                         </a>
-{{--                                    @endif--}}
+                                    @endif
                                 </div>
                             </div>
                         </div>
-{{--                        @php--}}
-{{--                            $actionUrl = request()->has('view_deleted') ? url('/master/users?view_deleted=DeletedRecords') : url('/master/users');--}}
-{{--                        @endphp--}}
+                        @php
+                            $actionUrl = request()->has('view_deleted') ? route('users.index', ['view_deleted' => 'DeletedRecords']) : route('users.index');
+                        @endphp
                         <div class="row mt-2 pb-0">
                             <form action="" method="get" class="pb-0 m-0">
                                 <div class="col-md-12 pb-0">
@@ -66,9 +66,9 @@
                                         <span class="input-group-text" id="basic-addon1">
                                             <i class="fa fa-search fa-xs opacity-7"></i>
                                         </span>
-{{--                                            @if(request()->has('view_deleted'))--}}
-{{--                                                <input type="hidden" name="view_deleted" value="DeletedRecords">--}}
-{{--                                            @endif--}}
+                                            @if(request()->has('view_deleted'))
+                                                <input type="hidden" name="view_deleted" value="DeletedRecords">
+                                            @endif
                                             <input type="text" class="form-control form-control-sm" name="search"
                                                    id="search" value="{{ request('search') }}" placeholder="Search...">
                                         </div>
@@ -155,17 +155,17 @@
                                             </td>
                                             <td class="align-middle text-xs text-end action">
                                                 @if(request()->has('view_deleted'))
-                                                    <a href="{{ url('/master/users/restore/one/' . $user->id) }}"
+                                                    <a href="{{ route('users.restore', $user->id) }}"
                                                        class="mx-1 badge bg-gradient-success show-confirm-restore">
                                                         <i class="fa fa-check text-white"></i> &nbsp; Restore
                                                     </a>
                                                 @else
-                                                    <a href="{{ url('/master/users/' . $user->id) }}"
-                                                       class="badge bg-gradient-info">
+                                                    <a href="javascript:void(0)"
+                                                       class="badge bg-gradient-info" data-bs-toggle="modal" data-bs-target="#detail-user-modal-form{{ $user->id }}">
                                                         <i class="fas fa-eye text-white"></i> &nbsp; Detail
                                                     </a>
-                                                    <a href="{{ url('/master/users/' . $user->id . '/edit') }}"
-                                                       class="mx-1 badge bg-gradient-warning">
+                                                    <a href="javascript:void(0);"
+                                                       class="mx-1 badge bg-gradient-warning" data-bs-toggle="modal" data-bs-target="#edit-user-modal-form{{ $user->id }}">
                                                         <i class="fas fa-edit text-white"></i> &nbsp; Edit
                                                     </a>
                                                     <form action="{{ url('/master/users/' . $user->id) }}"
@@ -180,6 +180,8 @@
                                                 @endif
                                             </td>
                                         </tr>
+                                        @include('dashboard.users.modals.show')
+                                        @include('dashboard.users.modals.edit')
                                     @endforeach
                                 @endif
                                 </tbody>
@@ -189,9 +191,36 @@
                             {{ $users->links() }}
                         </div>
                     </div>
+                    @include('dashboard.users.modals.create')
                 </div>
             </div>
         </div>
     </div>
 @endsection
+@section('scripts')
+    <script>
+        function previewImage(imageInputId, imagePreviewClass, defaultImageUrl) {
+            const imageUser = document.querySelector(`#${imageInputId}`);
+            const userImgPreview = document.querySelector(`.${imagePreviewClass}`);
 
+            if (imageUser.files && imageUser.files[0]) {
+                const oFReader = new FileReader();
+                oFReader.readAsDataURL(imageUser.files[0]);
+
+                oFReader.onload = function(oFREvent) {
+                    userImgPreview.src = oFREvent.target.result; // Update src to the selected image
+                }
+            } else {
+                userImgPreview.src = defaultImageUrl; // Set back to default if no file is chosen
+            }
+        }
+    </script>
+    @if ($errors->any())
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var myModal = new bootstrap.Modal(document.getElementById('create-user-modal-form'));
+                myModal.show();
+            });
+        </script>
+    @endif
+@endsection

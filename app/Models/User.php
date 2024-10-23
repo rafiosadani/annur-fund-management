@@ -46,6 +46,10 @@ class User extends Authenticatable
         return $this->hasOne(User::class, "id", "created_by");
     }
 
+    public function getCreatedAtAttribute() {
+        return Carbon::parse($this->attributes['created_at'])->translatedFormat('d F Y H:i:s');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function($query, $search) {

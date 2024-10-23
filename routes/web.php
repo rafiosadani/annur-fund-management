@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,4 +49,10 @@ Route::get('/master/charitable-donations', function () {
 //    return view('dashboard.users.index');
 //})->name('master.users.index');
 
+Route::get('/master/users/restore/one/{id}', [UserController::class, 'restore'])->name('users.restore');
+Route::get('/master/users/restoreAll', [UserController::class, 'restoreAll'])->name('users.restore.all');
 Route::resource('/master/users', UserController::class);
+
+
+Route::resource('/master/roles', RoleController::class);
+

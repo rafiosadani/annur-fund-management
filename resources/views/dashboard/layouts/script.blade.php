@@ -118,6 +118,9 @@
 {{-- SweetAlert2 --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+{{-- Select 2 JS --}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 {{-- My JS --}}
 <script src="{{ asset('js/script.js') }}"></script>
 
@@ -183,6 +186,63 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 form.submit();
+            }
+        });
+    });
+
+    $('.show-confirm-delete').click(function (event) {
+        event.preventDefault();
+        var form = $(this).closest("form");
+        Swal.fire({
+            title: "Apakah kamu yakin?",
+            text: "Ingin menghapus data ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#5e72e4",
+            cancelButtonColor: "#f5365c",
+            confirmButtonText: "Ya, hapus data!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+
+    $('.show-confirm-restore').click(function (event) {
+        event.preventDefault();
+        var href = $(this).attr("href");
+        Swal.fire({
+            title: "Apakah kamu yakin?",
+            text: "Ingin merestore data ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#5e72e4",
+            cancelButtonColor: "#f5365c",
+            confirmButtonText: "Ya, restore data!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = href;
+            }
+        });
+    });
+
+    $('.show-confirm-restore-all').click(function (event) {
+        event.preventDefault();
+        var href = $(this).attr("href");
+        Swal.fire({
+            title: "Apakah kamu yakin?",
+            text: "Ingin merestore semua data ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#5e72e4",
+            cancelButtonColor: "#f5365c",
+            confirmButtonText: "Ya, restore data!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = href;
             }
         });
     });
