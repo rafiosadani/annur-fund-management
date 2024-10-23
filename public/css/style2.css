@@ -1,0 +1,72 @@
+/* card2 start */
+.card2 {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+  }
+
+  .card2-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .card2-header h4 {
+    margin: 0;
+  }
+  
+  .table2-responsive {
+    margin-top: 20px;
+  }
+  
+  .table2 thead th {
+    text-align: center;
+    background-color: #f8f9fa;
+  }
+  
+  .table2 td {
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .btn {
+    border-radius: 4px;
+  }
+
+  .pagination {
+    margin: 0;
+  }
+
+  .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+  }
+
+  .page-item .page-link {
+    color: #007bff;
+  }
+  /* card2 end */
+  /* Modal start */
+  .modal-header {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .modal-body {
+    padding-top: 20px;
+  }
+
+  .modal-footer {
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+  }
+
+  .btn {
+    border-radius: 4px;
+  }
+
+  /* Modal end*/
