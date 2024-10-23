@@ -1,7 +1,7 @@
 // Variables
 //
 // Variables should follow the `$component-state-property-size` formula for
-// consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
+// consistent naming. Ex: $nav-link-disabled-color and $modals-content-box-shadow-xs.
 
 $argon-background-color: #ffffff !default; // Testing
 $font-color:            #67748e !default;
@@ -1371,10 +1371,10 @@ $badge-border-radius:               $badge-border-radius-custom !default;
 
 // Modals
 
-// Padding applied to the modal body
+// Padding applied to the modals body
 $modal-inner-padding:               $spacer !default;
 
-// Margin between elements in footer, must be lower than or equal to 2 * $modal-inner-padding
+// Margin between elements in footer, must be lower than or equal to 2 * $modals-inner-padding
 $modal-footer-margin-between:       .5rem !default;
 
 $modal-dialog-margin:               .5rem !default;

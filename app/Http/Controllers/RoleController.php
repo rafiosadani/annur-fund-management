@@ -10,9 +10,20 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $roles = Role::with(['dibuat']);
+        if ($request->has('view_deleted')) {
+            $roles = $roles->onlyTrashed();
+        } else {
+            $roles = $roles->where('deleted_at', null);
+        }
+        $roles = $roles->orderBy('created_at', 'desc')
+            ->filter(request(['search']))->paginate(5)->withQueryString();
+
+        return view('dashboard.roles.index', [
+            'roles' => $roles
+        ]);
     }
 
     /**

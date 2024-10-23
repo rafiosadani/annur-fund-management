@@ -23,6 +23,9 @@
     {{-- CSS Files --}}
     <link id="pagestyle" href="{{ asset('css/argon-dashboard.css?v=2.0.4') }}" rel="stylesheet"/>
 
+    {{-- Select 2 CSS --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
     {{--  My CSS --}}
     <link id="pagestyle" href="{{ asset('css/style.css') }}" rel="stylesheet"/>
     <link id="pagestyle" href="{{ asset('css/style2.css') }}" rel="stylesheet"/>
