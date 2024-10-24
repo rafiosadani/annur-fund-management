@@ -78,7 +78,12 @@ class UserController extends Controller
         ];
 
         // Validasi input
-        $validatedData = $request->validate($rules, $customMessage);
+        try {
+            $validatedData = $request->validate($rules, $customMessage);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            session(['create_error' => 'create_error']);
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
 
         // Ambil file gambar dari request
         $image = $request->file('image');
@@ -155,7 +160,14 @@ class UserController extends Controller
             'image.max' => 'Ukuran file foto yang anda masukkan terlalu besar!',
         ];
 
-        $validatedData = $request->validate($rules, $customMessage);
+
+        // Validation input
+        try {
+            $validatedData = $request->validate($rules, $customMessage);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            session(['edit_user_id' => $user->id, 'edit_error' => 'edit_error']);
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
 
         if ($request->file('image')) {
             if ($request->oldImage !== null) {
