@@ -34,26 +34,28 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 Route::post('/register', [AuthController::class, 'register'])->name('register')->middleware('guest');
 
-// route dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
-})->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    // route dashboard
+    Route::get('/dashboard', function () { return view('dashboard.index'); })->name('dashboard');
 
-// route master data
-// route charitable donations
-Route::get('/master/charitable-donations', function () {
-    return view('dashboard.charitable-donations.index');
-})->name('master.charitable-donations.index');
+    // master data
+    Route::prefix('master')->group(function () {
+        // route charitable donations
+        Route::get('/charitable-donations', function () {
+            return view('dashboard.charitable-donations.index');
+        })->name('master.charitable-donations.index');
 
-//Route::get('/master/users', function () {
-//    return view('dashboard.users.index');
-//})->name('master.users.index');
+        // roles
+        Route::get('/roles/restore/one/{id}', [RoleController::class, 'restore'])->name('roles.restore');
+        Route::get('/roles/restoreAll', [RoleController::class, 'restoreAll'])->name('roles.restore.all');
+        Route::resource('/roles', RoleController::class);
 
-Route::get('/master/users/restore/one/{id}', [UserController::class, 'restore'])->name('users.restore');
-Route::get('/master/users/restoreAll', [UserController::class, 'restoreAll'])->name('users.restore.all');
-Route::resource('/master/users', UserController::class);
+        // users
+        Route::get('/users/restore/one/{id}', [UserController::class, 'restore'])->name('users.restore');
+        Route::get('/users/restoreAll', [UserController::class, 'restoreAll'])->name('users.restore.all');
+        Route::resource('/users', UserController::class);
+    });
+});
 
-Route::get('/master/roles/restore/one/{id}', [RoleController::class, 'restore'])->name('roles.restore');
-Route::get('/master/roles/restoreAll', [RoleController::class, 'restoreAll'])->name('roles.restore.all');
-Route::resource('/master/roles', RoleController::class);
+
 
