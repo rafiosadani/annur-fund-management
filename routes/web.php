@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\DonorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,6 +49,8 @@ Route::get('/master/charitable-donations', function () {
 //Route::get('/master/users', function () {
 //    return view('dashboard.users.index');
 //})->name('master.users.index');
+
+Route::resource('/master/donors', DonorController::class);
 
 Route::get('/master/users/restore/one/{id}', [UserController::class, 'restore'])->name('users.restore');
 Route::get('/master/users/restoreAll', [UserController::class, 'restoreAll'])->name('users.restore.all');
