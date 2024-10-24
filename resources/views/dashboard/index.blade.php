@@ -1,5 +1,7 @@
 @extends('dashboard.layouts.main')
 
+@section('title', 'Dashboard')
+
 @section('breadcrumb')
     <x-breadcrumb title="Dashboard" page="Dashboard" active=""/>
 @endsection
