@@ -1,5 +1,7 @@
 @extends('dashboard.layouts.main')
 
+@section('title', 'Data User')
+
 @section('breadcrumb')
     <x-breadcrumb title="Data User" page="Master Data" active="Pengaturan User"/>
 @endsection
@@ -121,7 +123,6 @@
                                                         @else
                                                             @php $imageUrl = asset('img/' . $user->image); @endphp
                                                         @endif
-
                                                         <img src="{{ $imageUrl }}"
                                                              class="avatar avatar me-3 shadow"
                                                              alt="user-image-profile">
@@ -199,6 +200,60 @@
 @endsection
 @section('scripts')
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Trigger page refresh when any modal is closed
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.addEventListener('hidden.bs.modal', function () {
+                    location.reload(); // This will refresh the page
+                });
+            });
+
+            @if ($errors->any())
+                @if (session('create_error'))
+                    // Show Create Form Modal
+                    var myModal = new bootstrap.Modal(document.getElementById('create-user-modal-form'));
+                    myModal.show();
+
+                    // Show SweetAlert for Create Form Errors
+                    setTimeout(function () {
+                        Swal.fire({
+                            title: 'Tambah Data User Error',
+                            icon: 'error',
+                            html: `
+                                @foreach ($errors->all() as $error)
+                                    <p class="mb-0">{{ $error }}</p>
+                                @endforeach
+                            `
+                        }).then(() => {
+                            @php session()->forget('create_error'); @endphp
+                        });
+                    }, 100);
+                @elseif (session('edit_error'))
+                    // Show Edit Form Modal for specific role
+                    var userId = '{{ session('edit_user_id') }}';
+                    var myModalEdit = new bootstrap.Modal(document.getElementById('edit-user-modal-form' + userId));
+                    myModalEdit.show();
+
+                    // Show SweetAlert for Edit Form Errors
+                    setTimeout(function () {
+                        Swal.fire({
+                        title: 'Edit Data User Error',
+                        icon: 'error',
+                        html: `
+                                @foreach ($errors->all() as $error)
+                                    <p class="mb-0">{{ $error }}</p>
+                                @endforeach
+                        `
+                        }).then(() => {
+                            @php session()->forget('edit_user_id'); @endphp
+                            @php session()->forget('edit_error'); @endphp
+                        });
+                }, 100);
+                @endif
+            @endif
+        });
+
         function previewImage(imageInputId, imagePreviewClass, defaultImageUrl) {
             const imageUser = document.querySelector(`#${imageInputId}`);
             const userImgPreview = document.querySelector(`.${imagePreviewClass}`);
@@ -215,12 +270,4 @@
             }
         }
     </script>
-    @if ($errors->any())
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var myModal = new bootstrap.Modal(document.getElementById('create-user-modal-form'));
-                myModal.show();
-            });
-        </script>
-    @endif
 @endsection

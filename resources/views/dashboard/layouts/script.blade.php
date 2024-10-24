@@ -151,6 +151,19 @@
     </script>
 @endif
 
+@if(session('error'))
+    <script>
+        setTimeout(function () {
+            Swal.fire({
+                title: "Error",
+                text: "{{ session('error') }}",
+                icon: "error",
+                timer: 3000
+            });
+        }, 100);
+    </script>
+@endif
+
 <script type="text/javascript">
     $('.show-logout-header').click(function (event) {
         event.preventDefault();

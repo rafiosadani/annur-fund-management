@@ -53,6 +53,7 @@ Route::get('/master/users/restore/one/{id}', [UserController::class, 'restore'])
 Route::get('/master/users/restoreAll', [UserController::class, 'restoreAll'])->name('users.restore.all');
 Route::resource('/master/users', UserController::class);
 
-
+Route::get('/master/roles/restore/one/{id}', [RoleController::class, 'restore'])->name('roles.restore');
+Route::get('/master/roles/restoreAll', [RoleController::class, 'restoreAll'])->name('roles.restore.all');
 Route::resource('/master/roles', RoleController::class);
 
