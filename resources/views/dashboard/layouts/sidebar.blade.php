@@ -59,7 +59,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link"
+                            <a class="nav-link {{ Request::is('master/roles*') ? 'active' : '' }}"
                                href="{{ route('roles.index') }}">
                                 <span class="sidenav-normal">Role</span>
                             </a>
