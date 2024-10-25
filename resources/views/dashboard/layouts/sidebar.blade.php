@@ -48,7 +48,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('master/charitable-donations*') ? 'active' : '' }}"
-                               href="{{ route('master.charitable-donations.index') }}">
+                               href="{{ route('infaq.index') }}">
                                 <span class="sidenav-normal">Infaq</span>
                             </a>
                         </li>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InfaqController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//route infaq
+// Route::get('/master/charitable-donations', [InfaqController::class, 'index'])->name('master.charitable-donations.index');
+// Route::post('/infaqstore', [InfaqController::class, 'store'])->name('infaq.store');
+// Route::put('/infaqupdate', [InfaqController::class, 'update'])->name('infaq.update');
 
 // route authentication - can't be accessed yet
 Route::get('/login', function () {
@@ -41,9 +47,9 @@ Route::get('/dashboard', function () {
 
 // route master data
 // route charitable donations
-Route::get('/master/charitable-donations', function () {
-    return view('dashboard.charitable-donations.index');
-})->name('master.charitable-donations.index');
+// Route::get('/master/charitable-donations', function () {
+//     return view('dashboard.charitable-donations.index');
+// })->name('master.charitable-donations.index');
 
 //Route::get('/master/users', function () {
 //    return view('dashboard.users.index');
@@ -55,4 +61,6 @@ Route::resource('/master/users', UserController::class);
 
 
 Route::resource('/master/roles', RoleController::class);
+
+Route::resource('/master/infaq', InfaqController::class);
 
