@@ -24,11 +24,11 @@ Route::get('/', function () {
 // route authentication - can't be accessed yet
 Route::get('/login', function () {
     return view('auth.login');
-})->name('web.login')->middleware('guest');
+})->name('login')->middleware('guest');
 
 Route::get('/register', function () {
     return view('auth.register');
-})->name('web.register')->middleware('guest');
+})->name('register')->middleware('guest');
 
 Route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate')->middleware('guest');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
@@ -38,6 +38,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register')-
 Route::middleware(['auth'])->group(function () {
     // route dashboard
     Route::get('/dashboard', function () { return view('dashboard.index'); })->name('dashboard');
+    Route::post('/change-password', [AuthController::class, 'saveChangePassword'])->name('change-password');
 
     // master data
     Route::prefix('master')->group(function () {
@@ -58,6 +59,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users/restoreAll', [UserController::class, 'restoreAll'])->name('users.restore.all');
         Route::resource('/users', UserController::class);
     });
+
+    Route::post('/roles/restoreAll', [RoleController::class, 'restoreAll'])->name('roles.restore.all');
 });
 
 
