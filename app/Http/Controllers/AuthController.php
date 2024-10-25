@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Rules\MatchOldPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -108,6 +110,52 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('logoutSuccess', 'Anda berhasil logout!');
+        if (!empty($request->action) && $request->action == 'change-password') {
+            return redirect()->route('login')->with('logoutSuccess', 'Ubah password berhasil dilakukan. Silakan login untuk masuk ke dalam aplikasi');
+        } else {
+            return redirect()->route('login')->with('logoutSuccess', 'Anda berhasil logout!');
+        }
+    }
+
+    public function saveChangePassword(Request $request) {
+        $rules = [
+            'current_password' => ['required', new MatchOldPassword],
+            'new_password' => 'required|min:8|different:current_password',
+            'confirm_new_password' => 'required|same:new_password'
+        ];
+
+        $customMessage = [
+            'current_password.required' => 'Password lama tidak boleh kosong, isi password lama terlebih dahulu!',
+            'new_password.required' => 'Password baru tidak boleh kosong, isi password baru terlebih dahulu!',
+            'new_password.min' => 'Pastikan password baru anda memiliki setidaknya 8 karakter.',
+            'new_password.different' => 'Password baru harus berbeda dengan password saat ini!',
+            'confirm_new_password.required' => 'Konfirmasi password baru tidak boleh kosong, isi konfirmasi password baru terlebih dahulu!',
+            'confirm_new_password.same' => 'Konfirmasi password baru harus sama dengan password baru!'
+        ];
+
+        // Validation input
+        try {
+            $validatedData = $request->validate($rules, $customMessage);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            session(['change_password_error' => 'change_password_error']);
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
+
+        // set action another alert logout
+        $request['action'] = 'change-password';
+
+        $user = auth()->user();
+
+        if (!empty($user)) {
+            $updatePassword = User::where('id', $user->id)->update(['password' => Hash::make($validatedData["new_password"])]);
+
+            if (!empty($updatePassword)) {
+                return app()->call('App\Http\Controllers\AuthController@logout');
+            } else {
+                return redirect()->back()->with('error', 'Terjadi kesalahan pada server!');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Terjadi kesalahan pada server!');
+        }
     }
 }

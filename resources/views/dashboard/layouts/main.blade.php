@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <title>
-        Masjid An Nur Politeknik Negeri Malang
+        @yield('title') | {{ config('app.name', 'Masjid Raya An Nur Politeknik Negeri Malang') }}
     </title>
     {{-- Fonts and icons --}}
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
@@ -43,6 +43,7 @@
 {{--        @include('dashboard.layouts.footer-large')--}}
     </div>
 </main>
+@include('dashboard.change-password.change-password')
 @include('dashboard.layouts.script')
 @yield('scripts')
 </body>
