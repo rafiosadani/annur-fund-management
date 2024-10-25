@@ -42,6 +42,7 @@
 {{--        @include('dashboard.layouts.footer-large')--}}
     </div>
 </main>
+@include('dashboard.change-password.change-password')
 @include('dashboard.layouts.script')
 @yield('scripts')
 </body>

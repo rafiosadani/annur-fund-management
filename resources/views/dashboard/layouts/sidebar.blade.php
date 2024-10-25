@@ -10,6 +10,9 @@
     <hr class="horizontal dark mt-0">
     <div class="w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav navbar-sidebar">
+            <li class="nav-item mt-0">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Dashboard</h6>
+            </li>
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                     <div
@@ -19,208 +22,212 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Master Data</h6>
-            </li>
-            <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#masterData"
-                   class="nav-link {{ Request::is('master*') ? 'active' : '' }}" aria-controls="masterData"
-                   role="button" aria-expanded="false">
-                    <div
-                        class="border-radius-md text-center ms-2 me-3 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-database text-warning" aria-hidden="true"></i>
+            @if(auth()->user()->hasRole('Administrator'))
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Master Data</h6>
+                </li>
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#masterData"
+                       class="nav-link {{ Request::is('master*') ? 'active' : '' }}" aria-controls="masterData"
+                       role="button" aria-expanded="false">
+                        <div
+                            class="border-radius-md text-center ms-2 me-3 d-flex align-items-center justify-content-center">
+                            <i class="fa fa-database text-warning" aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text">Master Data</span>
+                    </a>
+                    <div class="collapse" id="masterData">
+                        <ul class="nav ms-4">
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Barang</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Donatur</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('master/charitable-donations*') ? 'active' : '' }}"
+                                   href="{{ route('master.charitable-donations.index') }}">
+                                    <span class="sidenav-normal">Infaq</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Program</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('master/roles*') ? 'active' : '' }}"
+                                   href="{{ route('roles.index') }}">
+                                    <span class="sidenav-normal">Role</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('master/users*') ? 'active' : '' }}"
+                                   href="{{ route('users.index') }}">
+                                    <span class="sidenav-normal">User</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                    <span class="nav-link-text">Master Data</span>
-                </a>
-                <div class="collapse" id="masterData">
-                    <ul class="nav ms-4">
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Barang</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Donatur</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('master/charitable-donations*') ? 'active' : '' }}"
-                               href="{{ route('master.charitable-donations.index') }}">
-                                <span class="sidenav-normal">Infaq</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Program</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('master/roles*') ? 'active' : '' }}"
-                               href="{{ route('roles.index') }}">
-                                <span class="sidenav-normal">Role</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('master/users*') ? 'active' : '' }}"
-                               href="{{ route('users.index') }}">
-                                <span class="sidenav-normal">User</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Transaksi</h6>
-            </li>
-            <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#incomeTransactions"
-                   class="nav-link" aria-controls="incomeTransactions"
-                   role="button" aria-expanded="false">
-                    <div
-                        class="border-radius-md text-center ms-2 me-3 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-money text-success" aria-hidden="true"></i>
+                </li>
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Transaksi</h6>
+                </li>
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#incomeTransactions"
+                       class="nav-link" aria-controls="incomeTransactions"
+                       role="button" aria-expanded="false">
+                        <div
+                            class="border-radius-md text-center ms-2 me-3 d-flex align-items-center justify-content-center">
+                            <i class="fa fa-money text-success" aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text">Transaksi Pemasukan</span>
+                    </a>
+                    <div class="collapse" id="incomeTransactions">
+                        <ul class="nav ms-4">
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Donasi Offline</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Infaq</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Konfirmasi Transfer Donatur</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                    <span class="nav-link-text">Transaksi Pemasukan</span>
-                </a>
-                <div class="collapse" id="incomeTransactions">
-                    <ul class="nav ms-4">
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Donasi Offline</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Infaq</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Konfirmasi Transfer Donatur</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#expendTransactions"
-                   class="nav-link" aria-controls="expendTransactions"
-                   role="button" aria-expanded="false">
-                    <div
-                        class="border-radius-md text-center ms-2 me-3 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-exchange text-danger" aria-hidden="true"></i>
+                </li>
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#expendTransactions"
+                       class="nav-link" aria-controls="expendTransactions"
+                       role="button" aria-expanded="false">
+                        <div
+                            class="border-radius-md text-center ms-2 me-3 d-flex align-items-center justify-content-center">
+                            <i class="fa fa-exchange text-danger" aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text">Transaksi Pengeluaran</span>
+                    </a>
+                    <div class="collapse" id="expendTransactions">
+                        <ul class="nav ms-4">
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Pengeluaran Umum</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Pengeluaran Program</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                    <span class="nav-link-text">Transaksi Pengeluaran</span>
-                </a>
-                <div class="collapse" id="expendTransactions">
-                    <ul class="nav ms-4">
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Pengeluaran Umum</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Pengeluaran Program</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <div
-                        class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-gift text-info" style="margin-left: -6px;"></i>
-                    </div>
-                    <span class="nav-link-text ms-2">Donasi Barang</span>
-                </a>
-            </li>
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Laporan</h6>
-            </li>
-            <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#reports"
-                   class="nav-link" aria-controls="reports"
-                   role="button" aria-expanded="false">
-                    <div
-                        class="border-radius-md text-center ms-2 me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-file text-primary" style="margin-left: 4px;" aria-hidden="true"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Laporan</span>
-                </a>
-                <div class="collapse" id="reports">
-                    <ul class="nav ms-4">
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Pemasukan</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Pengeluaran</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Donasi Barang</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Program Penggalangan Dana</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('profile*') ? 'active' : '' }}" href="#">
-                    <div
-                        class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-user fa-sm text-info" style="margin-left: -4px;"></i>
-                    </div>
-                    <span class="nav-link-text ms-2">Profile</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('change-password') ? 'active' : '' }}" href="#">
-                    <div
-                        class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-solid fa-key fa-sm text-success" style="margin-left: -6px;"></i>
-                    </div>
-                    <span class="nav-link-text ms-2">Ubah Password</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <form action="{{ route('logout') }}" method="post">
-                    @csrf
-                    <a class="nav-link show-logout-sidebar" href="javascript:;">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
                         <div
                             class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa fa-sign-out text-danger" style="margin-left: -4px;"></i>
+                            <i class="fa fa-gift text-info" style="margin-left: -6px;"></i>
                         </div>
-                        <span class="nav-link-text ms-2">Logout</span>
+                        <span class="nav-link-text ms-2">Donasi Barang</span>
                     </a>
-                    <button type="submit" class="d-none"></button>
-                </form>
-            </li>
+                </li>
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Laporan</h6>
+                </li>
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#reports"
+                       class="nav-link" aria-controls="reports"
+                       role="button" aria-expanded="false">
+                        <div
+                            class="border-radius-md text-center ms-2 me-2 d-flex align-items-center justify-content-center">
+                            <i class="fa fa-file text-primary" style="margin-left: 4px;" aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Laporan</span>
+                    </a>
+                    <div class="collapse" id="reports">
+                        <ul class="nav ms-4">
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Pemasukan</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Pengeluaran</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Donasi Barang</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Program Penggalangan Dana</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
+            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasRole('Donatur'))
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('profile*') ? 'active' : '' }}" href="#">
+                        <div
+                            class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
+                            <i class="fa fa-user fa-sm text-info" style="margin-left: -4px;"></i>
+                        </div>
+                        <span class="nav-link-text ms-2">Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('change-password') ? 'active' : '' }}" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#change-password-user-modal-form">
+                        <div
+                            class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
+                            <i class="fa fa-solid fa-key fa-sm text-success" style="margin-left: -6px;"></i>
+                        </div>
+                        <span class="nav-link-text ms-2">Ubah Password</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <a class="nav-link show-logout-sidebar" href="javascript:void(0);">
+                            <div
+                                class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa fa-sign-out text-danger" style="margin-left: -4px;"></i>
+                            </div>
+                            <span class="nav-link-text ms-2">Logout</span>
+                        </a>
+                        <button type="submit" class="d-none"></button>
+                    </form>
+                </li>
+            @endif
         </ul>
     </div>
 {{--    <div class="sidenav-footer mx-3 ">--}}
