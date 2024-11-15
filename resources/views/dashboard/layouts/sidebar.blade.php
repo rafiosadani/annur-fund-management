@@ -57,8 +57,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
+                                <a class="nav-link" {{ Request::is('master/fundraising-programs*') ? 'active' : '' }}
+                                   href="{{ route('fundraising-programs.index') }}">
                                     <span class="sidenav-normal">Program</span>
                                 </a>
                             </li>
@@ -76,11 +76,43 @@
                             </li>
                         </ul>
                     </div>
-                </a>
-            </li>
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Transaksi</h6>
-            </li>
+                </li>
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Transaksi</h6>
+                </li>
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#incomeTransactions"
+                       class="nav-link" aria-controls="incomeTransactions"
+                       role="button" aria-expanded="false">
+                        <div
+                            class="border-radius-md text-center ms-2 me-3 d-flex align-items-center justify-content-center">
+                            <i class="fa fa-money text-success" aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text">Transaksi Pemasukan</span>
+                    </a>
+                    <div class="collapse" id="incomeTransactions">
+                        <ul class="nav ms-4">
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('transaction/donations/donation-offline*') ? 'active' : '' }}"
+                                   href="{{ route('transaction.donations.offline-donation.index') }}">
+                                    <span class="sidenav-normal">Donasi Offline</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Infaq</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="#">
+                                    <span class="sidenav-normal">Konfirmasi Transfer Donatur</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#expendTransactions"
                        class="nav-link" aria-controls="expendTransactions"
