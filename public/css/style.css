@@ -163,6 +163,50 @@
     padding: 2px 2px 2px 3px;
 }
 
+/* Custom datepicker bootstrap */
+.datepicker {
+    z-index: 1151 !important; /* Pastikan datepicker muncul di atas elemen lain */
+}
+
+.datepicker-dropdown {
+    top: 0;
+    left: 0;
+    padding: 4px;
+    margin-top: 2px;
+    border-radius: 4px;
+    /*background-color: #f6f9fc;*/
+    border: 1px solid #ccdddd;
+}
+
+.datepicker table {
+    width: 100%;
+}
+
+.datepicker td, .datepicker th {
+    width: 2.5rem;
+    height: 2.5rem;
+    text-align: center;
+}
+
+.datepicker .datepicker-years .year.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.datepicker .datepicker-years .year:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+/* daterangepicker*/
+.daterangepicker {
+    color: black;
+}
+
+.daterangepicker .drp-buttons button.btn {
+    margin-bottom: 0;
+}
+
 /* pagination */
 .page-item.active .page-link {
     color: #ffffff;

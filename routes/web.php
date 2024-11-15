@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DonationController;
+use App\Http\Controllers\FundraisingProgramController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +48,13 @@ Route::middleware(['auth'])->group(function () {
             return view('dashboard.charitable-donations.index');
         })->name('master.charitable-donations.index');
 
+        // donations
+
+        // fundraising programs
+        Route::get('/fundraising-programs/restore/one/{id}', [FundraisingProgramController::class, 'restore'])->name('fundraising-programs.restore');
+        Route::get('/fundraising-programs/restoreAll', [FundraisingProgramController::class, 'restoreAll'])->name('fundraising-programs.restore.all');
+        Route::resource('/fundraising-programs', FundraisingProgramController::class);
+
         // roles
         Route::get('/roles/restore/one/{id}', [RoleController::class, 'restore'])->name('roles.restore');
         Route::get('/roles/restoreAll', [RoleController::class, 'restoreAll'])->name('roles.restore.all');
@@ -56,6 +65,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users/restoreAll', [UserController::class, 'restoreAll'])->name('users.restore.all');
         Route::resource('/users', UserController::class);
     });
+
+    Route::prefix('transactions')->group(function () {
+        // donation offline
+        Route::get('/donations/donation-offline', [DonationController::class, 'listOfflineDonations'])->name('transaction.donations.offline-donation.index');
+        Route::post('/donations/donation-offline', [DonationController::class, 'storeOfflineDonation'])->name('transaction.donations.offline-donation.store');
+    });
+
+
 
     Route::post('/roles/restoreAll', [RoleController::class, 'restoreAll'])->name('roles.restore.all');
 });

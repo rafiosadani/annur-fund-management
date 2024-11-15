@@ -48,7 +48,21 @@ class UserSeederTableSeeder extends Seeder
             'remember_token'=> Str::random(10),
         ]);
 
+        User::create([
+            'm_role_id'     => $donorRoleId,
+            'user_code'     => 'USR/' . $year . $month . '/0003',
+            'name'          => 'Budi Gunadi Sadikin',
+            'email'         => 'budigunadis@gmail.com',
+            'gender'        => 'laki-laki',
+            'phone'         => '085235645765',
+            'address'       => 'Bandung, Jawa Barat, Indonesia',
+            'password'      => Hash::make('password'),
+            'image'         => 'default.png',
+            'remember_token'=> Str::random(10),
+        ]);
+
         User::where('email', 'administrator@gmail.com')->first()->assignRole('Administrator');
         User::where('email', 'agussubiyanto@gmail.com')->first()->assignRole('Donatur');
+        User::where('email', 'budigunadis@gmail.com')->first()->assignRole('Donatur');
     }
 }
