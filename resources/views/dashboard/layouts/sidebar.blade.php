@@ -57,8 +57,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
+                                <a class="nav-link" {{ Request::is('master/fundraising-programs*') ? 'active' : '' }}
+                                   href="{{ route('fundraising-programs.index') }}">
                                     <span class="sidenav-normal">Program</span>
                                 </a>
                             </li>
@@ -93,8 +93,8 @@
                     <div class="collapse" id="incomeTransactions">
                         <ul class="nav ms-4">
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
+                                <a class="nav-link {{ Request::is('transaction/donations/donation-offline*') ? 'active' : '' }}"
+                                   href="{{ route('transaction.donations.offline-donation.index') }}">
                                     <span class="sidenav-normal">Donasi Offline</span>
                                 </a>
                             </li>
