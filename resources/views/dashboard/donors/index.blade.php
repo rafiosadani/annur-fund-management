@@ -19,20 +19,23 @@
                             <div class="col-lg-8 col-12 parent-button">
                                 <div>
                                     <a href="javascript:void(0);"
-                                       class="btn bg-gradient-primary btn-sm mb-0 btn-action" data-bs-toggle="modal" data-bs-target="#create-donor-modal-form">
+                                       class="btn bg-gradient-primary btn-sm mb-0 btn-action"
+                                       data-bs-toggle="modal" data-bs-target="#create-donor-modal-form">
                                         +&nbsp; Tambah Donatur
                                     </a>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Search Form -->
                         <div class="row mt-2 pb-0">
                             <form action="{{ route('donors.index') }}" method="get" class="pb-0 m-0">
                                 <div class="col-md-12 pb-0">
                                     <div class="form-group">
                                         <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1">
-                                            <i class="fa fa-search fa-xs opacity-7"></i>
-                                        </span>
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <i class="fa fa-search fa-xs opacity-7"></i>
+                                            </span>
                                             <input type="text" class="form-control form-control-sm" name="search"
                                                    id="search" value="{{ request('search') }}" placeholder="Search...">
                                         </div>
@@ -41,6 +44,8 @@
                             </form>
                         </div>
                     </div>
+
+                    <!-- Table Content -->
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive pt-0 px-4">
                             <table class="table align-items-center mb-0">
@@ -145,52 +150,54 @@
         </div>
     </div>
 @endsection
+
 @section('scripts')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Trigger page refresh when any modal is closed
+            // Tidak ada reload halaman saat modal ditutup
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
                 modal.addEventListener('hidden.bs.modal', function () {
-                    location.reload(); // This will refresh the page
+                    // Removed location.reload() to avoid losing input data
                 });
             });
 
             @if ($errors->any())
             @if (session('create_error'))
-            // Show Create Form Modal
+            // Buka modal form Tambah Donatur
             var myModal = new bootstrap.Modal(document.getElementById('create-donor-modal-form'));
             myModal.show();
 
-            // Show SweetAlert for Create Form Errors
+            // Tampilkan SweetAlert untuk error pada form Tambah Donatur
             setTimeout(function () {
                 Swal.fire({
                     title: 'Tambah Data Donatur Error',
                     icon: 'error',
                     html: `
-                                @foreach ($errors->all() as $error)
-                    <p class="mb-0">{{ $error }}</p>
-                                @endforeach
+                        @foreach ($errors->all() as $error)
+                            <p class="mb-0">{{ $error }}</p>
+                        @endforeach
                     `
                 }).then(() => {
                     @php session()->forget('create_error'); @endphp
                 });
             }, 100);
+
             @elseif (session('edit_error'))
-            // Show Edit Form Modal for specific role
+            // Buka modal form Edit Donatur
             var donorId = '{{ session('edit_donor_id') }}';
             var myModalEdit = new bootstrap.Modal(document.getElementById('edit-donor-modal-form' + donorId));
             myModalEdit.show();
 
-            // Show SweetAlert for Edit Form Errors
+            // Tampilkan SweetAlert untuk error pada form Edit Donatur
             setTimeout(function () {
                 Swal.fire({
-                    title: 'Edit Data Donor Error',
+                    title: 'Edit Data Donatur Error',
                     icon: 'error',
                     html: `
-                                @foreach ($errors->all() as $error)
-                    <p class="mb-0">{{ $error }}</p>
-                                @endforeach
+                        @foreach ($errors->all() as $error)
+                            <p class="mb-0">{{ $error }}</p>
+                        @endforeach
                     `
                 }).then(() => {
                     @php session()->forget('edit_donor_id'); @endphp
@@ -201,19 +208,22 @@
             @endif
         });
 
+        
+
+        // Fungsi untuk preview gambar
         function previewImage(imageInputId, imagePreviewClass, defaultImageUrl) {
-            const imageUser = document.querySelector(#${imageInputId});
-            const userImgPreview = document.querySelector(.${imagePreviewClass});
+            const imageUser = document.getElementById(imageInputId);
+            const userImgPreview = document.querySelector(`.${imagePreviewClass}`);
 
             if (imageUser.files && imageUser.files[0]) {
                 const oFReader = new FileReader();
                 oFReader.readAsDataURL(imageUser.files[0]);
 
                 oFReader.onload = function(oFREvent) {
-                    userImgPreview.src = oFREvent.target.result; // Update src to the selected image
+                    userImgPreview.src = oFREvent.target.result;
                 }
             } else {
-                userImgPreview.src = defaultImageUrl; // Set back to default if no file is chosen
+                userImgPreview.src = defaultImageUrl;
             }
         }
     </script>

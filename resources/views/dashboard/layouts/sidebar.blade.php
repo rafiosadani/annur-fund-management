@@ -45,8 +45,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
+                                <a class="nav-link {{ Request::is('master/donor*') ? 'active' : '' }}"
+                                   href="{{ route('donors.index') }}">
                                     <span class="sidenav-normal">Donatur</span>
                                 </a>
                             </li>
