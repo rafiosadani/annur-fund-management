@@ -99,11 +99,6 @@ class UserController extends Controller
             $role = Role::findById($create->m_role_id);
             User::find($create->id)->assignRole($role->name);
 
-            // Hapus gambar sementara jika ada
-            if ($request->session()->has('temp_image')) {
-                Storage::disk('public')->delete($request->session()->get('temp_image'));
-            }
-
             return redirect()->route('users.index')->with('success', 'Data user berhasil ditambahkan!');
         } else {
             return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan pada server!');
