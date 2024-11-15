@@ -51,8 +51,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{ Request::is('master/charitable-donations*') ? 'active' : '' }}"
-                                   href="{{ route('master.charitable-donations.index') }}">
+                                <a class="nav-link {{ Request::is('master/infaq*') ? 'active' : '' }}"
+                                   href="{{ route('infaq.index') }}">
                                     <span class="sidenav-normal">Infaq</span>
                                 </a>
                             </li>
@@ -76,61 +76,11 @@
                             </li>
                         </ul>
                     </div>
-                    <span class="nav-link-text">Master Data</span>
                 </a>
-                <div class="collapse" id="masterData">
-                    <ul class="nav ms-4">
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Barang</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Donatur</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('master/charitable-donations*') ? 'active' : '' }}"
-                               href="{{ route('infaq.index') }}">
-                                <span class="sidenav-normal">Infaq</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">
-                                <span class="sidenav-normal">Program</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="{{ route('roles.index') }}">
-                                <span class="sidenav-normal">Role</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('master/users*') ? 'active' : '' }}"
-                               href="{{ route('users.index') }}">
-                                <span class="sidenav-normal">User</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
             </li>
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Transaksi</h6>
             </li>
-            <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#incomeTransactions"
-                   class="nav-link" aria-controls="incomeTransactions"
-                   role="button" aria-expanded="false">
-                    <div
-                        class="border-radius-md text-center ms-2 me-3 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-money text-success" aria-hidden="true"></i>
-                    </div>
-                </li>
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#expendTransactions"
                        class="nav-link" aria-controls="expendTransactions"

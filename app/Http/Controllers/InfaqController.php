@@ -18,7 +18,6 @@ class InfaqController extends Controller
         $search = $request->input('search');
         $infaqTypes = Infaq::orderBy('infaq_type_code', 'desc')
             ->filter(request(['search']))->paginate(5)->withQueryString();
-
         return view('dashboard.charitable-donations.index', compact('infaqTypes'));
      }
  
