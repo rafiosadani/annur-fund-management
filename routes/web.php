@@ -72,8 +72,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/donations/donation-offline', [DonationController::class, 'storeOfflineDonation'])->name('transaction.donations.offline-donation.store');
     });
 
-
-
     Route::post('/roles/restoreAll', [RoleController::class, 'restoreAll'])->name('roles.restore.all');
 });
 

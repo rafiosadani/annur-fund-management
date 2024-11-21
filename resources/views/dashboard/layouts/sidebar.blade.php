@@ -17,7 +17,7 @@
                 <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                     <div
                         class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-tachometer fa-sm text-primary" style="margin-left: -8px;"></i>
+                        <i class="fa fa-tachometer-alt fa-sm text-primary" style="margin-left: -8px;"></i>
                     </div>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
@@ -86,7 +86,7 @@
                        role="button" aria-expanded="false">
                         <div
                             class="border-radius-md text-center ms-2 me-3 d-flex align-items-center justify-content-center">
-                            <i class="fa fa-money text-success" aria-hidden="true"></i>
+                            <i class="fa fa-money-bill-alt text-success" aria-hidden="true"></i>
                         </div>
                         <span class="nav-link-text">Transaksi Pemasukan</span>
                     </a>
@@ -119,7 +119,7 @@
                        role="button" aria-expanded="false">
                         <div
                             class="border-radius-md text-center ms-2 me-3 d-flex align-items-center justify-content-center">
-                            <i class="fa fa-exchange text-danger" aria-hidden="true"></i>
+                            <i class="fa fa-exchange-alt text-danger" aria-hidden="true"></i>
                         </div>
                         <span class="nav-link-text">Transaksi Pengeluaran</span>
                     </a>
@@ -200,7 +200,7 @@
                     <a class="nav-link {{ Request::is('profile*') ? 'active' : '' }}" href="#">
                         <div
                             class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa fa-user fa-sm text-info" style="margin-left: -4px;"></i>
+                            <i class="fa fa-user-alt fa-sm text-info" style="margin-left: -4px;"></i>
                         </div>
                         <span class="nav-link-text ms-2">Profile</span>
                     </a>
@@ -220,7 +220,7 @@
                         <a class="nav-link show-logout-sidebar" href="javascript:void(0);">
                             <div
                                 class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
-                                <i class="fa fa-sign-out text-danger" style="margin-left: -4px;"></i>
+                                <i class="fa fa-sign-out-alt text-danger" style="margin-left: -4px;"></i>
                             </div>
                             <span class="nav-link-text ms-2">Logout</span>
                         </a>
