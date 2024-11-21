@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('m_donations', function (Blueprint $table) {
+        Schema::create('t_donations', function (Blueprint $table) {
             $table->string('id', 36)->primary()->unique();
             $table->string('m_user_id', 36)->nullable();
-            $table->string('m_donor_biodata_id', 36)->nullable();
+            $table->string('m_donor_profile_id', 36)->nullable();
             $table->string('m_fundraising_program_id', 36)->nullable();
             $table->string('donation_code', 36)->unique()->nullable();
             $table->integer('amount')->nullable();
@@ -22,13 +22,12 @@ return new class extends Migration
             $table->string('poof_of_payment')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'rejected'])->default('pending');
             $table->timestamps();
-            $table->softDeletes();
             $table->string('created_by', 36)->nullable();
             $table->string('updated_by', 36)->nullable();
-            $table->string('deleted_by', 36)->nullable();
 
             $table->foreign('m_user_id')->references('id')->on('m_users');
             $table->foreign('m_fundraising_program_id')->references('id')->on('m_fundraising_programs');
+            $table->foreign('m_donor_profile_id')->references('id')->on('m_donor_profiles');
         });
     }
 
@@ -37,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('m_donations');
+        Schema::dropIfExists('t_donations');
     }
 };
