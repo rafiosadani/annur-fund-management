@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\DonorController;
 use App\Http\Controllers\FundraisingProgramController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
@@ -49,6 +50,9 @@ Route::middleware(['auth'])->group(function () {
         })->name('master.charitable-donations.index');
 
         // donations
+
+        // donors
+        Route::resource('/donors', DonorController::class);
 
         // fundraising programs
         Route::get('/fundraising-programs/restore/one/{id}', [FundraisingProgramController::class, 'restore'])->name('fundraising-programs.restore');
