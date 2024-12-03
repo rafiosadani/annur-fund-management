@@ -19,14 +19,16 @@
                             <div class="col-lg-8 col-12 parent-button">
                                 <div>
                                     <a href="javascript:void(0);"
-                                       class="btn bg-gradient-primary btn-sm mb-0 btn-action" data-bs-toggle="modal" data-bs-target="#create-offline-donation-modal-form">
+                                       class="btn bg-gradient-primary btn-sm mb-0 btn-action" data-bs-toggle="modal"
+                                       data-bs-target="#create-offline-donation-modal-form">
                                         +&nbsp; Tambah Donasi Offline
                                     </a>
                                 </div>
                             </div>
                         </div>
                         <div class="row mt-2 pb-0">
-                            <form action="{{ route('transaction.donations.offline-donation.index') }}" method="get" class="pb-0 m-0">
+                            <form action="{{ route('transaction.donations.offline-donation.index') }}" method="get"
+                                  class="pb-0 m-0">
                                 <div class="col-md-12 pb-0">
                                     <div class="form-group">
                                         <div class="input-group">
@@ -55,10 +57,11 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Donatur
                                     </th>
-                                    <th style="width: 30%" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    <th style="width: 30%"
+                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Program
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Jumlah Donasi
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
@@ -84,12 +87,12 @@
                                                 <p class="text-xs text-secondary mb-0">{{ $donation->donation_code }}</p>
                                             </td>
                                             <td class="align-middle">
-                                                <p class="text-xs text-secondary mb-0">{{ $donation->donor->name }}</p>
+                                                <p class="text-xs text-secondary mb-0">{{ $donation->user->name }}</p>
                                             </td>
                                             <td class="align-middle text-wrap text-justify">
                                                 <p class="text-xs text-secondary mb-0">{{ $donation->fundraisingProgram->title }}</p>
                                             </td>
-                                            <td class="align-middle">
+                                            <td class="align-middle text-center">
                                                 <p class="text-xs text-secondary mb-0">@currency($donation->amount ?? 0)</p>
                                             </td>
                                             <td class="align-middle">
@@ -98,14 +101,16 @@
                                             </td>
                                             <td class="align-middle text-xs text-end action">
                                                 <a href="javascript:void(0)"
-                                                   class="badge bg-gradient-info" data-bs-toggle="modal" data-bs-target="#detail-offline-donation-modal-form{{ $donation->id }}">
+                                                   class="badge bg-gradient-info" data-bs-toggle="modal"
+                                                   data-bs-target="#detail-offline-donation-modal-form{{ $donation->id }}">
                                                     <i class="fas fa-eye text-white"></i> &nbsp; Detail
                                                 </a>
                                                 <a href="javascript:void(0);"
-                                                   class="mx-1 badge bg-gradient-warning" data-bs-toggle="modal" data-bs-target="#edit-offline-donation-modal-form{{ $donation->id }}">
+                                                   class="mx-1 badge bg-gradient-warning" data-bs-toggle="modal"
+                                                   data-bs-target="#edit-offline-donation-modal-form-{{ $donation->id }}">
                                                     <i class="fas fa-edit text-white"></i> &nbsp; Edit
                                                 </a>
-                                                <form action=""
+                                                <form action="{{ route('transaction.donations.offline-donation.destroy', $donation->id) }}"
                                                       method="post" class="d-inline">
                                                     @csrf
                                                     @method('delete')
@@ -116,8 +121,8 @@
                                                 </form>
                                             </td>
                                         </tr>
-{{--                                        @include('dashboard.fundraising-programs.modals.show')--}}
-{{--                                        @include('dashboard.fundraising-programs.modals.edit')--}}
+                                        {{--                                        @include('dashboard.fundraising-programs.modals.show')--}}
+                                        @include('dashboard.transactions.income-transactions.offline-donations.modals.edit')
                                     @endforeach
                                 @endif
                                 </tbody>
@@ -127,7 +132,7 @@
                             {{ $donations->links() }}
                         </div>
                     </div>
-                    @include('dashboard.transactions.offline-donations.modals.create')
+                    @include('dashboard.transactions.income-transactions.offline-donations.modals.create')
                 </div>
             </div>
         </div>
@@ -135,7 +140,7 @@
 @endsection
 @section('scripts')
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Trigger page refresh when any modal is closed
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
@@ -157,14 +162,14 @@
                 $errorTitle = 'Tambah Donasi Offline Error';
             } elseif (session('edit_error')) {
                 $donationOfflineId = session('edit_donation_offline_id');
-                $modalId = 'edit-offline-donation-modal-form' . $donationOfflineId;
+                $modalId = 'edit-offline-donation-modal-form-' . $donationOfflineId;
                 $errorTitle = 'Edit Donasi Offline Error';
             }
         @endphp
 
         @if ($modalId && $errorTitle)
             <script>
-                document.addEventListener("DOMContentLoaded", function() {
+                document.addEventListener("DOMContentLoaded", function () {
                     var errorMessages = @json($errorMessages);
                     handleModalWithErrors('{{ $modalId }}', '{{ $sessionKey }}', '{{ $errorTitle }}', errorMessages, true);
                 });

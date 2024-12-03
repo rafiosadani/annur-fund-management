@@ -40,9 +40,14 @@ class Donation extends Model
         return $this->belongsTo(FundraisingProgram::class, 'm_fundraising_program_id', 'id');
     }
 
-    public function donor(): HasOne
+    public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'm_user_id');
+    }
+
+    public function donorProfile(): BelongsTo
+    {
+        return $this->belongsTo(DonorProfile::class, 'm_donor_profile_id', 'id');
     }
 
     public function dibuat(): HasOne

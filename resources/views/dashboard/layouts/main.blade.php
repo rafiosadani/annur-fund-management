@@ -35,7 +35,6 @@
 
     {{--  My CSS --}}
     <link id="pagestyle" href="{{ asset('css/style.css') }}" rel="stylesheet"/>
-    <link id="pagestyle" href="{{ asset('css/style2.css') }}" rel="stylesheet"/>
 </head>
 
 <body class="g-sidenav-show bg-gray-100">

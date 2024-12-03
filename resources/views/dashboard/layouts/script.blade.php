@@ -153,7 +153,7 @@
                 icon: "success",
                 timer: 3000
             });
-        }, 100);
+        }, 300);
     </script>
 @endif
 
@@ -166,7 +166,7 @@
                 icon: "error",
                 timer: 3000
             });
-        }, 100);
+        }, 1000);
     </script>
 @endif
 

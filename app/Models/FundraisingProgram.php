@@ -43,5 +43,9 @@ class FundraisingProgram extends Model
                     });
             });
         });
+
+        $query->when($filters['program_status'] ?? false, function($query, $programStatus) {
+            return $query->where('status', $programStatus);
+        });
     }
 }

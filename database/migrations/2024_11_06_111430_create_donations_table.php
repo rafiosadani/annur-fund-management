@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('donation_code', 36)->unique()->nullable();
             $table->integer('amount')->nullable();
             $table->enum('payment_method', ['offline', 'online'])->default('offline');
-            $table->string('poof_of_payment')->nullable();
+            $table->string('proof_of_payment')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'rejected'])->default('pending');
             $table->timestamps();
             $table->string('created_by', 36)->nullable();

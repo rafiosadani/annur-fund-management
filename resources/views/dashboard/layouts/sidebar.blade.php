@@ -45,7 +45,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" {{ Request::is('master/donors*') ? 'active' : '' }}
+                                <a class="nav-link {{ Request::is('master/donors*') ? 'active' : '' }}"
                                    href="{{ route('donors.index') }}">
                                     <span class="sidenav-normal">Donatur</span>
                                 </a>
@@ -57,7 +57,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" {{ Request::is('master/fundraising-programs*') ? 'active' : '' }}
+                                <a class="nav-link {{ Request::is('master/fundraising-programs*') ? 'active' : '' }}"
                                    href="{{ route('fundraising-programs.index') }}">
                                     <span class="sidenav-normal">Program</span>
                                 </a>

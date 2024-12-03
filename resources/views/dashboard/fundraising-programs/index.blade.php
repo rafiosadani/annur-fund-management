@@ -21,7 +21,7 @@
                                     @if(request()->has('view_deleted'))
                                         <a href="{{ route('fundraising-programs.index') }}"
                                            class="btn bg-gradient-info btn-sm mb-0 btn-action">
-                                            <i class="fa fa-list"></i> &nbsp; View All Users
+                                            <i class="fa fa-list"></i> &nbsp; View All Program
                                         </a>
                                         @if($fundraisingPrograms->total() < 1)
                                             <a href="{{ route('fundraising-programs.restore.all') }}"
@@ -51,8 +51,8 @@
                             $actionUrl = request()->has('view_deleted') ? route('fundraising-programs.index', ['view_deleted' => 'DeletedRecords']) : route('fundraising-programs.index');
                         @endphp
                         <div class="row mt-2 pb-0">
-                            <form action="" method="get" class="pb-0 m-0">
-                                <div class="col-md-12 pb-0">
+                            <form action="" method="get" class="pb-0 m-0 d-inline-flex">
+                                <div class="col-md-9 pb-0 pe-2">
                                     <div class="form-group">
                                         <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">
@@ -65,6 +65,15 @@
                                                    id="search" value="{{ request('search') }}" placeholder="Search...">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="program_status"
+                                            class="form-control form-control-sm dropdown-select2 mb-3" onchange="this.form.submit()">
+                                        <option value="">-- Status --</option>
+                                        <option value="active" {{ request('program_status') == 'active' ? 'selected' : '' }}>Active</option>
+                                        <option value="completed" {{ request('program_status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                                        <option value="cancelled" {{ request('program_status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                    </select>
                                 </div>
                             </form>
                         </div>
@@ -80,11 +89,14 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Program
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 pe-2">
                                         Kode Program
                                     </th>
-                                    <th style="width: 30%;" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    <th style="width: 25%;" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Keterangan
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-5">
+                                        Status
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Dibuat
@@ -137,6 +149,12 @@
                                             <td class="align-middle text-wrap text-justify">
                                                 <p class="text-xs text-secondary mb-0">{{ $fundraisingProgram->description ?? '-' }}</p>
                                             </td>
+                                            <td class="align-middle text-center text-xs">
+                                                <span class="badge d-inline-flex align-items-center {{ $fundraisingProgram->status == 'completed' ? 'bg-soft-completed' : ($fundraisingProgram->status == 'active' ? 'bg-soft-active' : 'bg-soft-cancelled') }}">
+                                                    <i class="fas {{ $fundraisingProgram->status == 'completed' ? 'fa-check-circle' : ($fundraisingProgram->status == 'active' ? 'fa-sync-alt' : 'fa-times-circle') }} me-1"></i>
+                                                    {{ $fundraisingProgram->status ?? '-' }}
+                                                </span>
+                                            </td>
                                             <td class="align-middle">
                                                 <p class="text-xs font-weight-bold mb-0">{{ $fundraisingProgram->dibuat->name ?? 'Administrator' }}</p>
                                                 <p class="text-xs text-secondary mb-0">{{ $fundraisingProgram->created_at }}</p>
@@ -148,12 +166,13 @@
                                                         <i class="fa fa-check text-white"></i> &nbsp; Restore
                                                     </a>
                                                 @else
-                                                    <a href="javascript:void(0)"
-                                                       class="badge bg-gradient-secondary me-1" data-bs-toggle="modal" data-bs-target="#detail-fundraising-program-modal-form{{ $fundraisingProgram->id }}">
+                                                    <input type="hidden" id="donationUrl{{ $fundraisingProgram->id }}" value="{{ url('transactions/donations/online/' . $fundraisingProgram->id) }}">
+                                                    <button
+                                                       class="badge bg-gradient-secondary border-0 me-1" onclick="copyData('donationUrl{{ $fundraisingProgram->id }}')">
                                                         <i class="fas fa-copy text-white"></i> &nbsp; Copy
-                                                    </a>
+                                                    </button>
                                                     <a href="javascript:void(0)"
-                                                       class="badge bg-gradient-info" data-bs-toggle="modal" data-bs-target="#detail-fundraising-program-modal-form{{ $fundraisingProgram->id }}">
+                                                       class="badge bg-gradient-info" data-bs-toggle="modal" data-bs-target="#detail-fundraising-program-modal-form-{{ $fundraisingProgram->id }}">
                                                         <i class="fas fa-eye text-white"></i> &nbsp; Detail
                                                     </a>
                                                     <a href="javascript:void(0);"
@@ -172,8 +191,6 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                        @include('dashboard.fundraising-programs.modals.show')
-                                        @include('dashboard.fundraising-programs.modals.edit')
                                     @endforeach
                                 @endif
                                 </tbody>
@@ -184,11 +201,24 @@
                         </div>
                     </div>
                     @include('dashboard.fundraising-programs.modals.create')
+                    @foreach($fundraisingPrograms as $fundraisingProgram)
+                        @include('dashboard.fundraising-programs.modals.show')
+                        @include('dashboard.fundraising-programs.modals.edit')
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
 @endsection
+@if ($openModal)
+    <script>
+        window.onload = function() {
+            const modalId = 'detail-fundraising-program-modal-form-{{ $openModal }}';
+            const modal = new bootstrap.Modal(document.getElementById(modalId));
+            modal.show();
+        };
+    </script>
+@endif
 @section('scripts')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -196,9 +226,14 @@
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
                 modal.addEventListener('hidden.bs.modal', function () {
-                    location.reload(); // This will refresh the page
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete('openModal');
+                    url.searchParams.delete('page_donations');
+                    window.history.replaceState(null, '', url.toString());
+                    location.reload();
                 });
             });
+
 
             @if ($errors->any())
                 @if (session('create_error'))
