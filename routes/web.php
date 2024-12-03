@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\DonorController;
 use App\Http\Controllers\FundraisingProgramController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InfaqController;
@@ -53,6 +54,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::resource('/infaq', InfaqController::class);
 
+        // donors
+        Route::resource('/donors', DonorController::class);
+
         // fundraising programs
         Route::get('/fundraising-programs/restore/one/{id}', [FundraisingProgramController::class, 'restore'])->name('fundraising-programs.restore');
         Route::get('/fundraising-programs/restoreAll', [FundraisingProgramController::class, 'restoreAll'])->name('fundraising-programs.restore.all');
@@ -73,9 +77,13 @@ Route::middleware(['auth'])->group(function () {
         // donation offline
         Route::get('/donations/donation-offline', [DonationController::class, 'listOfflineDonations'])->name('transaction.donations.offline-donation.index');
         Route::post('/donations/donation-offline', [DonationController::class, 'storeOfflineDonation'])->name('transaction.donations.offline-donation.store');
+        Route::put('/donations/donation-offline/{id}', [DonationController::class, 'updateOfflineDonation'])->name('transaction.donations.offline-donation.update');
+        Route::delete('/donations/donation-offline/{id}', [DonationController::class, 'destroyOfflineDonation'])->name('transaction.donations.offline-donation.destroy');
+
+        // donation online
+        Route::get('/donations/online/{fundraisingProgramId}', [DonationController::class, 'showOnlineDonationForm'])->name('donations.online.form');
+        Route::post('/donations/online/{fundraisingProgramId}', [DonationController::class, 'storeOnlineDonation'])->name('donations.online.store');
     });
-
-
 
     Route::post('/roles/restoreAll', [RoleController::class, 'restoreAll'])->name('roles.restore.all');
 });
