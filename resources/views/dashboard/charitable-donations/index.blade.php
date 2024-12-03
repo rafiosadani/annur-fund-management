@@ -72,7 +72,7 @@
                                         </td>
                                     </tr>
                                      <!-- Include Modal for Adding Data -->
-                                    @include('dashboard.charitable-donations.modals.create')
+                                    @include('dashboard.charitable-donations.modals.show')
                                     @include('dashboard.charitable-donations.modals.edit')
                                 @endforeach
                                 @if($infaqTypes->isEmpty())
@@ -87,6 +87,7 @@
                         <!-- Pagination -->
                         {{ $infaqTypes->links() }}
                     </div>
+                    @include('dashboard.charitable-donations.modals.create')
                 </div>
             </div>
         </div>

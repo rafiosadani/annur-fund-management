@@ -18,6 +18,7 @@ class InfaqController extends Controller
         $search = $request->input('search');
         $infaqTypes = Infaq::orderBy('infaq_type_code', 'desc')
             ->filter(request(['search']))->paginate(5)->withQueryString();
+
         return view('dashboard.charitable-donations.index', compact('infaqTypes'));
      }
  
@@ -72,7 +73,7 @@ class InfaqController extends Controller
         ]);
     
         // Redirect kembali ke halaman index dengan pesan sukses
-        return redirect()->route('master.charitable-donations.index')->with('success', 'Data Infaq berhasil ditambahkan.');
+        return redirect()->route('infaq.index')->with('success', 'Data Infaq berhasil ditambahkan.');
      }
  
      // Fungsi untuk menghapus data infaq

@@ -324,7 +324,7 @@ class DonationController extends Controller
                     'address' => $validatedData['address'],
                 ]);
 
-                if (!empty($dnorProfile) && $donorProfile->id) {
+                if (!empty($donorProfile) && $donorProfile->id) {
                     $donation = Donation::create([
                         'm_donor_profile_id' => $donorProfile->id,
                         'm_fundraising_program_id' => $fundraisingProgram->id,
