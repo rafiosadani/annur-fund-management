@@ -189,6 +189,15 @@ class DonationController extends Controller
             return redirect()->back()->withErrors($e->validator)->withInput();
         }
 
+        $donation = Donation::where('payment_method', 'offline')
+            ->where('status', 'confirmed')
+            ->where('id', $donationId)
+            ->first();
+
+        if (!$donation) {
+            return redirect()->back()->withInput()->with('error', 'Data donasi offline tidak ditemukan.');
+        }
+
         $update = Donation::where('id', $donationId)->update($validatedData);
 
         if ($update) {
@@ -206,7 +215,7 @@ class DonationController extends Controller
             ->where('id', $donationId)
             ->first();
 
-        if (!($donation)) {
+        if (!$donation) {
             return redirect()->back()->withInput()->with('error', 'Data donasi offline tidak ditemukan.');
         }
 
@@ -324,7 +333,7 @@ class DonationController extends Controller
                     'address' => $validatedData['address'],
                 ]);
 
-                if (!empty($dnorProfile) && $donorProfile->id) {
+                if (!empty($donorProfile) && $donorProfile->id) {
                     $donation = Donation::create([
                         'm_donor_profile_id' => $donorProfile->id,
                         'm_fundraising_program_id' => $fundraisingProgram->id,
@@ -352,6 +361,64 @@ class DonationController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
+        }
+    }
+
+    public function listDonorTransferConfirmations(Request $request) {
+        $donorTransferConfirmations = Donation::with(['donorProfile', 'fundraisingProgram', 'user', 'dibuat'])
+            ->where('payment_method', 'online');
+
+        if ($request->has('donationRejected')) {
+            $donorTransferConfirmations->where('status', 'rejected');
+        } else {
+            $donorTransferConfirmations->where('status', 'pending');
+        }
+
+        $donorTransferConfirmations = $donorTransferConfirmations->orderby('created_at', 'desc')
+            ->filter(request(['search', 'filterAnonymous']))->paginate(2)->withQueryString();
+
+        return view('dashboard.transactions.donor-transfer-confirmations.index', [
+            'donorTransferConfirmations' => $donorTransferConfirmations
+        ]);
+    }
+
+    public function updateDonorTransferConfirmation($donationId) {
+        $donation = Donation::where('payment_method', 'online')
+            ->where('status', 'pending')
+            ->where('id', $donationId)
+            ->first();
+
+        if (!$donation) {
+            return redirect()->back()->withInput()->with('error', 'Data donasi online tidak ditemukan.');
+        }
+
+        $update = Donation::where('id', $donationId)->update(['status' => 'confirmed']);
+
+        if ($update) {
+            return redirect()->route('transaction.donor-transfer-confirmations.index')
+                ->with('success', 'Konfirmasi Transfer Donatur berhasil dilakukan!');
+        } else {
+            return redirect()->back()->with('error', 'Terjadi kesalahan pada server!');
+        }
+    }
+
+    public function updateDonorTransferRejection($donationId) {
+        $donation = Donation::where('payment_method', 'online')
+            ->where('status', 'pending')
+            ->where('id', $donationId)
+            ->first();
+
+        if (!$donation) {
+            return redirect()->back()->withInput()->with('error', 'Data donasi online tidak ditemukan.');
+        }
+
+        $update = Donation::where('id', $donationId)->update(['status' => 'rejected']);
+
+        if ($update) {
+            return redirect()->route('transaction.donor-transfer-confirmations.index')
+                ->with('success', 'Penolakan konfirmasi transfer donatur berhasil dilakukan!');
+        } else {
+            return redirect()->back()->with('error', 'Terjadi kesalahan pada server!');
         }
     }
 

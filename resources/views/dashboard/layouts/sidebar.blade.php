@@ -93,7 +93,7 @@
                     <div class="collapse" id="incomeTransactions">
                         <ul class="nav ms-4">
                             <li class="nav-item">
-                                <a class="nav-link {{ Request::is('transaction/donations/donation-offline*') ? 'active' : '' }}"
+                                <a class="nav-link {{ Request::is('transactions/donations/donation-offline*') ? 'active' : '' }}"
                                    href="{{ route('transaction.donations.offline-donation.index') }}">
                                     <span class="sidenav-normal">Donasi Offline</span>
                                 </a>
@@ -105,8 +105,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
+                                <a class="nav-link" {{ Request::is('transactions/donor-transfer-confirmations*') }}
+                                   href="{{ route('transaction.donor-transfer-confirmations.index') }}">
                                     <span class="sidenav-normal">Konfirmasi Transfer Donatur</span>
                                 </a>
                             </li>

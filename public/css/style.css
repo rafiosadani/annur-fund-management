@@ -24,6 +24,19 @@
     cursor: pointer;
 }
 
+/* header dropdown menu solve in argon dashboard  */
+.dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    /*transition: visibility 0.2s, opacity 0.2s ease-in-out;*/
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown.show .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
 .parent-button {
     display: flex;
     justify-content: flex-end;
@@ -187,6 +200,11 @@
 .bg-soft-success {
     background-color: #d4edda;
     color: #155724;
+}
+
+.bg-soft-warning {
+    background-color: #fff3cd;
+    color: #856404;
 }
 
 .bg-soft-danger {

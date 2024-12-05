@@ -46,7 +46,7 @@
                                 <p class="text-xs text-white mb-0">{{ auth()->user()->email }}</p>
                             </div>
                         </div>
-                        <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                        <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" aria-expanded="false">
                             <li>
                                 <a class="dropdown-item text-sm py-2 second" href="{{ url('/profile') }}">
                                     <i class="fa fa-user-alt fa-sm me-2 opacity-7" aria-hidden="true"></i>

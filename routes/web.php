@@ -80,6 +80,11 @@ Route::middleware(['auth'])->group(function () {
         // donation online
         Route::get('/donations/online/{fundraisingProgramId}', [DonationController::class, 'showOnlineDonationForm'])->name('donations.online.form');
         Route::post('/donations/online/{fundraisingProgramId}', [DonationController::class, 'storeOnlineDonation'])->name('donations.online.store');
+
+        // donor transfer confirmation
+        Route::get('/donor-transfer-confirmations', [DonationController::class, 'listDonorTransferConfirmations'])->name('transaction.donor-transfer-confirmations.index');
+        Route::put('/donor-transfer-confirmation/{id}', [DonationController::class, 'updateDonorTransferConfirmation'])->name('transaction.donor-transfer-confirmation.update');
+        Route::put('/donor-transfer-confirmation/reject/{id}', [DonationController::class, 'updateDonorTransferRejection'])->name('transaction.donor-transfer-confirmation.rejection');
     });
 
     Route::post('/roles/restoreAll', [RoleController::class, 'restoreAll'])->name('roles.restore.all');

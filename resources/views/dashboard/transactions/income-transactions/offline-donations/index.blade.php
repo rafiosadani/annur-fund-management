@@ -100,11 +100,11 @@
                                                 <p class="text-xs text-secondary mb-0">{{ $donation->created_at }}</p>
                                             </td>
                                             <td class="align-middle text-xs text-end action">
-                                                <a href="javascript:void(0)"
-                                                   class="badge bg-gradient-info" data-bs-toggle="modal"
-                                                   data-bs-target="#detail-offline-donation-modal-form{{ $donation->id }}">
-                                                    <i class="fas fa-eye text-white"></i> &nbsp; Detail
-                                                </a>
+{{--                                                <a href="javascript:void(0)"--}}
+{{--                                                   class="badge bg-gradient-info" data-bs-toggle="modal"--}}
+{{--                                                   data-bs-target="#detail-offline-donation-modal-form{{ $donation->id }}">--}}
+{{--                                                    <i class="fas fa-eye text-white"></i> &nbsp; Detail--}}
+{{--                                                </a>--}}
                                                 <a href="javascript:void(0);"
                                                    class="mx-1 badge bg-gradient-warning" data-bs-toggle="modal"
                                                    data-bs-target="#edit-offline-donation-modal-form-{{ $donation->id }}">

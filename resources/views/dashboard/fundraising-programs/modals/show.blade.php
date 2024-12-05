@@ -113,12 +113,12 @@
                                                                 </td>
                                                                 <td>
                                                                     <p class="text-start text-xs mb-0">
-                                                                        {{ $donation->created_at ?? '-' }}
+                                                                        {{ $donation->payment_method == 'offline' ? $donation->created_at : $donation->updated_at }}
                                                                     </p>
                                                                 </td>
                                                                 <td>
                                                                     <p class="text-start text-xs mb-0">
-                                                                        {{ isset($donation->user) ? $donation->user->name : (isset($donation->donorProfile) ? ($donation->donorProfile->is_anonymous == 1 ? 'Anonymous' : $donation->donorProfile->name) : '') }}
+                                                                        {{ isset($donation->user) ? ($donation->user->is_anonymous == 1 ? 'Anonymous' : $donation->user->name) : (isset($donation->donorProfile) ? ($donation->donorProfile->is_anonymous == 1 ? 'Anonymous' : $donation->donorProfile->name) : '') }}
                                                                     </p>
                                                                 </td>
                                                                 <td class="align-middle text-center text-xs">

@@ -61,7 +61,7 @@
                             $actionUrl = request()->has('view_deleted') ? route('users.index', ['view_deleted' => 'DeletedRecords']) : route('users.index');
                         @endphp
                         <div class="row mt-2 pb-0">
-                            <form action="" method="get" class="pb-0 m-0">
+                            <form action="{{ $actionUrl }}" method="get" class="pb-0 m-0">
                                 <div class="col-md-12 pb-0">
                                     <div class="form-group">
                                         <div class="input-group">

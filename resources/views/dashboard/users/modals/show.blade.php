@@ -7,24 +7,6 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-{{--            <form role="form" action="{{ route('users.update', $user->id) }}" method="post" enctype="multipart/form-data">--}}
-{{--                @csrf--}}
-{{--                @method('PUT')--}}
-{{--                @if ($errors->any())--}}
-{{--                    <script>--}}
-{{--                        setTimeout(function () {--}}
-{{--                            Swal.fire({--}}
-{{--                                title: 'Error',--}}
-{{--                                icon: 'error',--}}
-{{--                                html: `--}}
-{{--                                    @foreach ($errors->all() as $error)--}}
-{{--                                <p class="mb-0">{{ $error }}</p>--}}
-{{--                                    @endforeach--}}
-{{--                                `--}}
-{{--                            });--}}
-{{--                        }, 100);--}}
-{{--                    </script>--}}
-{{--                @endif--}}
                 <div class="modal-body p-0">
                     <div class="card card-plain">
                         <div class="card-body p-3">
