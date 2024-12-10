@@ -36,12 +36,18 @@ Route::get('/register', function () {
 Route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate')->middleware('guest');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-Route::post('/register', [AuthController::class, 'register'])->name('register')->middleware('guest');
+Route::post('/register', [AuthController::class, 'register'])->name('registerUser')->middleware('guest');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['web', 'auth'])->group(function () {
     // route dashboard
     Route::get('/dashboard', function () { return view('dashboard.index'); })->name('dashboard');
+
+    // change password
     Route::post('/change-password', [AuthController::class, 'saveChangePassword'])->name('change-password');
+
+    // profile and edit profile
+    Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+    Route::put('/profile/{id}/update/', [AuthController::class, 'updateProfile'])->name('profile.update')->middleware('prevent.get.for.put');
 
     // master data
     Route::prefix('master')->group(function () {
@@ -83,9 +89,12 @@ Route::middleware(['auth'])->group(function () {
         // donation online
         Route::get('/donations/online/{fundraisingProgramId}', [DonationController::class, 'showOnlineDonationForm'])->name('donations.online.form');
         Route::post('/donations/online/{fundraisingProgramId}', [DonationController::class, 'storeOnlineDonation'])->name('donations.online.store');
-    });
 
-    Route::post('/roles/restoreAll', [RoleController::class, 'restoreAll'])->name('roles.restore.all');
+        // donor transfer confirmation
+        Route::get('/donor-transfer-confirmations', [DonationController::class, 'listDonorTransferConfirmations'])->name('transaction.donor-transfer-confirmations.index');
+        Route::put('/donor-transfer-confirmation/{id}', [DonationController::class, 'updateDonorTransferConfirmation'])->name('transaction.donor-transfer-confirmation.update');
+        Route::put('/donor-transfer-confirmation/reject/{id}', [DonationController::class, 'updateDonorTransferRejection'])->name('transaction.donor-transfer-confirmation.rejection');
+    });
 });
 
 

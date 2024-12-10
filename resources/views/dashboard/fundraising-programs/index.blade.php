@@ -98,7 +98,7 @@
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 px-5">
                                         Status
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    <th style="width: 15%;" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Dibuat
                                     </th>
                                     <th class="text-secondary opacity-7"></th>
@@ -155,7 +155,7 @@
                                                     {{ $fundraisingProgram->status ?? '-' }}
                                                 </span>
                                             </td>
-                                            <td class="align-middle">
+                                            <td class="align-middle text-wrap text-justify">
                                                 <p class="text-xs font-weight-bold mb-0">{{ $fundraisingProgram->dibuat->name ?? 'Administrator' }}</p>
                                                 <p class="text-xs text-secondary mb-0">{{ $fundraisingProgram->created_at }}</p>
                                             </td>

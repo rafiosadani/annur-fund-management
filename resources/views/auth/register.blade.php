@@ -11,7 +11,7 @@
                     </p>
                 </div>
                 <div class="card-body pb-3">
-                    <form role="form" action="{{ route('register') }}" method="post">
+                    <form role="form" action="{{ route('registerUser') }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-12 col-lg-6">
