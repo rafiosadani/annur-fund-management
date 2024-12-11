@@ -73,6 +73,7 @@ class Donation extends Model
         $query->when($filters['search'] ?? false, function($query, $search) {
             return $query->where(function($query) use ($search) {
                 $query->where('amount', 'like', '%' . $search . '%')
+                    ->orWhere('donation_code', 'like', '%' . $search . '%')
                     ->orWhereHas('user', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%')
                             ->where('is_anonymous', '0');
