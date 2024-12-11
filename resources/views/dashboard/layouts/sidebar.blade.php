@@ -105,7 +105,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" {{ Request::is('transactions/donor-transfer-confirmations*') }}
+                                <a class="nav-link {{ Request::is('transactions/donor-transfer-confirmations*') ? 'active' : '' }}"
                                    href="{{ route('transaction.donor-transfer-confirmations.index') }}">
                                     <span class="sidenav-normal">Konfirmasi Transfer Donatur</span>
                                 </a>

@@ -101,9 +101,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Dibuat
                                     </th>
-                                    @if(!request()->has('donationRejected'))
-                                        <th class="text-secondary opacity-7"></th>
-                                    @endif
+                                    <th class="text-secondary opacity-7"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -141,13 +139,13 @@
                                                 <p class="text-xs font-weight-bold mb-0">{{ $donorTransferConfirmation->dibuat->name ?? 'Administrator' }}</p>
                                                 <p class="text-xs text-secondary mb-0">{{ $donorTransferConfirmation->created_at }}</p>
                                             </td>
-                                            @if(!request()->has('donationRejected'))
-                                                <td class="align-middle text-xs text-end action">
-                                                    <a href="javascript:void(0)"
-                                                       class="badge bg-gradient-info" data-bs-toggle="modal"
-                                                       data-bs-target="#detail-offline-donation-modal-form{{ $donorTransferConfirmation->id }}">
-                                                        <i class="fas fa-eye text-white"></i> &nbsp; Detail
-                                                    </a>
+                                            <td class="align-middle text-xs text-end action">
+                                                <a href="javascript:void(0)"
+                                                   class="badge bg-gradient-info" data-bs-toggle="modal"
+                                                   data-bs-target="#detail-donor-transfer-confirmation-modal-form-{{ $donorTransferConfirmation->id }}">
+                                                    <i class="fas fa-eye text-white"></i> &nbsp; Detail
+                                                </a>
+                                                @if(!request()->has('donationRejected'))
                                                     <form action="{{ route('transaction.donor-transfer-confirmation.rejection', $donorTransferConfirmation->id) }}"
                                                           method="post" class="d-inline">
                                                         @csrf
@@ -166,10 +164,10 @@
                                                             <i class="fas fa-check-circle text-white"></i> &nbsp; Konfirmasi
                                                         </button>
                                                     </form>
-                                                </td>
-                                            @endif
+                                                @endif
+                                            </td>
                                         </tr>
-{{--                                        @include('dashboard.transactions.donor-transfer-confirmations.modals.show')--}}
+                                        @include('dashboard.transactions.donor-transfer-confirmations.modals.show')
                                     @endforeach
                                 @endif
                                 </tbody>

@@ -377,6 +377,8 @@ class DonationController extends Controller
         $donorTransferConfirmations = $donorTransferConfirmations->orderby('created_at', 'desc')
             ->filter(request(['search', 'filterAnonymous']))->paginate(2)->withQueryString();
 
+//        dd($donorTransferConfirmations);
+
         return view('dashboard.transactions.donor-transfer-confirmations.index', [
             'donorTransferConfirmations' => $donorTransferConfirmations
         ]);
