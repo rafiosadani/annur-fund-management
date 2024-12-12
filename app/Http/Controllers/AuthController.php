@@ -147,6 +147,7 @@ class AuthController extends Controller
             'name' => 'required|max:255',
             'gender' => 'required',
             'phone' => 'required|min:12',
+            'is_anonymous' => 'nullable',
             'address' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ];
@@ -187,6 +188,8 @@ class AuthController extends Controller
 
             $validatedData['image'] = $request->file('image')->store('user-images');
         }
+
+        $validatedData['is_anonymous'] = $validatedData['is_anonymous'] ?? 0;
 
         $update = User::where('id', $user->id)->update($validatedData);
 

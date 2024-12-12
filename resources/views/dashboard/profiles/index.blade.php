@@ -31,21 +31,12 @@
                                 <h5 class="mb-1 font-weight-bolder">
                                     {{ $user->name ?? '' }}
                                 </h5>
-{{--                                @if(!empty($user->studyProgram) && !empty($user->interestArea))--}}
-{{--                                    <span class="badge badge-sm bg-gradient-success text-xxs">{{ $user->role->name }}</span>--}}
-{{--                                @endif--}}
+                                @if(!empty($user->is_anonymous) && $user->is_anonymous == 1)
+                                    <span class="badge badge-sm bg-gradient-info text-xxs">Anonymous</span>
+                                @endif
                             </div>
                             <p class="mb-0 font-weight-bold text-sm">
                                 <span class="badge badge-sm {{ $user->role->name == 'Administrator' ? 'bg-gradient-primary' : 'bg-gradient-info' }}">{{ $user->role->name }}</span>
-{{--                                @if($user->role->name == 'Administrator')--}}
-{{--                                    @if(empty($user->studyProgram) && empty($user->interestArea))--}}
-{{--                                        <span class="badge badge-sm bg-gradient-primary">{{ $user->role->name }}</span>--}}
-{{--                                    @endif--}}
-{{--                                @else--}}
-{{--                                    @if(!empty($user->studyProgram) && !empty($user->interestArea))--}}
-{{--                                        {{ $user->studyProgram->name }} - {{ $user->interestArea->name }}--}}
-{{--                                    @endif--}}
-{{--                                @endif--}}
                             </p>
                         </div>
                     </div>
