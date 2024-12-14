@@ -17,9 +17,10 @@ return new class extends Migration
             $table->string('type_name')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
-
+            $table->softDeletes();
             $table->string('created_by', 36)->nullable();
             $table->string('updated_by', 36)->nullable();
+            $table->string('deleted_by', 36)->nullable();
         });
     }
 
