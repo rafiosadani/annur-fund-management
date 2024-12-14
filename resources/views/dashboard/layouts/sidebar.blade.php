@@ -133,7 +133,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link"
-                                   href="#">
+                                   href="{{ route('transaction.expenses.program-expenses.index') }}">
                                     <span class="sidenav-normal">Pengeluaran Program</span>
                                 </a>
                             </li>

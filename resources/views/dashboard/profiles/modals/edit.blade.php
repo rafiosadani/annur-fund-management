@@ -77,6 +77,16 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
+                                            <label class="mt-3 mt-lg-3">Anonymous</label>
+                                            <div>
+                                                <div class="form-check form-switch form-switch-donation-online d-inline-block align-middle">
+                                                    <input class="form-check-input" type="checkbox" name="is_anonymous" value="1" {{ $user->is_anonymous == 1 ? "checked" : "" }}>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
                                             <label class="mt-3 mt-lg-3 required" for="address">Alamat</label>
                                             <textarea style="resize: none;" class="form-control form-control-sm @error('address') is-invalid @enderror"
                                                       id="address" name="address" rows="2" >{{ old('address', $user->address) }}</textarea>
@@ -87,33 +97,6 @@
                                             @enderror
                                         </div>
                                     </div>
-{{--                                    <div class="row">--}}
-{{--                                        <div class="col-12 col-md-6">--}}
-{{--                                            <label class="mt-3 mt-lg-3 required">Role</label>--}}
-{{--                                            <select name="m_role_id"--}}
-{{--                                                    class="form-control form-control-sm modal-dropdown-select2 @error('m_role_id') is-invalid border border-danger @enderror">--}}
-{{--                                                <option value="">-- Pilih Role --</option>--}}
-{{--                                                @foreach($roles as $role)--}}
-{{--                                                    @if(old('m_role_id', $user->m_role_id) == $role->id)--}}
-{{--                                                        <option value="{{ $role->id }}" selected>{{ $role->name }}</option>--}}
-{{--                                                    @else--}}
-{{--                                                        <option value="{{ $role->id }}">{{ $role->name }}</option>--}}
-{{--                                                    @endif--}}
-{{--                                                @endforeach--}}
-{{--                                            </select>--}}
-{{--                                            @error('m_role_id')--}}
-{{--                                            <div class="invalid-feedback text-xxs ms-1">--}}
-{{--                                                {{ $message }}--}}
-{{--                                            </div>--}}
-{{--                                            @enderror--}}
-{{--                                        </div>--}}
-{{--                                        <div class="col-12 col-md-6">--}}
-{{--                                            <label class="mt-3 mt-lg-3 required">Password</label>--}}
-{{--                                            <input type="text" class="form-control form-control-sm" name="password">--}}
-{{--                                            <span class="text-xxs text-danger">*Kosongi jika tidak ingin mengubah password</span>--}}
-{{--                                            --}}{{--                                            <p class="text-xs text-danger mt-2 mb-0">*png, jpg, jpeg (maxsize: 2MB)</p>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
                                 </div>
                                 <div class="col-12 col-lg-3">
                                     <label class="mt-3 mt-lg-0" for="">Foto User</label>

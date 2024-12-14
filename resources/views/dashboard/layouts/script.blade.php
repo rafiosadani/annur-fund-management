@@ -84,6 +84,22 @@
     </script>
 @endif
 
+@if ($errors->any())
+    <script>
+        setTimeout(function () {
+            Swal.fire({
+                title: 'Error',
+                icon: 'error',
+                html: `
+                    @foreach ($errors->all() as $error)
+                        <p class="mb-0">{{ $error }}</p>
+                    @endforeach
+                `
+            });
+        }, 100);
+    </script>
+@endif
+
 <script type="text/javascript">
     $('.show-logout-header').click(function (event) {
         event.preventDefault();

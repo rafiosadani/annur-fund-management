@@ -15,7 +15,6 @@ use Illuminate\Support\Str;
 
 class DonationController extends Controller
 {
-
     use GlobalTrait;
 
     /**
