@@ -45,18 +45,30 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr style="border-top-width: 1px;">
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Deskripsi</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
+                                    <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 px-2">No</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Infaq Tipe Kode</th>
+                                    <th style="width: 25%;" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nama</th>
+                                    <th style="width: 35%;" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Deskripsi</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($infaqTypes as $infaqType)
-                                    <tr>
-                                        <td class="text-xs ps-4">{{ $infaqType->type_name }}</td>
-                                        <td class="text-xs ps-4">{{ $infaqType->description }}</td>
-                                        <td class="text-xs ps-4">
-                                            <a href="#" class="badge bg-gradient-info"><i class="fas fa-eye text-white"></i> &nbsp; Detail</a>
+                                    <tr style="border-bottom: 1px solid #ccdddd;">
+                                        <td>
+                                            <p class="text-center text-xs mb-0">{{ $loop->iteration + ($infaqTypes->currentPage() - 1) * $infaqTypes->perPage() }}</p>
+                                        </td>
+                                        <td class="text-xs">
+                                            <p class="text-xs mb-0">{{ $infaqType->infaq_type_code }}</p>
+                                        </td>
+                                        <td class="text-xs">
+                                            <p class="text-xs mb-0"> {{ $infaqType->type_name }}</p>
+                                        </td>
+                                        <td class="text-xs text-wrap text-justify">
+                                            <p class="text-xs mb-0"> {{ $infaqType->description }}</p>
+                                        </td>
+                                        <td class="text-xs text-end action">
+                                            <a href="javascript:void(0);" class="badge bg-gradient-info" data-bs-toggle="modal" data-bs-target="#detail-infaq-modal-form{{ $infaqType->id }}"><i class="fas fa-eye text-white"></i> &nbsp; Detail</a>
                                             <a href="javascript:void(0);" class="mx-1 badge bg-gradient-warning" data-bs-toggle="modal" data-bs-target="#edit-infaq-modal-form{{ $infaqType->id }}">
                                                 <i class="fas fa-edit text-white"></i> &nbsp; Edit
                                             </a>
@@ -84,7 +96,8 @@
                                 @endif
                             </tbody>
                         </table>
-                        <!-- Pagination -->
+                    </div>
+                    <div class="d-flex justify-content-end pt-3 pe-4">
                         {{ $infaqTypes->links() }}
                     </div>
                     @include('dashboard.charitable-donations.modals.create')

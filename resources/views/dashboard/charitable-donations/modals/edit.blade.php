@@ -25,9 +25,9 @@
                     <div class="card card-plain">
                         <div class="card-body p-3">
                             <div class="row">
-                                <div class="col-12 col-lg-9">
+                                <div class="col-12">
                                     <div class="row">
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12">
                                             <label class="mt-3 mt-lg-0 required">Nama Tipe Infaq</label>
                                             <input type="text" class="form-control form-control-sm @error('type_name') is-invalid @enderror" placeholder="Nama tipe infaq" name="type_name" value="{{ old('type_name', $infaqType->type_name) }}">
                                             @error('type_name')

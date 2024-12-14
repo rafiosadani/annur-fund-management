@@ -13,22 +13,16 @@ use Illuminate\Support\Facades\Storage;
 class InfaqController extends Controller
 {
      // Fungsi untuk menampilkan semua data infaq
-     public function index(Request $request)
-     {
+    public function index(Request $request)
+    {
         $search = $request->input('search');
         $infaqTypes = Infaq::orderBy('infaq_type_code', 'desc')
-            ->filter(request(['search']))->paginate(5)->withQueryString();
+            ->filter(request(['search']))->paginate(1)->withQueryString();
 
         return view('dashboard.charitable-donations.index', compact('infaqTypes'));
-     }
- 
-     // Fungsi untuk menampilkan detail dari satu data infaq berdasarkan id
-     public function show($id)
-     {
-         //
-     }
+    }
 
-     public function update(Request $request, Infaq $infaq)
+    public function update(Request $request, Infaq $infaq)
     {
         $rules = [
             'type_name' => 'required',
