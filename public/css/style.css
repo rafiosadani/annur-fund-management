@@ -272,3 +272,8 @@
 .form-switch-donation-online {
     padding-left: 3.2rem;
 }
+
+/* dashboard */
+.menu-counts .icon-shape i {
+    top: 12px;
+}
