@@ -16,53 +16,61 @@ class UserSeederTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $year = Carbon::now()->format('y'); // Last two digits of the current year
-        $month = Carbon::now()->format('m'); // two digits month
+        $users = [
+            [
+                'role_name' => 'Administrator',
+                'name' => 'Administrator',
+                'email' => 'administrator@gmail.com',
+                'gender' => 'laki-laki',
+                'phone' => '085755558654',
+                'address' => 'Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141',
+                'password' => Hash::make('password'),
+                'image' => 'default.png',
+            ],
+            [
+                'role_name' => 'Donatur',
+                'name' => 'Agus Subiyanto',
+                'email' => 'agussubiyanto@gmail.com',
+                'gender' => 'laki-laki',
+                'phone' => '085235645345',
+                'address' => 'Bandung, Jawa Barat, Indonesia',
+                'password' => Hash::make('password'),
+                'image' => 'default.png',
+            ],
+            [
+                'role_name' => 'Donatur',
+                'name' => 'Budi Gunadi Sadikin',
+                'email' => 'budigunadis@gmail.com',
+                'gender' => 'laki-laki',
+                'phone' => '085235645765',
+                'address' => 'Bandung, Jawa Barat, Indonesia',
+                'password' => Hash::make('password'),
+                'image' => 'default.png',
+            ],
+        ];
 
-        $administratorRoleId = Role::where('name', 'Administrator')->pluck('id')->first();
-        $donorRoleId = Role::where('name', 'Donatur')->pluck('id')->first();
+        $year = Carbon::now()->format('y');
+        $month = Carbon::now()->format('m');
 
-        User::create([
-            'm_role_id'     => $administratorRoleId,
-            'user_code'     => 'USR/' . $year . $month . '/0001',
-            'name'          => 'Administrator',
-            'email'         => 'administrator@gmail.com',
-            'gender'        => null,
-            'phone'         => null,
-            'address'       => null,
-            'password'      => Hash::make('password'),
-            'image'         => 'default.png',
-            'remember_token'=> Str::random(10),
-        ]);
+        foreach ($users as $index => $user) {
+            $roleId = Role::where('name', $user['role_name'])->pluck('id')->first();
 
-        User::create([
-            'm_role_id'     => $donorRoleId,
-            'user_code'     => 'USR/' . $year . $month . '/0002',
-            'name'          => 'Agus Subiyanto',
-            'email'         => 'agussubiyanto@gmail.com',
-            'gender'        => 'laki-laki',
-            'phone'         => '085235645345',
-            'address'       => 'Bandung, Jawa Barat, Indonesia',
-            'password'      => Hash::make('password'),
-            'image'         => 'default.png',
-            'remember_token'=> Str::random(10),
-        ]);
+            $user['user_code'] = 'USR/' . $year . $month . '/' . str_pad($index + 1, 4, '0', STR_PAD_LEFT);
 
-        User::create([
-            'm_role_id'     => $donorRoleId,
-            'user_code'     => 'USR/' . $year . $month . '/0003',
-            'name'          => 'Budi Gunadi Sadikin',
-            'email'         => 'budigunadis@gmail.com',
-            'gender'        => 'laki-laki',
-            'phone'         => '085235645765',
-            'address'       => 'Bandung, Jawa Barat, Indonesia',
-            'password'      => Hash::make('password'),
-            'image'         => 'default.png',
-            'remember_token'=> Str::random(10),
-        ]);
+            User::create([
+                'm_role_id'      => $roleId,
+                'user_code'      => $user['user_code'],
+                'name'           => $user['name'],
+                'email'          => $user['email'],
+                'gender'         => $user['gender'],
+                'phone'          => $user['phone'],
+                'address'        => $user['address'],
+                'password'       => $user['password'],
+                'image'          => $user['image'],
+                'remember_token' => Str::random(10),
+            ]);
 
-        User::where('email', 'administrator@gmail.com')->first()->assignRole('Administrator');
-        User::where('email', 'agussubiyanto@gmail.com')->first()->assignRole('Donatur');
-        User::where('email', 'budigunadis@gmail.com')->first()->assignRole('Donatur');
+            User::where('email', $user['email'])->first()->assignRole($user['role_name']);
+        }
     }
 }

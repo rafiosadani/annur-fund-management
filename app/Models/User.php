@@ -41,6 +41,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function role(): HasOne
+    {
+        return $this->hasOne(Role::class, "id", "m_role_id");
+    }
+
     public function dibuat(): HasOne
     {
         return $this->hasOne(User::class, "id", "created_by");

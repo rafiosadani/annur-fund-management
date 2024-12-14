@@ -61,7 +61,7 @@
                             $actionUrl = request()->has('view_deleted') ? route('users.index', ['view_deleted' => 'DeletedRecords']) : route('users.index');
                         @endphp
                         <div class="row mt-2 pb-0">
-                            <form action="" method="get" class="pb-0 m-0">
+                            <form action="{{ $actionUrl }}" method="get" class="pb-0 m-0">
                                 <div class="col-md-12 pb-0">
                                     <div class="form-group">
                                         <div class="input-group">
@@ -93,7 +93,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         No Hp
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    <th style="width: 30%;" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Alamat
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
@@ -139,7 +139,7 @@
                                             <td class="align-middle">
                                                 <p class="text-xs text-secondary mb-0">{{ $user->phone ?? '-' }}</p>
                                             </td>
-                                            <td class="align-middle">
+                                            <td class="align-middle text-wrap text-justify">
                                                 <p class="text-xs text-secondary mb-0">{{ $user->address ?? '-' }}</p>
                                             </td>
 {{--                                            <td class="align-middle">--}}
@@ -150,7 +150,7 @@
 {{--                                                    <p class="text-xs text-secondary mb-0">-</p>--}}
 {{--                                                @endif--}}
 {{--                                            </td>--}}
-                                            <td class="align-middle">
+                                            <td class="align-middle text-wrap">
                                                 <p class="text-xs font-weight-bold mb-0">{{ $user->dibuat->name ?? 'Administrator' }}</p>
                                                 <p class="text-xs text-secondary mb-0">{{ $user->created_at }}</p>
                                             </td>

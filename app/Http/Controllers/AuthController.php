@@ -8,6 +8,7 @@ use App\Rules\MatchOldPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -114,6 +115,88 @@ class AuthController extends Controller
             return redirect()->route('login')->with('logoutSuccess', 'Ubah password berhasil dilakukan. Silakan login untuk masuk ke dalam aplikasi');
         } else {
             return redirect()->route('login')->with('logoutSuccess', 'Anda berhasil logout!');
+        }
+    }
+
+    public function profile() {
+        if (auth()->user()) {
+            $user = User::with(['role'])
+                ->where('deleted_at', null)
+                ->where('id', auth()->user()->id)
+                ->first();
+        } else {
+            return redirect()->back()->with('error', 'Terjadi kesalahan pada server!');
+        }
+
+        return view('dashboard.profiles.index', [
+            'user' => $user
+        ]);
+    }
+
+    public function updateProfile(Request $request, String $id) {
+        $user = User::with(['role'])
+            ->where('deleted_at', null)
+            ->where('id', $id)
+            ->first();
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan pada server!');
+        }
+
+        $rules = [
+            'name' => 'required|max:255',
+            'gender' => 'required',
+            'phone' => 'required|min:12',
+            'is_anonymous' => 'nullable',
+            'address' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ];
+
+        if ($request->email != $user->email) {
+            $rules['email'] = 'required|email:dns|unique:m_users';
+        }
+
+        $customMessage = [
+            'name.required' => 'Nama lengkap harus diisi!',
+            'name.max' => 'Nama lengkap tidak boleh lebih dari 255 karakter.',
+            'email.required' => 'Email harus diisi!',
+            'email.email' => 'Email yang anda masukkan tidak valid / salah.',
+            'email.unique' => 'Email yang anda masukkan sudah digunakan.',
+            'gender.required' => 'Jenis kelamin harus diisi!',
+            'phone.required' => 'No telepon harus diisi!',
+            'phone.min' => 'No telepon yang anda masukkan tidak valid / salah.',
+            'address.required' => 'Alamat harus diisi!',
+            'image.image' => 'Foto yang anda masukkan tidak valid / salah.',
+            'image.mimes' => 'Foto yang anda masukkan tidak valid / salah.',
+            'image.max' => 'Ukuran file foto yang anda masukkan terlalu besar!',
+        ];
+
+        // Validation input
+        try {
+            $validatedData = $request->validate($rules, $customMessage);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            session(['update_profile_id' => $user->id, 'update_profile_error' => 'update_profile_error']);
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
+
+        if ($request->file('image')) {
+            if ($request->oldImage !== null) {
+                if ($request->oldImage !== 'default.png') {
+                    Storage::delete($request->oldImage);
+                }
+            }
+
+            $validatedData['image'] = $request->file('image')->store('user-images');
+        }
+
+        $validatedData['is_anonymous'] = $validatedData['is_anonymous'] ?? 0;
+
+        $update = User::where('id', $user->id)->update($validatedData);
+
+        if ($update) {
+            return redirect()->route('profile')->with('success', 'Data profile user berhasil diedit!');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan pada server!');
         }
     }
 

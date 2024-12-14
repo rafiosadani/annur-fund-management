@@ -40,9 +40,14 @@ class Donation extends Model
         return $this->belongsTo(FundraisingProgram::class, 'm_fundraising_program_id', 'id');
     }
 
-    public function user(): HasOne
+//    public function user(): HasOne
+//    {
+//        return $this->hasOne(User::class, 'id', 'm_user_id');
+//    }
+
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class, 'id', 'm_user_id');
+        return $this->belongsTo(User::class, 'm_user_id', 'id');
     }
 
     public function donorProfile(): BelongsTo
@@ -59,19 +64,40 @@ class Donation extends Model
         return Carbon::parse($this->attributes['created_at'])->translatedFormat('d F Y H:i:s');
     }
 
+    public function getUpdatedAtAttribute() {
+        return Carbon::parse($this->attributes['updated_at'])->translatedFormat('d F Y H:i:s');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function($query, $search) {
             return $query->where(function($query) use ($search) {
                 $query->where('amount', 'like', '%' . $search . '%')
-                    ->orWhereHas('donor', function ($query) use ($search) {
+                    ->orWhere('donation_code', 'like', '%' . $search . '%')
+                    ->orWhereHas('user', function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%')
+                            ->where('is_anonymous', '0');
+                    })->orWhereHas('donorProfile', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%');
                     })->orWhereHas('fundraisingProgram', function ($query) use ($search) {
                         $query->where('title', 'like', '%' . $search . '%');
                     })->orWhereHas('dibuat', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%');
-                    });;
+                    });
             });
         });
+
+        if (isset($filters['filterAnonymous']) && $filters['filterAnonymous'] !== '') {
+
+            $filterAnonymous = (int) $filters['filterAnonymous'];
+
+            return $query->where(function ($query) use ($filterAnonymous) {
+                $query->whereHas('user', function ($query) use ($filterAnonymous) {
+                    $query->where('is_anonymous', $filterAnonymous);
+                })->orWhereHas('donorProfile', function ($query) use ($filterAnonymous) {
+                    $query->where('is_anonymous', $filterAnonymous);
+                });
+            });
+        }
     }
 }
