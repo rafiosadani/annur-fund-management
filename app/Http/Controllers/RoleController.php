@@ -28,12 +28,22 @@ class RoleController extends Controller
         $dashboards = $permissions["dashboard"];
         $users = $permissions["user"];
         $masters = $permissions["master"];
+        $incomeTransaction = $permissions["transaksi-pemasukan"];
+        $expenseTransaction = $permissions["transaksi-pengeluaran"];
+        $goodsTransaction = $permissions["transaksi-barang"];
+        $reports = $permissions["laporan"];
+
+//        dd($permissions);
 
         return view('dashboard.roles.index', [
             'roles' => $roles,
             'dashboards' => $dashboards,
             'users' => $users,
             'masters' => $masters,
+            'incomeTransaction' => $incomeTransaction,
+            'expenseTransaction' => $expenseTransaction,
+            'goodsTransaction' => $goodsTransaction,
+            'reports' => $reports,
         ]);
     }
 

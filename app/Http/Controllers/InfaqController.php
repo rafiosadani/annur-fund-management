@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Infaq;
-use Database\Seeders\InfaqTypeSeeder;
+use Database\Seeders\InfaqTypeSeederTableSeeder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Storage;
 
 class InfaqController extends Controller
 {
-     // Fungsi untuk menampilkan semua data infaq
+    // Fungsi untuk menampilkan semua data infaq
     public function index(Request $request)
     {
         $search = $request->input('search');
         $infaqTypes = Infaq::orderBy('infaq_type_code', 'desc')
-            ->filter(request(['search']))->paginate(10)->withQueryString();
+            ->filter(request(['search']))->paginate(1)->withQueryString();
 
         return view('dashboard.charitable-donations.index', compact('infaqTypes'));
     }
@@ -48,7 +48,7 @@ class InfaqController extends Controller
             return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan pada server!');
         }
     }
- 
+
      // Fungsi untuk menambah data infaq
      public function store(Request $request)
      {
@@ -56,7 +56,7 @@ class InfaqController extends Controller
             'type_name' => 'required|string|max:255',
             'description' => 'required|string',
         ]);
-    
+
         // Buat data infaq baru menggunakan data yang diinputkan
         Infaq::create([
             'type_name' => $request->input('type_name'),
@@ -65,11 +65,11 @@ class InfaqController extends Controller
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
-    
+
         // Redirect kembali ke halaman index dengan pesan sukses
         return redirect()->route('infaq.index')->with('success', 'Data Infaq berhasil ditambahkan.');
      }
- 
+
      // Fungsi untuk menghapus data infaq
      public function destroy(Infaq $infaq)
      {

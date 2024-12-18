@@ -15,16 +15,16 @@ class Infaq extends Model
 
     protected $guarded = [];
 
+    public $incrementing = false; // Menggunakan UUID
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function($query, $search) {
             return $query->where(function($query) use ($search) {
-                $query->where('type_name', 'like', '%' . $search . '%')
+                $query->where('infaq_type_name', 'like', '%' . $search . '%')
+                    ->orWhere('type_name', 'like', '%' . $search . '%')
                     ->orWhere('description', 'like', '%' . $search . '%');
             });
         });
     }
-
-    public $incrementing = false; // Menggunakan UUID
-    
 }

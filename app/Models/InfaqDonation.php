@@ -67,3 +67,4 @@ class InfaqDonation extends Model
         });
     }
 }
+

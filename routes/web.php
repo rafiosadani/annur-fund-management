@@ -5,6 +5,8 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DonorController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\FundraisingProgramController;
+use App\Http\Controllers\GoodDonationController;
+use App\Http\Controllers\GoodInventoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InfaqController;
 use App\Http\Controllers\RoleController;
@@ -52,17 +54,16 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     // master data
     Route::prefix('master')->group(function () {
-        // route charitable donations
-        Route::get('/charitable-donations', function () {
-            return view('dashboard.charitable-donations.index');
-        })->name('master.charitable-donations.index');
-
-        // donations
-
-        Route::resource('/infaq', InfaqController::class);
+        // goods
+        Route::get('/goods/restore/one/{id}', [GoodInventoryController::class, 'restore'])->name('goods.restore');
+        Route::get('/goods/restoreAll', [GoodInventoryController::class, 'restoreAll'])->name('goods.restore.all');
+        Route::resource('/good-inventories', GoodInventoryController::class);
 
         // donors
         Route::resource('/donors', DonorController::class);
+
+        // infaq types
+        Route::resource('/infaq', InfaqController::class);
 
         // fundraising programs
         Route::get('/fundraising-programs/restore/one/{id}', [FundraisingProgramController::class, 'restore'])->name('fundraising-programs.restore');
@@ -96,7 +97,20 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::put('/donor-transfer-confirmation/{id}', [DonationController::class, 'updateDonorTransferConfirmation'])->name('transaction.donor-transfer-confirmation.update');
         Route::put('/donor-transfer-confirmation/reject/{id}', [DonationController::class, 'updateDonorTransferRejection'])->name('transaction.donor-transfer-confirmation.rejection');
 
+        // infaq donations
+        Route::get('/infaq-donations', [DonationController::class, 'listInfaqDonations'])->name('transaction.infaq-donations.index');
+        Route::post('/infaq-donations', [DonationController::class, 'storeInfaqDonation'])->name('transaction.infaq-donations.store');
+        Route::put('/infaq-donations/{id}', [DonationController::class, 'updateInfaqDonation'])->name('transaction.infaq-donations.update');
+        Route::delete('/infaq-donations/{id}', [DonationController::class, 'destroyInfaqDonation'])->name('transaction.infaq-donations.destroy');
+
+        // goods donations
+        Route::resource('/donations/good-donations', GoodDonationController::class);
+
         Route::prefix('expenses')->group(function () {
+            Route::get('general-expenses', [ExpenseController::class, 'indexGeneralExpenses'])->name('transaction.expenses.general-expenses.index');
+            Route::post('general-expenses', [ExpenseController::class, 'storeGeneralExpense'])->name('transaction.expenses.general-expenses.store');
+            Route::put('general-expenses/{id}', [ExpenseController::class, 'updateGeneralExpense'])->name('transaction.expenses.general-expenses.update');
+
             Route::get('program-expenses', [ExpenseController::class, 'indexProgramExpenses'])->name('transaction.expenses.program-expenses.index');
             Route::post('program-expenses', [ExpenseController::class, 'storeProgramExpense'])->name('transaction.expenses.program-expenses.store');
         });

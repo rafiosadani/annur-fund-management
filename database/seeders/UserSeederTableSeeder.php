@@ -68,6 +68,12 @@ class UserSeederTableSeeder extends Seeder
                 'password'       => $user['password'],
                 'image'          => $user['image'],
                 'remember_token' => Str::random(10),
+                'created_at'          => Carbon::now(),
+                'updated_at'          => Carbon::now(),
+                'deleted_at'          => null,
+                'created_by'          => null,
+                'updated_by'          => null,
+                'deleted_by'          => null,
             ]);
 
             User::where('email', $user['email'])->first()->assignRole($user['role_name']);

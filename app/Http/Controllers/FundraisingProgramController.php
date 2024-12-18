@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\PaginationTrait;
 use App\Models\FundraisingProgram;
 use App\Models\FundraisingProgramImage;
 use Carbon\Carbon;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Storage;
 
 class FundraisingProgramController extends Controller
 {
+    use PaginationTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -20,7 +23,10 @@ class FundraisingProgramController extends Controller
         $fundraisingPrograms = FundraisingProgram::with(['dibuat', 'images'])
             ->withSum(['donations as total_donated' => function($query) {
                 $query->where('status', 'confirmed');
-        }], 'amount');
+            }], 'amount')
+            ->withSum(['expenses as total_expense' => function ($query) {
+                $query->where('type', 'program');
+            }], 'amount');
 
         if ($request->has('view_deleted')) {
             $fundraisingPrograms = $fundraisingPrograms->onlyTrashed();
@@ -33,21 +39,20 @@ class FundraisingProgramController extends Controller
             ->filter(request(['search', 'program_status']))->paginate(5)->withQueryString();
 
         foreach ($fundraisingPrograms as $fundraisingProgram) {
-            $allDonations = $fundraisingProgram->donations()
+            $allDonationsQuery = $fundraisingProgram->donations()
                 ->where('status', 'confirmed')
-                ->with(['user', 'donorProfile'])
-                ->get();
+                ->with(['user', 'donorProfile']);
 
-            $perPage = 4;
-            $currentPage = LengthAwarePaginator::resolveCurrentPage('page_donations');
-            $offset = ($currentPage - 1) * $perPage;
-            $currentItems = $allDonations->slice($offset, $perPage)->all();
+            $this->setPaginatedRelation($fundraisingProgram, 'donations', $allDonationsQuery, 4, 'page_donations');
 
-            $paginatedDonations = new LengthAwarePaginator($currentItems, $allDonations->count(), $perPage, $currentPage, ['path' => url()->current(), 'pageName' => 'page_donations']);
+            $allExpensesQuery = $fundraisingProgram->expenses()
+                ->where('type', 'program')
+                ->orderBy('created_at', 'desc');
 
-            $fundraisingProgram->setRelation('donations', $paginatedDonations);
+            $this->setPaginatedRelation($fundraisingProgram, 'expenses', $allExpensesQuery, 4, 'page_expenses');
 
-            $fundraisingProgram->total_donated = $fundraisingProgram->total_donated ?? 0;
+            $fundraisingProgram->total_donated = intval($fundraisingProgram->total_donated) ?? 0;
+            $fundraisingProgram->total_expense = intval($fundraisingProgram->total_expense) ?? 0;
             $fundraisingProgram->donation_percentage = $fundraisingProgram->target_amount > 0
                 ? min(intval(round(($fundraisingProgram->total_donated / $fundraisingProgram->target_amount) * 100)), 100)
                 : 0;

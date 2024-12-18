@@ -1,26 +1,91 @@
 @extends('dashboard.layouts.main')
 
-@section('title', 'Transaksi Dana Infaq')
+@section('title', 'Transaksi Pengeluaran Umum')
 
 @section('breadcrumb')
-    <x-breadcrumb title="Transaksi Dana Infaq" page="Transaksi" active="Dana Infaq"/>
+    <x-breadcrumb title="Transaksi Pengeluaran Umum" page="Transaksi" active="Pengeluaran Umum"/>
 @endsection
 
 @section('content')
     <div class="row">
-        <div class="row mt-4 mt-lg-0">
+        <div class="row">
+            <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase text-dark font-weight-bold">Total Pemasukan</p>
+                                    <h5 class="font-weight-bolder text-gradient text-success mb-0">
+                                        @currency($totalInfaq ?? 0)
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end menu-counts">
+                                <div class="icon icon-shape bg-gradient-success shadow-primary text-center rounded-circle">
+                                    <i class="fas fa-donate text-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase text-dark font-weight-bold">Total Pengeluaran</p>
+                                    <h5 class="font-weight-bolder text-danger mb-0">
+                                        @currency($totalGeneralExpenses)
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end menu-counts">
+                                <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
+                                    <i class="fas fa-hand-holding-usd text-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-4 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase text-dark font-weight-bold">Saldo Akhir</p>
+                                    <h5 class="font-weight-bolder text-info mb-0">
+                                        @currency($endingBalance ?? 0)
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end menu-counts">
+                                <div class="icon icon-shape bg-gradient-info shadow-success text-center rounded-circle">
+                                    <i class="fas fa-dollar-sign text-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 mt-lg-3">
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header mb-0 pb-0">
                         <div class="row">
                             <div class="col-lg-4 col-12">
-                                <h6>Transaksi Dana Infaq</h6>
+                                <h6>Data Pengeluaran Umum</h6>
                             </div>
                             <div class="col-lg-8 col-12 parent-button">
                                 <div>
                                     <a href="javascript:void(0);"
-                                       class="btn bg-gradient-primary btn-sm mb-0 btn-action" data-bs-toggle="modal" data-bs-target="#create-infaq-donation-modal-form">
-                                        +&nbsp; Transaksi Dana Infaq
+                                       class="btn bg-gradient-primary btn-sm mb-0 btn-action" data-bs-toggle="modal" data-bs-target="#create-general-expense-modal-form">
+                                        +&nbsp; Transaksi Pengeluaran Umum
                                     </a>
                                 </div>
                             </div>
@@ -47,16 +112,16 @@
                                 <tr style="border-top-width: 1px;">
                                     <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 px-2">No</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Kode Dana Infaq
+                                        Kode Pengeluaran
                                     </th>
                                     <th style="width: 25%;" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Nama Infaq - Jenis Infaq
+                                        Nama Pengeluaran
                                     </th>
                                     <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                         Jumlah
                                     </th>
                                     <th style="width: 20%;" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Keterangan
+                                        Deskripsi
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Dibuat
@@ -65,41 +130,40 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if($infaqDonations->total() < 1)
+                                @if($generalExpenses->total() < 1)
                                     <tr style="border-bottom: 1px solid #ccdddd;">
                                         <td colspan="7">
                                             <p class="text-center text-xs mb-0 py-1">Data tidak ditemukan.</p>
                                         </td>
                                     </tr>
                                 @else
-                                    @foreach($infaqDonations as $infaqDonation)
+                                    @foreach($generalExpenses as $generalExpense)
                                         <tr style="border-bottom: 1px solid #ccdddd;">
                                             <td>
-                                                <p class="text-center text-xs mb-0">{{ $loop->iteration + ($infaqDonations->currentPage() - 1) * $infaqDonations->perPage() }}</p>
+                                                <p class="text-center text-xs mb-0">{{ $loop->iteration + ($generalExpenses->currentPage() - 1) * $generalExpenses->perPage() }}</p>
                                             </td>
                                             <td class="align-middle">
-                                                <p class="text-xs text-secondary mb-0">{{ $infaqDonation->infaq_code }}</p>
+                                                <p class="text-xs text-secondary mb-0">{{ $generalExpense->expense_code }}</p>
                                             </td>
-                                            <td class="align-middle">
-                                                <p class="text-xs text-secondary mb-0">{{ $infaqDonation->name ?? '-' }}</p>
-                                                <p class="text-xs text-secondary font-weight-bold mb-0">Jenis Infaq : {{ $infaqDonation->infaqType->type_name ?? '-' }}</p>
+                                            <td class="align-middle text-wrap text-justify">
+                                                <p class="text-xs text-secondary mb-0">{{ $generalExpense->title ?? '-' }}</p>
                                             </td>
                                             <td class="align-middle text-center">
-                                                <p class="text-xs text-secondary mb-0">@currency($infaqDonation->amount ?? 0)</p>
+                                                <p class="text-xs text-secondary mb-0">@currency($generalExpense->amount ?? 0)</p>
                                             </td>
                                             <td class="text-xs text-wrap text-justify">
-                                                <p class="text-xs mb-0"> {{ $infaqDonation->note }}</p>
+                                                <p class="text-xs mb-0"> {{ $generalExpense->description }}</p>
                                             </td>
                                             <td class="align-middle text-wrap">
-                                                <p class="text-xs font-weight-bold mb-0">{{ $infaqDonation->dibuat->name ?? 'Administrator' }}</p>
-                                                <p class="text-xs text-secondary mb-0">{{ $infaqDonation->created_at }}</p>
+                                                <p class="text-xs font-weight-bold mb-0">{{ $generalExpense->dibuat->name ?? 'Administrator' }}</p>
+                                                <p class="text-xs text-secondary mb-0">{{ $generalExpense->created_at }}</p>
                                             </td>
                                             <td class="align-middle text-xs text-end action">
                                                 <a href="javascript:void(0);"
-                                                   class="mx-1 badge bg-gradient-warning" data-bs-toggle="modal" data-bs-target="#edit-infaq-donation-modal-form-{{ $infaqDonation->id }}">
+                                                   class="mx-1 badge bg-gradient-warning" data-bs-toggle="modal" data-bs-target="#edit-general-expense-modal-form-{{ $generalExpense->id }}">
                                                     <i class="fas fa-edit text-white"></i> &nbsp; Edit
                                                 </a>
-                                                <form action="{{ route('transaction.infaq-donations.destroy', $infaqDonation->id) }}"
+                                                <form action="{{ route('transaction.infaq-donations.destroy', $generalExpense->id) }}"
                                                       method="post" class="d-inline">
                                                     @csrf
                                                     @method('delete')
@@ -110,17 +174,17 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                        @include('dashboard.transactions.income-transactions.infaq-donations.modals.edit')
+                                        @include('dashboard.transactions.expense-transactions.general-expenses.modals.edit')
                                     @endforeach
                                 @endif
                                 </tbody>
                             </table>
                         </div>
                         <div class="d-flex justify-content-end pt-3 pe-4">
-                            {{ $infaqDonations->links() }}
+                            {{ $generalExpenses->links() }}
                         </div>
                     </div>
-                    @include('dashboard.transactions.income-transactions.infaq-donations.modals.create')
+                    @include('dashboard.transactions.expense-transactions.general-expenses.modals.create')
                 </div>
             </div>
         </div>
@@ -172,4 +236,3 @@
         @endphp
     @endif
 @endsection
-

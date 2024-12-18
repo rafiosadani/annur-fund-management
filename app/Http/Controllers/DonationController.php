@@ -6,6 +6,8 @@ use App\Http\Traits\GlobalTrait;
 use App\Models\Donation;
 use App\Models\DonorProfile;
 use App\Models\FundraisingProgram;
+use App\Models\GoodDonation;
+use App\Models\GoodInventory;
 use App\Models\Infaq;
 use App\Models\InfaqDonation;
 use App\Models\Role;
@@ -461,7 +463,6 @@ class DonationController extends Controller
             session(['edit_infaq_donation_id' => $infaqDonationId, 'edit_error' => 'edit_error']);
             return redirect()->back()->withErrors($e->validator)->withInput();
         }
-
 
         try {
             DB::beginTransaction();

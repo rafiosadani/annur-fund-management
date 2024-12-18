@@ -175,6 +175,9 @@ return [
 
         // HasHashid
         Vinkla\Hashids\HashidsServiceProvider::class,
+
+        // Excel
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -191,6 +194,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         'HasHashid' => Vinkla\Hashids\Facades\Hashids::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
 ];
