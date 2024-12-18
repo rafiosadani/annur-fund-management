@@ -39,17 +39,13 @@
                     <div class="collapse" id="masterData">
                         <ul class="nav ms-4">
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
+                                <a class="nav-link {{ Request::is('master/goods*') ? 'active' : '' }}"
+                                   href="{{ route('good-inventories.index') }}">
                                     <span class="sidenav-normal">Barang</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-<<<<<<< HEAD
-                                <a class="nav-link {{ Request::is('master/donor*') ? 'active' : '' }}"
-=======
                                 <a class="nav-link {{ Request::is('master/donors*') ? 'active' : '' }}"
->>>>>>> 075f971455e6d247456f5be847dc168375116524
                                    href="{{ route('donors.index') }}">
                                     <span class="sidenav-normal">Donatur</span>
                                 </a>
@@ -145,7 +141,8 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link {{ Request::is('transactions/donations/good-donations*') ? 'active' : '' }}" 
+                        href="{{ route('good-donations.index') }}">
                         <div
                             class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
                             <i class="fa fa-gift text-info" style="margin-left: -6px;"></i>

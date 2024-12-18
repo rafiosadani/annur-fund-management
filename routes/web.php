@@ -5,6 +5,8 @@ use App\Http\Controllers\DonorController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\FundraisingProgramController;
+use App\Http\Controllers\GoodInventoryController;
+use App\Http\Controllers\GoodDonationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InfaqController;
 use App\Http\Controllers\RoleController;
@@ -52,6 +54,11 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     // master data
     Route::prefix('master')->group(function () {
+        // goods
+        Route::get('/goods/restore/one/{id}', [GoodInventoryController::class, 'restore'])->name('goods.restore');
+        Route::get('/goods/restoreAll', [GoodInventoryController::class, 'restoreAll'])->name('goods.restore.all');
+        Route::resource('/good-inventories', GoodInventoryController::class);
+
         // route charitable donations
         Route::get('/charitable-donations', function () {
             return view('dashboard.charitable-donations.index');
@@ -95,6 +102,9 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::get('/donor-transfer-confirmations', [DonationController::class, 'listDonorTransferConfirmations'])->name('transaction.donor-transfer-confirmations.index');
         Route::put('/donor-transfer-confirmation/{id}', [DonationController::class, 'updateDonorTransferConfirmation'])->name('transaction.donor-transfer-confirmation.update');
         Route::put('/donor-transfer-confirmation/reject/{id}', [DonationController::class, 'updateDonorTransferRejection'])->name('transaction.donor-transfer-confirmation.rejection');
+
+        // goods donations
+        Route::resource('/donations/good-donations', GoodDonationController::class);
 
         Route::prefix('expenses')->group(function () {
             Route::get('program-expenses', [ExpenseController::class, 'indexProgramExpenses'])->name('transaction.expenses.program-expenses.index');
