@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Donation extends Model
+class GoodDonation extends Model
 {
-    protected $table = 't_donations';
+    protected $table = 't_good_donations';
 
     protected $primaryKey = 'id';
 
@@ -35,19 +35,14 @@ class Donation extends Model
         });
     }
 
-    public function fundraisingProgram(): BelongsTo
-    {
-        return $this->belongsTo(FundraisingProgram::class, 'm_fundraising_program_id', 'id');
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'm_user_id', 'id');
     }
 
-    public function donorProfile(): BelongsTo
+    public function good(): BelongsTo
     {
-        return $this->belongsTo(DonorProfile::class, 'm_donor_profile_id', 'id');
+        return $this->belongsTo(GoodInventory::class, 'm_good_inventory_id', 'id');
     }
 
     public function dibuat(): HasOne
@@ -59,40 +54,21 @@ class Donation extends Model
         return Carbon::parse($this->attributes['created_at'])->translatedFormat('d F Y H:i:s');
     }
 
-    public function getUpdatedAtAttribute() {
-        return Carbon::parse($this->attributes['updated_at'])->translatedFormat('d F Y H:i:s');
-    }
-
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function($query, $search) {
             return $query->where(function($query) use ($search) {
-                $query->where('amount', 'like', '%' . $search . '%')
-                    ->orWhere('donation_code', 'like', '%' . $search . '%')
-                    ->orWhereHas('user', function ($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%')
-                            ->where('is_anonymous', '0');
-                    })->orWhereHas('donorProfile', function ($query) use ($search) {
+                $query->where('good_donation_code', 'like', '%' . $search . '%')
+                    ->orWhere('quantity', 'like', '%' . $search . '%')
+                    ->orWhere('note', 'like', '%' . $search . '%')
+                    ->orWhereHas('good', function ($query) use ($search) {
+                        $query->where('item_name', 'like', '%' . $search . '%');
+                    })->orWhereHas('user', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%');
-                    })->orWhereHas('fundraisingProgram', function ($query) use ($search) {
-                        $query->where('title', 'like', '%' . $search . '%');
                     })->orWhereHas('dibuat', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%');
                     });
             });
         });
-
-        if (isset($filters['filterAnonymous']) && $filters['filterAnonymous'] !== '') {
-
-            $filterAnonymous = (int) $filters['filterAnonymous'];
-
-            return $query->where(function ($query) use ($filterAnonymous) {
-                $query->whereHas('user', function ($query) use ($filterAnonymous) {
-                    $query->where('is_anonymous', $filterAnonymous);
-                })->orWhereHas('donorProfile', function ($query) use ($filterAnonymous) {
-                    $query->where('is_anonymous', $filterAnonymous);
-                });
-            });
-        }
     }
 }

@@ -39,8 +39,8 @@
                     <div class="collapse" id="masterData">
                         <ul class="nav ms-4">
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
+                                <a class="nav-link {{ Request::is('master/good-inventories*') ? 'active' : '' }}"
+                                   href="{{ route('good-inventories.index') }}">
                                     <span class="sidenav-normal">Barang</span>
                                 </a>
                             </li>
@@ -53,7 +53,7 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ Request::is('master/infaq*') ? 'active' : '' }}"
                                    href="{{ route('infaq.index') }}">
-                                    <span class="sidenav-normal">Infaq</span>
+                                    <span class="sidenav-normal">Jenis Infaq</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -99,8 +99,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
+                                <a class="nav-link {{ Request::is('transactions/infaq-donations*') ? 'active' : '' }}"
+                                   href="{{ route('transaction.infaq-donations.index') }}">
                                     <span class="sidenav-normal">Infaq</span>
                                 </a>
                             </li>
@@ -126,13 +126,13 @@
                     <div class="collapse" id="expendTransactions">
                         <ul class="nav ms-4">
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
+                                <a class="nav-link {{ Request::is('transactions/expenses/general-expenses*') ? 'active' : '' }}"
+                                   href="{{ route('transaction.expenses.general-expenses.index') }}">
                                     <span class="sidenav-normal">Pengeluaran Umum</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link"
+                                <a class="nav-link {{ Request::is('transactions/expenses/program-expenses*') ? 'active' : '' }}"
                                    href="{{ route('transaction.expenses.program-expenses.index') }}">
                                     <span class="sidenav-normal">Pengeluaran Program</span>
                                 </a>
@@ -141,7 +141,8 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link {{ Request::is('transactions/donations/good-donations*') ? 'active' : '' }}"
+                        href="{{ route('good-donations.index') }}">
                         <div
                             class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
                             <i class="fa fa-gift text-info" style="margin-left: -6px;"></i>

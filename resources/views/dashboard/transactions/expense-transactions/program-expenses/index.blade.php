@@ -203,15 +203,15 @@
                                                     Kode Pengeluaran
                                                 </th>
                                                 <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                    Tanggal
+                                                    Tanggal Keluar
                                                 </th>
                                                 <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                                     style="width: 93%">
                                                     Nama Pengeluaran
                                                 </th>
-                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                                                <th class="text-end text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 pe-2"
                                                     style="width: 7%">
-                                                    Jumlah
+                                                    Jumlah Dana
                                                 </th>
                                             </tr>
                                             </thead>
@@ -235,7 +235,7 @@
                                                         </td>
                                                         <td>
                                                             <p class="text-start text-xs mb-0">
-                                                                {{ \Carbon\Carbon::parse($expense->created_at)->translatedFormat('d F Y') }}
+                                                                {{ $expense->created_at }}
                                                             </p>
                                                         </td>
                                                         <td class="align-middle text-center text-xs">
@@ -243,8 +243,8 @@
                                                                 {{ $expense->title }}
                                                             </p>
                                                         </td>
-                                                        <td>
-                                                            <p class="text-center text-xs mb-0">@currency($expense->amount)</p>
+                                                        <td class="text-end">
+                                                            <p class="text-end text-xs mb-0">@currency($expense->amount)</p>
                                                         </td>
                                                     </tr>
                                                 @endforeach

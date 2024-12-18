@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Traits\GlobalTrait;
 use App\Models\Expense;
 use App\Models\FundraisingProgram;
+use App\Models\InfaqDonation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -14,6 +15,23 @@ use Illuminate\Support\Str;
 class ExpenseController extends Controller
 {
     use GlobalTrait;
+
+    public function indexGeneralExpenses()
+    {
+        $infaqSummary = Expense::calculateInfaqSummary();
+
+        $generalExpenses = Expense::with(['dibuat'])
+            ->where('type', 'general')
+            ->orderBy('created_at', 'desc')
+            ->filter(request(['search', 'program_status']))->paginate(5)->withQueryString();;
+
+        return view('dashboard.transactions.expense-transactions.general-expenses.index', [
+            'generalExpenses' => $generalExpenses,
+            'totalInfaq' => $infaqSummary['totalInfaq'],
+            'totalGeneralExpenses' => $infaqSummary['totalGeneralExpenses'],
+            'endingBalance' => $infaqSummary['endingBalance'],
+        ]);
+    }
 
     public function indexProgramExpenses(Request $request) {
         $selectedFundraisingProgramId = $request->get('m_fundraising_program_id');

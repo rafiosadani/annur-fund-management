@@ -73,7 +73,19 @@
                             <div class="col-12 col-md-7 ps-md-4">
                                 <div class="row">
                                     <div class="col-12">
-                                        <h6 class="font-weight-bolder text-xs mt-1">Transaksi Pemasukan</h6>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h6 class="font-weight-bolder text-xs mt-1">Transaksi Pemasukan</h6>
+                                            </div>
+                                            <div class="col-6 d-inline-flex justify-content-end align-items-center">
+                                                <p class="text-sm mb-0">
+                                                    <span class="badge d-inline-flex align-items-center bg-soft-success">
+                                                        <i class="fas fa-donate me-2"></i>
+                                                        Total Dana Donasi : @currency($fundraisingProgram->total_donated ?? 0)
+                                                </span>
+                                                </p>
+                                            </div>
+                                        </div>
                                         <div class="table-responsive pt-1">
                                             <table class="table align-items-center mb-0">
                                                 <thead>
@@ -83,7 +95,7 @@
                                                         No
                                                     </th>
                                                     <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Tanggal
+                                                        Tanggal Masuk
                                                     </th>
                                                     <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                                         style="width: 93%">
@@ -92,7 +104,7 @@
                                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                         Metode
                                                     </th>
-                                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                                                    <th class="text-end text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 pe-2"
                                                         style="width: 7%">
                                                         Jumlah Donasi
                                                     </th>
@@ -128,7 +140,7 @@
                                                                     </span>
                                                                 </td>
                                                                 <td>
-                                                                    <p class="text-center text-xs mb-0">@currency($donation->amount)</p>
+                                                                    <p class="text-end text-xs mb-0">@currency($donation->amount)</p>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -144,7 +156,19 @@
                                 </div>
                                 <div class="row mt-4">
                                     <div class="col-12">
-                                        <h6 class="font-weight-bolder text-xs mt-1">Transaksi Pengeluaran</h6>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h6 class="font-weight-bolder text-xs mt-1">Transaksi Pengeluaran</h6>
+                                            </div>
+                                            <div class="col-6 d-inline-flex justify-content-end align-items-center">
+                                                <p class="text-sm mb-0">
+                                                    <span class="badge d-inline-flex align-items-center bg-soft-danger">
+                                                        <i class="fas fa-lg fa-hand-holding-usd me-2"></i>
+                                                        Total Dana Keluar : @currency($fundraisingProgram->total_expense ?? 0)
+                                                </span>
+                                                </p>
+                                            </div>
+                                        </div>
                                         <div class="table-responsive pt-1">
                                             <table class="table align-items-center mb-0">
                                                 <thead>
@@ -153,45 +177,49 @@
                                                         No
                                                     </th>
                                                     <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Tanggal
+                                                        Tanggal Keluar
                                                     </th>
                                                     <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                                         style="width: 93%">
-                                                        Keterangan
+                                                        Nama Pengeluaran
                                                     </th>
-                                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                                                    <th class="text-end text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 pe-2"
                                                         style="width: 7%">
                                                         Jumlah Dana
                                                     </th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <td>
-                                                        {{--                                                        <p class="text-center text-xs mb-0">{{ $loop->iteration + ($roles->currentPage() - 1) * $roles->perPage() }}</p>--}}
-                                                        <p class="text-center text-xs mb-0">1</p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="text-start text-xs mb-0">{{ \Carbon\Carbon::parse('2024-09-12')->translatedFormat('d F Y') }}</p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="text-start text-xs mb-0">Pembelian bahan bangunan (semen, pasir, dll.)</p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="text-center text-xs mb-0">@currency(5000000)</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="3" class="ps-3">
-                                                        <p class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 mb-0">Total Pengeluaran</p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="text-center text-xs font-weight-bold mb-0">@currency(5000000)</p>
-                                                    </td>
-                                                </tr>
+                                                @if($fundraisingProgram->expenses->total() < 1)
+                                                    <tr style="border-bottom: 1px solid #ccdddd;">
+                                                        <td colspan="4">
+                                                            <p class="text-center text-xs mb-0 py-1">Data tidak ditemukan.</p>
+                                                        </td>
+                                                    </tr>
+                                                @else
+                                                    @foreach($fundraisingProgram->expenses as $expense)
+                                                        <tr>
+                                                            <td>
+                                                                <p class="text-center text-xs mb-0">{{ $loop->iteration + ($fundraisingProgram->expenses->currentPage() - 1) * $fundraisingProgram->expenses->perPage() }}</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-start text-xs mb-0">{{ $expense->created_at }}</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-start text-xs mb-0">{{ $expense->title }}</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-end text-xs mb-0">@currency($expense->amount)</p>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                                 </tbody>
                                             </table>
                                             <hr class="mt-0" style="border: 1px solid #ccdddd">
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            {!! $fundraisingProgram->expenses->appends(['openModal' => $fundraisingProgram->id])->links() !!}
                                         </div>
                                     </div>
                                 </div>

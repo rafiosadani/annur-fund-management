@@ -7,11 +7,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Expense extends Model
+class InfaqDonation extends Model
 {
-    protected $table = 't_expenses';
+    protected $table = 't_infaqs';
 
     protected $primaryKey = 'id';
 
@@ -36,39 +36,31 @@ class Expense extends Model
         });
     }
 
-    public function dibuat(): BelongsTo
+    public function infaqType(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'created_by', 'id');
+        return $this->belongsTo(Infaq::class, 'm_infaq_type_id', 'id');
+    }
+
+    public function dibuat(): HasOne
+    {
+        return $this->hasOne(User::class, "id", "created_by");
     }
 
     public function getCreatedAtAttribute() {
-        return Carbon::parse($this->attributes['created_at'])->translatedFormat('d F Y');
-    }
-
-    public static function calculateInfaqSummary()
-    {
-        $totalInfaq = intval(InfaqDonation::sum('amount'));
-
-        $totalGeneralExpenses = intval(Expense::where('type', 'general')->sum('amount'));
-
-        $endingBalance = intval($totalInfaq - $totalGeneralExpenses) ?? 0;
-
-        return [
-            'totalInfaq' => $totalInfaq,
-            'totalGeneralExpenses' => $totalGeneralExpenses,
-            'endingBalance' => $endingBalance,
-        ];
+        return Carbon::parse($this->attributes['created_at'])->translatedFormat('d F Y H:i:s');
     }
 
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function($query, $search) {
             return $query->where(function($query) use ($search) {
-                $query->where('title', 'like', '%' . $search . '%')
-                    ->orWhere('expense_code', 'like', '%' . $search . '%')
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('infaq_code', 'like', '%' . $search . '%')
                     ->orWhere('amount', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%')
-                    ->orWhereHas('dibuat', function ($query) use ($search) {
+                    ->orWhere('note', 'like', '%' . $search . '%')
+                    ->orWhereHas('infaqType', function ($query) use ($search) {
+                        $query->where('type_name', 'like', '%' . $search . '%');
+                    })->orWhereHas('dibuat', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%');
                     });
             });
