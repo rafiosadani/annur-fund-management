@@ -6,6 +6,8 @@ use App\Http\Traits\GlobalTrait;
 use App\Models\Donation;
 use App\Models\DonorProfile;
 use App\Models\FundraisingProgram;
+use App\Models\Infaq;
+use App\Models\InfaqDonation;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
@@ -363,6 +365,148 @@ class DonationController extends Controller
         }
     }
 
+    public function listInfaqDonations(Request $request)
+    {
+        $infaqDonations = InfaqDonation::with(['dibuat', 'infaqType'])
+            ->orderBy('created_at', 'desc')
+            ->orderBy('infaq_code', 'desc')
+            ->filter(request(['search']))->paginate(10)->withQueryString();
+
+        $infaqTypes = Infaq::whereNull('deleted_at')
+            ->orderBy('type_name', 'asc')
+            ->get();
+
+        return view('dashboard.transactions.income-transactions.infaq-donations.index', [
+            'infaqDonations' => $infaqDonations,
+            'infaqTypes' => $infaqTypes,
+        ]);
+    }
+
+    public function storeInfaqDonation(Request $request) {
+        $this->processRupiahInput($request, 'amount');
+
+        $rules = [
+            'name' => 'required|max:255',
+            'm_infaq_type_id' => 'required',
+            'amount' => 'required|numeric|min:0',
+            'note' => 'required',
+        ];
+
+        $customMessage = [
+            'name.required' => 'Nama infaq tidak boleh kosong!',
+            'name.max' => 'Nama infaq tidak boleh lebih dari 255 karakter.',
+            'm_infaq_type_id.required' => 'Jenis Infaq tidak boleh kosong, pilih jenis infaq terlebih dahulu!.',
+            'amount.required' => 'Jumlah infaq harus diisi!',
+            'amount.numeric' => 'Jumlah infaq harus berupa angka atau desimal.',
+            'amount.min' => 'Jumlah infaq tidak boleh bernilai negatif.',
+            'note.required' => 'Keterangan harus diisi!',
+        ];
+
+        // Validasi input
+        try {
+            $validatedData = $request->validate($rules, $customMessage);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            session(['create_error' => 'create_error']);
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $validatedData['infaq_code'] = $this->generateInfaqDonationCode();
+
+            $infaqDonation = InfaqDonation::create($validatedData);
+
+            if (!empty($infaqDonation) && $infaqDonation->id) {
+                DB::commit();
+                session()->forget('originalAmount');
+                return redirect()->route('transaction.infaq-donations.index')->with('success', 'Transaksi Dana Infaq berhasil dilakukan!');
+            }
+
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data transaksi dana infaq.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->withErrors($e->validator);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
+        }
+    }
+
+    public function updateInfaqDonation(Request $request, $infaqDonationId) {
+        $this->processRupiahInput($request, 'amount');
+
+        $rules = [
+            'name' => 'required|max:255',
+            'm_infaq_type_id' => 'required',
+            'amount' => 'required|numeric|min:0',
+            'note' => 'required',
+        ];
+
+        $customMessage = [
+            'name.required' => 'Nama infaq tidak boleh kosong!',
+            'name.max' => 'Nama infaq tidak boleh lebih dari 255 karakter.',
+            'm_infaq_type_id.required' => 'Jenis Infaq tidak boleh kosong, pilih jenis infaq terlebih dahulu!.',
+            'amount.required' => 'Jumlah infaq harus diisi!',
+            'amount.numeric' => 'Jumlah infaq harus berupa angka atau desimal.',
+            'amount.min' => 'Jumlah infaq tidak boleh bernilai negatif.',
+            'note.required' => 'Keterangan harus diisi!',
+        ];
+
+        // Validasi input
+        try {
+            $validatedData = $request->validate($rules, $customMessage);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            session(['edit_infaq_donation_id' => $infaqDonationId, 'edit_error' => 'edit_error']);
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
+
+
+        try {
+            DB::beginTransaction();
+
+            $infaqDonation = InfaqDonation::find($infaqDonationId);
+
+            if (!$infaqDonation) {
+                return redirect()->back()->withInput()->with('error', 'Data Transaksi Dana Infaq tidak ditemukan.');
+            }
+
+            $updateInfaqDonation = InfaqDonation::where('id', $infaqDonationId)->update($validatedData);
+
+            if ($updateInfaqDonation) {
+                DB::commit();
+                session()->forget('originalAmount');
+                return redirect()->route('transaction.infaq-donations.index')->with('success', 'Transaksi Dana Infaq berhasil diedit!');
+            }
+
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Gagal mengedit data transaksi dana infaq.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->withErrors($e->validator);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
+        }
+    }
+
+    public function destroyInfaqDonation($infaqDonationId) {
+        $infaqDonation = InfaqDonation::find($infaqDonationId);
+
+        if (!$infaqDonation) {
+            return redirect()->back()->withInput()->with('error', 'Data Transaksi Dana Infaq tidak ditemukan.');
+        }
+
+        $delete = InfaqDonation::destroy($infaqDonation->id);
+
+        if ($delete) {
+            return redirect()->route('transaction.infaq-donations.index')->with('success', 'Transaksi Dana Infaq berhasil dihapus!');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Gagal menghapus data transaksi donasi barang.');
+        }
+    }
+
     public function listDonorTransferConfirmations(Request $request) {
         $donorTransferConfirmations = Donation::with(['donorProfile', 'fundraisingProgram', 'user', 'dibuat'])
             ->where('payment_method', 'online');
@@ -503,5 +647,37 @@ class DonationController extends Controller
                 "dev" => $th->getMessage() . " at line " . $th->getLine() . " in " . $th->getFile()
             ];
         }
+    }
+
+    public static function generateInfaqDonationCode()
+    {
+        $lastKode = InfaqDonation::select("infaq_code")
+            ->whereDate("created_at", Carbon::today())
+            ->where(DB::raw("substr(infaq_code, 1, 7)"), "=", "DNS/INQ")
+            ->orderBy("infaq_code", "desc")
+            ->first();
+
+        $prefix = "DNS/INQ";
+        $currentDate = date("Ymd");
+
+        if ($lastKode) {
+            $parts = explode("/", $lastKode->infaq_code);
+            $lastDate = $parts[2];
+            $lastNumber = (int) $parts[3];
+
+            if ($lastDate === $currentDate) {
+                $urutan = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+            } else {
+                $urutan = "0001";
+            }
+        } else {
+            $urutan = "0001";
+        }
+
+        $randomString = strtoupper(Str::random(6));
+
+        $kode = "{$prefix}/{$currentDate}/{$urutan}/{$randomString}";
+
+        return $kode;
     }
 }

@@ -96,6 +96,11 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::put('/donor-transfer-confirmation/{id}', [DonationController::class, 'updateDonorTransferConfirmation'])->name('transaction.donor-transfer-confirmation.update');
         Route::put('/donor-transfer-confirmation/reject/{id}', [DonationController::class, 'updateDonorTransferRejection'])->name('transaction.donor-transfer-confirmation.rejection');
 
+        Route::get('/infaq-donations', [DonationController::class, 'listInfaqDonations'])->name('transaction.infaq-donations.index');
+        Route::post('/infaq-donations', [DonationController::class, 'storeInfaqDonation'])->name('transaction.infaq-donations.store');
+        Route::put('/infaq-donations/{id}', [DonationController::class, 'updateInfaqDonation'])->name('transaction.infaq-donations.update');
+        Route::delete('/infaq-donations/{id}', [DonationController::class, 'destroyInfaqDonation'])->name('transaction.infaq-donations.destroy');
+
         Route::prefix('expenses')->group(function () {
             Route::get('program-expenses', [ExpenseController::class, 'indexProgramExpenses'])->name('transaction.expenses.program-expenses.index');
             Route::post('program-expenses', [ExpenseController::class, 'storeProgramExpense'])->name('transaction.expenses.program-expenses.store');

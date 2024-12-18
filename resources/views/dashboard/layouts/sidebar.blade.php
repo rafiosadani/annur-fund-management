@@ -99,8 +99,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
+                                <a class="nav-link {{ Request::is('transactions/infaq-donations*') ? 'active' : '' }}"
+                                   href="{{ route('transaction.infaq-donations.index') }}">
                                     <span class="sidenav-normal">Infaq</span>
                                 </a>
                             </li>
