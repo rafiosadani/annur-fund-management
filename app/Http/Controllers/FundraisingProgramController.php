@@ -6,6 +6,7 @@ use App\Models\FundraisingProgram;
 use App\Models\FundraisingProgramImage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,7 +20,7 @@ class FundraisingProgramController extends Controller
         $fundraisingPrograms = FundraisingProgram::with(['dibuat', 'images'])
             ->withSum(['donations as total_donated' => function($query) {
                 $query->where('status', 'confirmed');
-            }], 'amount');
+        }], 'amount');
 
         if ($request->has('view_deleted')) {
             $fundraisingPrograms = $fundraisingPrograms->onlyTrashed();
@@ -29,17 +30,34 @@ class FundraisingProgramController extends Controller
 
         $fundraisingPrograms = $fundraisingPrograms->orderBy('created_at', 'desc')
             ->orderBy('fundraising_program_code', 'asc')
-            ->filter(request(['search']))->paginate(5)->withQueryString();
+            ->filter(request(['search', 'program_status']))->paginate(5)->withQueryString();
 
         foreach ($fundraisingPrograms as $fundraisingProgram) {
+            $allDonations = $fundraisingProgram->donations()
+                ->where('status', 'confirmed')
+                ->with(['user', 'donorProfile'])
+                ->get();
+
+            $perPage = 4;
+            $currentPage = LengthAwarePaginator::resolveCurrentPage('page_donations');
+            $offset = ($currentPage - 1) * $perPage;
+            $currentItems = $allDonations->slice($offset, $perPage)->all();
+
+            $paginatedDonations = new LengthAwarePaginator($currentItems, $allDonations->count(), $perPage, $currentPage, ['path' => url()->current(), 'pageName' => 'page_donations']);
+
+            $fundraisingProgram->setRelation('donations', $paginatedDonations);
+
             $fundraisingProgram->total_donated = $fundraisingProgram->total_donated ?? 0;
             $fundraisingProgram->donation_percentage = $fundraisingProgram->target_amount > 0
-                ? intval(round(($fundraisingProgram->total_donated / $fundraisingProgram->target_amount) * 100))
+                ? min(intval(round(($fundraisingProgram->total_donated / $fundraisingProgram->target_amount) * 100)), 100)
                 : 0;
         }
 
+        $openModal = $request->query('openModal');
+
         return view('dashboard.fundraising-programs.index', [
-            'fundraisingPrograms' => $fundraisingPrograms
+            'fundraisingPrograms' => $fundraisingPrograms,
+            'openModal' => $openModal
         ]);
     }
 

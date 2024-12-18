@@ -14,89 +14,6 @@
     }
 </script>
 <script>
-    var ctx1 = document.getElementById("chart-line").getContext("2d");
-
-    var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
-    gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
-    gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
-    new Chart(ctx1, {
-        type: "line",
-        data: {
-            labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [{
-                label: "Mobile apps",
-                tension: 0.4,
-                borderWidth: 0,
-                pointRadius: 0,
-                borderColor: "#5e72e4",
-                backgroundColor: gradientStroke1,
-                borderWidth: 3,
-                fill: true,
-                data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-                maxBarThickness: 6
-
-            }],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false,
-                }
-            },
-            interaction: {
-                intersect: false,
-                mode: 'index',
-            },
-            scales: {
-                y: {
-                    grid: {
-                        drawBorder: false,
-                        display: true,
-                        drawOnChartArea: true,
-                        drawTicks: false,
-                        borderDash: [5, 5]
-                    },
-                    ticks: {
-                        display: true,
-                        padding: 10,
-                        color: '#fbfbfb',
-                        font: {
-                            size: 11,
-                            family: "Open Sans",
-                            style: 'normal',
-                            lineHeight: 2
-                        },
-                    }
-                },
-                x: {
-                    grid: {
-                        drawBorder: false,
-                        display: false,
-                        drawOnChartArea: false,
-                        drawTicks: false,
-                        borderDash: [5, 5]
-                    },
-                    ticks: {
-                        display: true,
-                        color: '#ccc',
-                        padding: 20,
-                        font: {
-                            size: 11,
-                            family: "Open Sans",
-                            style: 'normal',
-                            lineHeight: 2
-                        },
-                    }
-                },
-            },
-        },
-    });
-</script>
-<script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
         var options = {
@@ -124,9 +41,6 @@
 {{-- Datepicker --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
-{{-- Maginific Popup --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-
 {{-- My JS --}}
 <script src="{{ asset('js/script.js') }}"></script>
 
@@ -153,7 +67,7 @@
                 icon: "success",
                 timer: 3000
             });
-        }, 100);
+        }, 300);
     </script>
 @endif
 
@@ -165,6 +79,22 @@
                 text: "{{ session('error') }}",
                 icon: "error",
                 timer: 3000
+            });
+        }, 1000);
+    </script>
+@endif
+
+@if ($errors->any())
+    <script>
+        setTimeout(function () {
+            Swal.fire({
+                title: 'Error',
+                icon: 'error',
+                html: `
+                    @foreach ($errors->all() as $error)
+                        <p class="mb-0">{{ $error }}</p>
+                    @endforeach
+                `
             });
         }, 100);
     </script>
@@ -262,6 +192,44 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 location.href = href;
+            }
+        });
+    });
+
+    $('.show-confirm-donor-transfer').click(function (event) {
+        event.preventDefault();
+        var form = $(this).closest("form");
+        Swal.fire({
+            title: "Konfirmasi Transfer?",
+            text: "Apakah anda yakin ingin mengonfirmasi transfer donasi ini? Pastikan bukti pembayaran sudah diperiksa.",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#5e72e4",
+            cancelButtonColor: "#f5365c",
+            confirmButtonText: "Ya, Konfirmasi!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+
+    $('.show-reject-donor-transfer').click(function (event) {
+        event.preventDefault();
+        var form = $(this).closest("form");
+        Swal.fire({
+            title: "Tolak Konfirmasi Transfer?",
+            text: "Apakah anda yakin ingin menolak konfirmasi transfer donasi ini? Pastikan bukti pembayaran sudah diperiksa.",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#5e72e4",
+            cancelButtonColor: "#f5365c",
+            confirmButtonText: "Ya, Tolak!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
             }
         });
     });

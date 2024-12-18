@@ -24,6 +24,19 @@
     cursor: pointer;
 }
 
+/* header dropdown menu solve in argon dashboard  */
+.dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    /*transition: visibility 0.2s, opacity 0.2s ease-in-out;*/
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown.show .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
 .parent-button {
     display: flex;
     justify-content: flex-end;
@@ -163,6 +176,42 @@
     padding: 2px 2px 2px 3px;
 }
 
+/* Custom badge background */
+.bg-soft-completed {
+    background-color: #b8e0f4;
+    color: #0c5460;
+}
+
+.bg-soft-active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.bg-soft-cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.bg-soft-info {
+    background-color: #b8e0f4;
+    color: #0c5460;
+}
+
+.bg-soft-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.bg-soft-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.bg-soft-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
 /* Custom datepicker bootstrap */
 .datepicker {
     z-index: 1151 !important; /* Pastikan datepicker muncul di atas elemen lain */
@@ -218,4 +267,13 @@
 
 .form-switch {
     padding-left: 3.6rem;
+}
+
+.form-switch-donation-online {
+    padding-left: 3.2rem;
+}
+
+/* dashboard */
+.menu-counts .icon-shape i {
+    top: 12px;
 }

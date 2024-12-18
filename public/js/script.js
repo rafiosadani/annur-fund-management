@@ -1,5 +1,8 @@
 $(document).ready(function () {
     // Select 2
+    $(".dropdown-select2").select2();
+
+    // Select 2 Modal
     initializeSelect2InModal();
 
     // Datepicker
@@ -29,6 +32,22 @@ $(document).ready(function () {
         }
     }
 });
+
+function previewImage(imageInputId, imagePreviewClass, defaultImageUrl) {
+    const imageUser = document.querySelector(`#${imageInputId}`);
+    const userImgPreview = document.querySelector(`.${imagePreviewClass}`);
+
+    if (imageUser.files && imageUser.files[0]) {
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL(imageUser.files[0]);
+
+        oFReader.onload = function(oFREvent) {
+            userImgPreview.src = oFREvent.target.result; // Update src to the selected image
+        }
+    } else {
+        userImgPreview.src = defaultImageUrl; // Set back to default if no file is chosen
+    }
+}
 
 function initializeSelect2InModal() {
     // Setiap kali modal terbuka, inisialisasi Select2 di dalam modal tersebut
@@ -74,6 +93,26 @@ function formatRupiah(angka, prefix) {
     return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
 }
 
+function copyData(elementId) {
+    var copyText = document.getElementById(elementId);
+
+    // Membuat input sementara untuk menyalin URL
+    var tempInput = document.createElement("input");
+    tempInput.value = copyText.value;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+
+    Swal.fire({
+        title: 'Berhasil!',
+        text: 'URL Donasi Online berhasil disalin!',
+        icon: 'success',
+        timer: 2000,
+        timerProgressBar: true,
+    });
+}
+
 function handleModalWithErrors(modalId, sessionKey, errorTitle, errorMessages, refreshOnClose = false) {
     // Check if there is a session key indicating an error
     if (sessionKey) {
@@ -86,14 +125,14 @@ function handleModalWithErrors(modalId, sessionKey, errorTitle, errorMessages, r
             Swal.fire({
                 title: errorTitle,
                 icon: 'error',
-                html: errorMessages.map(msg => `<p class="mb-0">${msg}</p>`).join('')
+                html: errorMessages.map(msg => `<p class="mb-0">${msg}</p>`).join(''),
+                timer: 3000,
+                timerProgressBar: true
             }).then(() => {
                 // Blade will handle the session forget on page reload or next action
             });
         }, 100);
     }
-
-    console.log(refreshOnClose);
 
     // If refresh on modal close is enabled, set up the event listener
     if (refreshOnClose) {

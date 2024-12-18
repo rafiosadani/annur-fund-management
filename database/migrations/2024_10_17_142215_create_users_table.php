@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('password')->nullable();
             $table->string('image')->nullable();
+            $table->boolean('is_anonymous')->default(0);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

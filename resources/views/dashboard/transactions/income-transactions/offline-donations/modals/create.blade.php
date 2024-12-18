@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="col-12">
                                     <label class="mt-3 mt-lg-3 required">Jumlah Donasi</label>
-                                    <input type="text" class="form-control form-control-sm @error('amount') is-invalid @enderror inputRupiah" name="amount" value="{{ old('amount') }}">
+                                    <input type="text" class="form-control form-control-sm @error('amount') is-invalid @enderror inputRupiah" name="amount" value="{{ old('originalAmount', session('originalAmount')) }}">
                                     @error('amount')
                                     <div class="invalid-feedback text-xxs ms-1">
                                         {{ $message }}

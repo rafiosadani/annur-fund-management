@@ -46,10 +46,10 @@
                                 <p class="text-xs text-white mb-0">{{ auth()->user()->email }}</p>
                             </div>
                         </div>
-                        <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                        <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" aria-expanded="false">
                             <li>
                                 <a class="dropdown-item text-sm py-2 second" href="{{ url('/profile') }}">
-                                    <i class="fa fa-user fa-sm me-2 opacity-7" aria-hidden="true"></i>
+                                    <i class="fa fa-user-alt fa-sm me-2 opacity-7" aria-hidden="true"></i>
                                     Profile
                                 </a>
                             </li>
@@ -57,7 +57,7 @@
                                 <form action="{{ route('logout') }}" method="post">
                                     @csrf
                                     <button class="dropdown-item text-sm py-2 show-logout-header" type="submit">
-                                        <i class="fa fa-sign-out fa-sm me-2 opacity-7" aria-hidden="true"></i>
+                                        <i class="fa fa-sign-out-alt fa-sm me-2 opacity-7" aria-hidden="true"></i>
                                         Logout
                                     </button>
                                 </form>

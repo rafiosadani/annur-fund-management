@@ -28,9 +28,42 @@ class FundraisingProgram extends Model
         return $this->hasMany(Donation::class, "m_fundraising_program_id", "id");
     }
 
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class, "m_fundraising_program_id", "id");
+    }
+
     public function dibuat(): HasOne
     {
         return $this->hasOne(User::class, "id", "created_by");
+    }
+
+    public static function loadWithDetails($id, $additionalConditions = [])
+    {
+        $query = self::with(['dibuat', 'images'])
+            ->withSum(['donations as total_donated' => function ($query) {
+                $query->where('status', 'confirmed');
+            }], 'amount')
+            ->withSum(['expenses as total_expense' => function ($query) {
+                $query->where('type', 'program');
+            }], 'amount')
+            ->whereNull('deleted_at')
+            ->whereIn('status', ['active', 'completed'])
+            ->where('id', $id);
+
+        foreach ($additionalConditions as $column => $value) {
+            $query->where($column, $value);
+        }
+
+        $fundraisingProgram = $query->first();
+
+        if ($fundraisingProgram) {
+            $fundraisingProgram->total_donated = intval($fundraisingProgram->total_donated) ?? 0;
+            $fundraisingProgram->total_expense = intval($fundraisingProgram->total_expense) ?? 0;
+            $fundraisingProgram->remaining_donations = intval(($fundraisingProgram->total_donated ?? 0) - ($fundraisingProgram->total_expense ?? 0)) ?? 0;
+        }
+
+        return $fundraisingProgram;
     }
 
     public function scopeFilter($query, array $filters)
@@ -42,6 +75,10 @@ class FundraisingProgram extends Model
                         $query->where('name', 'like', '%' . $search . '%');
                     });
             });
+        });
+
+        $query->when($filters['program_status'] ?? false, function($query, $programStatus) {
+            return $query->where('status', $programStatus);
         });
     }
 }

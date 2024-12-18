@@ -1,5 +1,5 @@
 /* card2 start */
-.card2 {
+/* .card2 {
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
@@ -19,16 +19,16 @@
     margin: 0;
   }
   
-  .table2-responsive {
+  .table-responsive {
     margin-top: 20px;
   }
   
-  .table2 thead th {
+  .table thead th {
     text-align: center;
     background-color: #f8f9fa;
   }
   
-  .table2 td {
+  .table td {
     text-align: center;
     vertical-align: middle;
   }
@@ -49,10 +49,10 @@
 
   .page-item .page-link {
     color: #007bff;
-  }
+  } */
   /* card2 end */
   /* Modal start */
-  .modal-header {
+  /* .modal-header {
     border-bottom: 1px solid #ddd;
   }
 
@@ -67,6 +67,6 @@
 
   .btn {
     border-radius: 4px;
-  }
+  } */
 
-  /* Modal end*/
+  /* Modal end */
