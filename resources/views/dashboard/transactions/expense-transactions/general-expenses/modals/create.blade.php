@@ -21,7 +21,7 @@
                                                     <div class="numbers">
                                                         <p class="text-sm mb-0 text-uppercase text-white font-weight-bold">Saldo Akhir</p>
                                                         <h5 class="font-weight-bolder text-white mb-0">
-                                                            @currency($totalGeneralExpenses)
+                                                            @currency($endingBalance)
                                                         </h5>
                                                     </div>
                                                 </div>
@@ -51,20 +51,25 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <label class="mt-3 mt-lg-3 required" for="amount">Jumlah Dana</label>
-                                            <input type="text" class="form-control form-control-sm @error('amount') is-invalid @enderror inputRupiah" name="amount" value="{{ old('originalAmount', session('originalAmount')) }}">
+                                            <input type="text" class="form-control form-control-sm @error('amount') is-invalid @enderror @if(session('error_amount')) is-invalid @endif inputRupiah" name="amount" value="{{ old('originalAmount', session('originalAmount')) }}">
                                             @error('amount')
                                             <div class="invalid-feedback text-xxs ms-1">
                                                 {{ $message }}
                                             </div>
                                             @enderror
+                                            @if(session('error_amount'))
+                                                <div class="invalid-feedback text-xxs ms-1">
+                                                    {{ session('error_amount') }}
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
                                             <label class="mt-3 mt-lg-3 required" for="description">Deskripsi</label>
                                             <textarea style="resize: none;" class="form-control form-control-sm @error('description') is-invalid @enderror"
-                                                      id="note" name="description" rows="3" >{{ old('note') }}</textarea>
-                                            @error('note')
+                                                      id="note" name="description" rows="3" >{{ old('description') }}</textarea>
+                                            @error('description')
                                             <div class="invalid-feedback text-xxs ms-1">
                                                 {{ $message }}
                                             </div>

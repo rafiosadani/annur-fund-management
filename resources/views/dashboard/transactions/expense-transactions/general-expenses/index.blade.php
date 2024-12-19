@@ -163,7 +163,7 @@
                                                    class="mx-1 badge bg-gradient-warning" data-bs-toggle="modal" data-bs-target="#edit-general-expense-modal-form-{{ $generalExpense->id }}">
                                                     <i class="fas fa-edit text-white"></i> &nbsp; Edit
                                                 </a>
-                                                <form action="{{ route('transaction.infaq-donations.destroy', $generalExpense->id) }}"
+                                                <form action="{{ route('transaction.expenses.general-expenses.destroy', $generalExpense->id) }}"
                                                       method="post" class="d-inline">
                                                     @csrf
                                                     @method('delete')
@@ -202,20 +202,30 @@
             });
         });
     </script>
-    @if ($errors->any())
+    @if ($errors->any() || session('create_amount_error'))
         @php
-            $sessionKey = session('create_error') ? 'create_error' : (session('edit_error') ? 'edit_error' : null);
+//            $sessionKey = session('create_error') ? 'create_error' : (session('edit_error') ? 'edit_error' : null);
+            $sessionKey = session('create_error') ? 'create_error': (session('create_amount_error') ? 'create_amount_error' : (session('edit_error') ? 'edit_error' : null));
             $errorMessages = $errors->all();
             $modalId = null;
             $errorTitle = null;
 
             if (session('create_error')) {
-                $modalId = 'create-infaq-donation-modal-form';
-                $errorTitle = 'Tambah Transaksi Dana Infaq Error';
+                $modalId = 'create-general-expense-modal-form';
+                $errorTitle = 'Tambah Transaksi Pengeluaran Umum Error';
+            } elseif (session('create_amount_error')) {
+                if(session('edit_general_expense_id')) {
+                    $generalExpenseId = session('edit_general_expense_id');
+                    $modalId = 'edit-general-expense-modal-form-' . $generalExpenseId;
+                    $errorTitle = 'Edit Transaksi Pengeluaran Umum Error';
+                } else {
+                    $modalId = 'create-general-expense-modal-form';
+                    $errorTitle = 'Tambah Transaksi Pengeluaran Umum Error';
+                }
             } elseif (session('edit_error')) {
-                $goodId = session('edit_infaq_donation_id');
-                $modalId = 'edit-infaq-donation-modal-form-' . $goodId;
-                $errorTitle = 'Edit Transaksi Dana Infaq Error';
+                $generalExpenseId = session('edit_general_expense_id');
+                $modalId = 'edit-general-expense-modal-form-' . $generalExpenseId;
+                $errorTitle = 'Edit Transaksi Pengeluaran Umum Error';
             }
         @endphp
 
@@ -229,7 +239,8 @@
         @endif
 
         @php
-            $sessionKey = session('create_error') ? 'create_error' : (session('edit_error') ? 'edit_error' : null);
+//            $sessionKey = session('create_error') ? 'create_error' : (session('edit_error') ? 'edit_error' : null);
+            $sessionKey = session('create_error') ? 'create_error': (session('create_amount_error') ? 'create_amount_error' : (session('edit_error') ? 'edit_error' : null));
             if ($sessionKey) {
                 session()->forget($sessionKey);
             }

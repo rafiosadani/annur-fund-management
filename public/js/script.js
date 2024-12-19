@@ -120,18 +120,20 @@ function handleModalWithErrors(modalId, sessionKey, errorTitle, errorMessages, r
         var myModal = new bootstrap.Modal(document.getElementById(modalId));
         myModal.show();
 
-        // Show SweetAlert for errors
-        setTimeout(function () {
-            Swal.fire({
-                title: errorTitle,
-                icon: 'error',
-                html: errorMessages.map(msg => `<p class="mb-0">${msg}</p>`).join(''),
-                timer: 3000,
-                timerProgressBar: true
-            }).then(() => {
-                // Blade will handle the session forget on page reload or next action
-            });
-        }, 100);
+        if(sessionKey !== 'create_amount_error') {
+            // Show SweetAlert for errors
+            setTimeout(function () {
+                Swal.fire({
+                    title: errorTitle,
+                    icon: 'error',
+                    html: errorMessages.map(msg => `<p class="mb-0">${msg}</p>`).join(''),
+                    timer: 3000,
+                    timerProgressBar: true
+                }).then(() => {
+                    // Blade will handle the session forget on page reload or next action
+                });
+            }, 100);
+        }
     }
 
     // If refresh on modal close is enabled, set up the event listener

@@ -110,6 +110,7 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('general-expenses', [ExpenseController::class, 'indexGeneralExpenses'])->name('transaction.expenses.general-expenses.index');
             Route::post('general-expenses', [ExpenseController::class, 'storeGeneralExpense'])->name('transaction.expenses.general-expenses.store');
             Route::put('general-expenses/{id}', [ExpenseController::class, 'updateGeneralExpense'])->name('transaction.expenses.general-expenses.update');
+            Route::delete('general-expenses/{id}', [ExpenseController::class, 'destroyGeneralExpense'])->name('transaction.expenses.general-expenses.destroy');
 
             Route::get('program-expenses', [ExpenseController::class, 'indexProgramExpenses'])->name('transaction.expenses.program-expenses.index');
             Route::post('program-expenses', [ExpenseController::class, 'storeProgramExpense'])->name('transaction.expenses.program-expenses.store');
