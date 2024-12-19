@@ -180,7 +180,8 @@ class GoodInventoryController extends Controller
     public static function generateGoodInventoryCode()
     {
         $lastKode = GoodInventory::select("good_inventory_code")
-            ->whereDate("created_at", Carbon::today())
+            ->whereMonth("created_at", Carbon::now())
+            ->whereYear("created_at", Carbon::now())
             ->where(DB::raw("substr(good_inventory_code, 1, 3)"), "=", "BRG")
             ->orderBy("good_inventory_code", "desc")
             ->first();

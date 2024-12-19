@@ -1,13 +1,13 @@
-<div class="modal fade" id="edit-general-expense-modal-form-{{ $generalExpense->id }}" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="edit-program-expense-modal-form-{{ $expense->id }}" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title">Edit Transaksi Pengeluaran Umum - {{ $generalExpense->title }}</h6>
+                <h6 class="modal-title">Edit Transaksi Pengeluaran Program - {{ $expense->title }}</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form role="form" action="{{ route('transaction.expenses.general-expenses.update', $generalExpense->id) }}" method="post">
+            <form role="form" action="{{ route('transaction.expenses.program-expenses.update', $expense->id) }}" method="post">
                 @csrf
                 @method('put')
                 <div class="modal-body p-0">
@@ -20,10 +20,10 @@
                                             <div class="row">
                                                 <div class="col-8">
                                                     <div class="numbers">
-                                                        <p class="text-sm mb-0 text-uppercase text-white font-weight-bold">Saldo Akhir</p>
+                                                        <p class="text-sm mb-0 text-uppercase text-white font-weight-bold">Sisa Donasi</p>
                                                         <h5 class="font-weight-bolder text-white mb-0">
-                                                            @php $availableBalance = intval($generalExpense->amount + $endingBalance); @endphp
-                                                            @currency($availableBalance)
+                                                            @php $programAvailableBalance = intval($expense->amount + $selectedFundraisingProgram->remaining_donations); @endphp
+                                                            @currency($programAvailableBalance)
                                                         </h5>
                                                     </div>
                                                 </div>
@@ -42,7 +42,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <label class="mt-3 mt-lg-0 required" for="title">Nama Pengeluaran</label>
-                                            <input type="text" class="form-control form-control-sm @error('title') is-invalid @enderror" placeholder="Nama Pengeluaran" name="title" value="{{ old('title', $generalExpense->title) }}">
+                                            <input type="text" class="form-control form-control-sm @error('title') is-invalid @enderror" placeholder="Nama Pengeluaran" name="title" value="{{ old('title', $expense->title) }}">
                                             @error('title')
                                             <div class="invalid-feedback text-xxs ms-1">
                                                 {{ $message }}
@@ -52,9 +52,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <label class="mt-3 mt-lg-3 required" for="amount">Jumlah Dana</label>
-{{--                                            <input type="text" class="form-control form-control-sm @error('amount') is-invalid @enderror @if(session('error_amount')) is-invalid @endif inputRupiah" name="amount" value="{{ old('originalAmount', isset($generalExpense->amount) ? number_format($generalExpense->amount, 0, ',', '.') : session('originalAmount')) }}">--}}
-                                            <input type="text" class="form-control form-control-sm @error('amount') is-invalid @enderror @if(session('error_amount')) is-invalid @endif inputRupiah" name="amount" value="{{ session('error_amount') ? session('originalAmount') : old('originalAmount', isset($generalExpense->amount) ? number_format($generalExpense->amount, 0, ',', '.') : session('originalAmount')) }}">
+                                            <label class="mt-3 mt-lg-3 required" for="amount">Jumlah</label>
+                                            <input type="text" class="form-control form-control-sm @error('amount') is-invalid @enderror @if(session('error_amount')) is-invalid @endif inputRupiah" name="amount" value="{{ session('error_amount') ? session('originalAmount') : old('originalAmount', isset($expense->amount) ? number_format($expense->amount, 0, ',', '.') : session('originalAmount')) }}">
                                             @error('amount')
                                             <div class="invalid-feedback text-xxs ms-1">
                                                 {{ $message }}
@@ -69,9 +68,9 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <label class="mt-3 mt-lg-3 required" for="description">Deskripsi</label>
+                                            <label class="mt-3 mt-lg-3 required" for="description">Keterangan</label>
                                             <textarea style="resize: none;" class="form-control form-control-sm @error('description') is-invalid @enderror"
-                                                name="description" rows="3" >{{ old('description', $generalExpense->description) }}</textarea>
+                                                      name="description" rows="3" >{{ old('description', $expense->description) }}</textarea>
                                             @error('description')
                                             <div class="invalid-feedback text-xxs ms-1">
                                                 {{ $message }}

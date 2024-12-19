@@ -213,12 +213,13 @@
                                                     style="width: 7%">
                                                     Jumlah Dana
                                                 </th>
+                                                <th class="text-secondary opacity-7"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             @if($selectedFundraisingProgram->expenses->total() < 1)
                                                 <tr style="border-bottom: 1px solid #ccdddd;">
-                                                    <td colspan="5">
+                                                    <td colspan="6">
                                                         <p class="text-center text-xs mb-0 py-1">Data tidak ditemukan.</p>
                                                     </td>
                                                 </tr>
@@ -238,7 +239,7 @@
                                                                 {{ $expense->created_at }}
                                                             </p>
                                                         </td>
-                                                        <td class="align-middle text-center text-xs">
+                                                        <td class="align-middle text-xs text-wrap text-justify">
                                                             <p class="text-start text-xs mb-0">
                                                                 {{ $expense->title }}
                                                             </p>
@@ -246,7 +247,23 @@
                                                         <td class="text-end">
                                                             <p class="text-end text-xs mb-0">@currency($expense->amount)</p>
                                                         </td>
+                                                        <td class="align-middle text-xs text-end action">
+                                                            <a href="javascript:void(0);"
+                                                               class="badge bg-white text-warning" data-bs-toggle="modal" data-bs-target="#edit-program-expense-modal-form-{{ $expense->id }}">
+                                                                <i class="fas fa-edit text-gradient text-warning"></i> &nbsp; Edit
+                                                            </a>|
+                                                            <form action="{{ route('transaction.expenses.program-expenses.destroy', $expense->id) }}"
+                                                                  method="post" class="d-inline">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="submit"
+                                                                        class="badge bg-white text-danger border-0 text-danger show-confirm-delete">
+                                                                    <i class="fas fa-trash text-gradient text-danger"></i> &nbsp; Hapus
+                                                                </button>
+                                                            </form>
+                                                        </td>
                                                     </tr>
+                                                    @include('dashboard.transactions.expense-transactions.program-expenses.modals.edit')
                                                 @endforeach
                                             @endif
                                             </tbody>
@@ -320,5 +337,62 @@
                 </div>
             </div>
         </div>
+    @endif
+@endsection
+@section('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Trigger page refresh when any modal is closed
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.addEventListener('hidden.bs.modal', function () {
+                    location.reload(); // This will refresh the page
+                });
+            });
+        });
+    </script>
+    @if ($errors->any() || session('create_amount_error'))
+        @php
+            $sessionKey = session('create_error') ? 'create_error': (session('create_amount_error') ? 'create_amount_error' : (session('edit_error') ? 'edit_error' : null));
+            $errorMessages = $errors->all();
+            $modalId = null;
+            $errorTitle = null;
+
+            if (session('create_error')) {
+                $modalId = 'create-program-expense-modal-form';
+                $errorTitle = 'Tambah Transaksi Pengeluaran Program Error';
+            } elseif (session('create_amount_error')) {
+                if(session('edit_program_expense_id')) {
+                    $programExpenseId = session('edit_program_expense_id');
+                    $modalId = 'edit-program-expense-modal-form-' . $programExpenseId;
+                    $errorTitle = 'Edit Transaksi Pengeluaran Program Error';
+                } else {
+                    $modalId = 'create-program-expense-modal-form';
+                    $errorTitle = 'Tambah Transaksi Pengeluaran Program Error';
+                }
+            } elseif (session('edit_error')) {
+                $programExpenseId = session('edit_program_expense_id');
+                $modalId = 'edit-program-expense-modal-form-' . $programExpenseId;
+                $errorTitle = 'Edit Transaksi Pengeluaran Program Error';
+            }
+
+            session()->forget($programExpenseId);
+        @endphp
+
+        @if ($modalId && $errorTitle)
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var errorMessages = @json($errorMessages);
+                    handleModalWithErrors('{{ $modalId }}', '{{ $sessionKey }}', '{{ $errorTitle }}', errorMessages, true);
+                });
+            </script>
+        @endif
+
+        @php
+            $sessionKey = session('create_error') ? 'create_error': (session('create_amount_error') ? 'create_amount_error' : (session('edit_error') ? 'edit_error' : null));
+            if ($sessionKey) {
+                session()->forget($sessionKey);
+            }
+        @endphp
     @endif
 @endsection

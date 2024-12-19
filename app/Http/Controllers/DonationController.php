@@ -6,8 +6,6 @@ use App\Http\Traits\GlobalTrait;
 use App\Models\Donation;
 use App\Models\DonorProfile;
 use App\Models\FundraisingProgram;
-use App\Models\GoodDonation;
-use App\Models\GoodInventory;
 use App\Models\Infaq;
 use App\Models\InfaqDonation;
 use App\Models\Role;

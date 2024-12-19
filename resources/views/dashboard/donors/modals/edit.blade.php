@@ -108,15 +108,15 @@
                                         @php $imageUrl = asset('img/' . $donor->image); @endphp
                                     @endif
                                     <div class="col-12">
-                                        <img class="w-100 border-radius-lg shadow-lg image-preview-edit{{ $donor->id }}"
+                                        <img class="w-100 border-radius-lg shadow-lg image-preview-edit-{{ $donor->id }}"
                                              src="{{ $imageUrl }}" alt="donor_image"/>
                                     </div>
                                     <div class="col-12 mt-2">
-                                        <input type="file" name="image" id="image-user-edit{{ $donor->id }}"
-                                               class="form-control form-control-sm mb-2" style="display: none;" onchange="previewImage('image-user-edit{{ $donor->id }}', 'image-preview-edit{{ $donor->id }}', '{{ $imageUrl }}')">
+                                        <input type="file" name="image" id="image-user-edit-{{ $donor->id }}"
+                                               class="form-control form-control-sm mb-2" style="display: none;" onchange="previewImage('image-user-edit-{{ $donor->id }}', 'image-preview-edit-{{ $donor->id }}', '{{ $imageUrl }}')">
                                         <div class="d-grid">
                                             <button class="btn bg-gradient-primary btn-sm mb-0" type="button"
-                                                    onclick="document.getElementById('image-user-edit{{$donor->id}}').click();">
+                                                    onclick="document.getElementById('image-user-edit-{{$donor->id}}').click();">
                                                 {{ $donor->image ? 'Change Image' : 'Upload Image' }}
                                             </button>
                                         </div>

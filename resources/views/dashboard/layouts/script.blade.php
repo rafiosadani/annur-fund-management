@@ -78,9 +78,8 @@
                 title: "Error",
                 text: "{{ session('error') }}",
                 icon: "error",
-                timer: 3000
             });
-        }, 1000);
+        }, 400);
     </script>
 @endif
 

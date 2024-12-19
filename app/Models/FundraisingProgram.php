@@ -30,7 +30,7 @@ class FundraisingProgram extends Model
 
     public function expenses(): HasMany
     {
-        return $this->hasMany(Expense::class, "m_fundraising_program_id", "id");
+        return $this->hasMany(Expense::class, "m_fundraising_program_id", "id")->where('type', 'program');
     }
 
     public function dibuat(): HasOne

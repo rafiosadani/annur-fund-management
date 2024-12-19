@@ -22,7 +22,13 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-            @if(auth()->user()->hasRole('Administrator'))
+            @if(auth()->user()->hasRole('Administrator') ||
+                    auth()->user()->hasPermissionTo('master_barang.view') ||
+                    auth()->user()->hasPermissionTo('master_donatur.view') ||
+                    auth()->user()->hasPermissionTo('master_infaq.view') ||
+                    auth()->user()->hasPermissionTo('master_program-penggalangan-dana.view') ||
+                    auth()->user()->hasPermissionTo('master_roles.view') ||
+                    auth()->user()->hasPermissionTo('master_user.view'))
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Master Data</h6>
                 </li>
@@ -38,45 +44,65 @@
                     </a>
                     <div class="collapse" id="masterData">
                         <ul class="nav ms-4">
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('master/good-inventories*') ? 'active' : '' }}"
-                                   href="{{ route('good-inventories.index') }}">
-                                    <span class="sidenav-normal">Barang</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('master/donors*') ? 'active' : '' }}"
-                                   href="{{ route('donors.index') }}">
-                                    <span class="sidenav-normal">Donatur</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('master/infaq*') ? 'active' : '' }}"
-                                   href="{{ route('infaq.index') }}">
-                                    <span class="sidenav-normal">Jenis Infaq</span>
-                                </a>
-                            </li>
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('master_barang.view'))
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Request::is('master/good-inventories*') ? 'active' : '' }}"
+                                       href="{{ route('good-inventories.index') }}">
+                                        <span class="sidenav-normal">Barang</span>
+                                    </a>
+                                </li>
+                            @endif
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('master_donatur.view'))
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Request::is('master/donors*') ? 'active' : '' }}"
+                                        href="{{ route('donors.index') }}">
+                                        <span class="sidenav-normal">Donatur</span>
+                                    </a>
+                                </li>
+                            @endif
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('master_infaq.view'))
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Request::is('master/infaq*') ? 'active' : '' }}"
+                                     href="{{ route('infaq.index') }}">
+                                        <span class="sidenav-normal">Jenis Infaq</span>
+                                    </a>
+                                </li>
+                            @endif
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('master_program-penggalangan-dana.view'))
                             <li class="nav-item">
                                 <a class="nav-link {{ Request::is('master/fundraising-programs*') ? 'active' : '' }}"
                                    href="{{ route('fundraising-programs.index') }}">
                                     <span class="sidenav-normal">Program</span>
                                 </a>
                             </li>
+                            @endif
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('master_roles.view'))
                             <li class="nav-item">
                                 <a class="nav-link {{ Request::is('master/roles*') ? 'active' : '' }}"
                                    href="{{ route('roles.index') }}">
                                     <span class="sidenav-normal">Role</span>
                                 </a>
                             </li>
+                            @endif
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('master_user.view'))
                             <li class="nav-item">
                                 <a class="nav-link {{ Request::is('master/users*') ? 'active' : '' }}"
                                    href="{{ route('users.index') }}">
                                     <span class="sidenav-normal">User</span>
                                 </a>
                             </li>
+                            @endif
                         </ul>
                     </div>
                 </li>
+            @endif
+            @if(auth()->user()->hasRole('Administrator') ||
+                    auth()->user()->hasPermissionTo('transaksi-pemasukan_donasi-offline.view') ||
+                    auth()->user()->hasPermissionTo('transaksi-pemasukan_infaq.view') ||
+                    auth()->user()->hasPermissionTo('transaksi-pemasukan_konfirmasi-transfer-donatur.view') ||
+                    auth()->user()->hasPermissionTo('transaksi-pengeluaran_pengeluaran-umum.view') ||
+                    auth()->user()->hasPermissionTo('transaksi-pengeluaran_pengeluaran-program.view') ||
+                    auth()->user()->hasPermissionTo('transaksi-barang_donasi-barang.view'))
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Transaksi</h6>
                 </li>
@@ -92,24 +118,30 @@
                     </a>
                     <div class="collapse" id="incomeTransactions">
                         <ul class="nav ms-4">
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('transactions/donations/donation-offline*') ? 'active' : '' }}"
-                                   href="{{ route('transaction.donations.offline-donation.index') }}">
-                                    <span class="sidenav-normal">Donasi Offline</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('transactions/infaq-donations*') ? 'active' : '' }}"
-                                   href="{{ route('transaction.infaq-donations.index') }}">
-                                    <span class="sidenav-normal">Infaq</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('transactions/donor-transfer-confirmations*') ? 'active' : '' }}"
-                                   href="{{ route('transaction.donor-transfer-confirmations.index') }}">
-                                    <span class="sidenav-normal">Konfirmasi Transfer Donatur</span>
-                                </a>
-                            </li>
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('transaksi-pemasukan_donasi-offline.view'))
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Request::is('transactions/donations/donation-offline*') ? 'active' : '' }}"
+                                       href="{{ route('transaction.donations.offline-donation.index') }}">
+                                        <span class="sidenav-normal">Donasi Offline</span>
+                                    </a>
+                                </li>
+                            @endif
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('transaksi-pemasukan_infaq.view'))
+                                <li class="nav-item">
+                                     <a class="nav-link {{ Request::is('transactions/infaq-donations*') ? 'active' : '' }}"
+                                       href="{{ route('transaction.infaq-donations.index') }}">
+                                        <span class="sidenav-normal">Infaq</span>
+                                     </a>
+                                </li>
+                            @endif
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('transaksi-pemasukan_konfirmasi-transfer-donatur.view'))
+                                <li class="nav-item">
+                                     <a class="nav-link {{ Request::is('transactions/donor-transfer-confirmations*') ? 'active' : '' }}"
+                                       href="{{ route('transaction.donor-transfer-confirmations.index') }}">
+                                        <span class="sidenav-normal">Konfirmasi Transfer Donatur</span>
+                                     </a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </li>
@@ -125,31 +157,43 @@
                     </a>
                     <div class="collapse" id="expendTransactions">
                         <ul class="nav ms-4">
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('transactions/expenses/general-expenses*') ? 'active' : '' }}"
-                                   href="{{ route('transaction.expenses.general-expenses.index') }}">
-                                    <span class="sidenav-normal">Pengeluaran Umum</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('transactions/expenses/program-expenses*') ? 'active' : '' }}"
-                                   href="{{ route('transaction.expenses.program-expenses.index') }}">
-                                    <span class="sidenav-normal">Pengeluaran Program</span>
-                                </a>
-                            </li>
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('transaksi-pengeluaran_pengeluaran-umum.view'))
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Request::is('transactions/expenses/general-expenses*') ? 'active' : '' }}"
+                                       href="{{ route('transaction.expenses.general-expenses.index') }}">
+                                        <span class="sidenav-normal">Pengeluaran Umum</span>
+                                    </a>
+                                </li>
+                            @endif
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('transaksi-pengeluaran_pengeluaran-program.view'))
+                                <li class="nav-item">
+                                    <a class="nav-link {{ Request::is('transactions/expenses/program-expenses*') ? 'active' : '' }}"
+                                       href="{{ route('transaction.expenses.program-expenses.index') }}">
+                                        <span class="sidenav-normal">Pengeluaran Program</span>
+                                    </a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('transactions/donations/good-donations*') ? 'active' : '' }}"
-                        href="{{ route('good-donations.index') }}">
-                        <div
-                            class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa fa-gift text-info" style="margin-left: -6px;"></i>
-                        </div>
-                        <span class="nav-link-text ms-2">Donasi Barang</span>
-                    </a>
-                </li>
+                @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('transaksi-barang_donasi-barang.view'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('transactions/donations/good-donations*') ? 'active' : '' }}"
+                           href="{{ route('good-donations.index') }}">
+                            <div
+                                class="border-radius-md text-center ms-3 me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa fa-gift text-info" style="margin-left: -6px;"></i>
+                            </div>
+                            <span class="nav-link-text ms-2">Donasi Barang</span>
+                        </a>
+                    </li>
+                @endif
+            @endif
+            @if(auth()->user()->hasRole('Administrator') ||
+                    auth()->user()->hasPermissionTo('laporan_donasi-barang.view') ||
+                    auth()->user()->hasPermissionTo('laporan_pemasukan.view') ||
+                    auth()->user()->hasPermissionTo('laporan_pengeluaran.view') ||
+                    auth()->user()->hasPermissionTo('laporan_program-penggalangan-dana.view'))
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Laporan</h6>
                 </li>
@@ -165,32 +209,54 @@
                     </a>
                     <div class="collapse" id="reports">
                         <ul class="nav ms-4">
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
-                                    <span class="sidenav-normal">Pemasukan</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
-                                    <span class="sidenav-normal">Pengeluaran</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
-                                    <span class="sidenav-normal">Donasi Barang</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                   href="#">
-                                    <span class="sidenav-normal">Program Penggalangan Dana</span>
-                                </a>
-                            </li>
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('laporan_donasi-barang.view'))
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="#">
+                                        <span class="sidenav-normal">Pemasukan</span>
+                                    </a>
+                                </li>
+                            @endif
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('laporan_pemasukan.view'))
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="#">
+                                        <span class="sidenav-normal">Pengeluaran</span>
+                                    </a>
+                                </li>
+                            @endif
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('laporan_pengeluaran.view'))
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="#">
+                                        <span class="sidenav-normal">Donasi Barang</span>
+                                    </a>
+                                </li>
+                            @endif
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasPermissionTo('laporan_program-penggalangan-dana.view'))
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="#">
+                                        <span class="sidenav-normal">Program Penggalangan Dana</span>
+                                    </a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
+                </li>
+            @endif
+            @if(auth()->user()->hasRole('Donatur'))
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Transaksi Donatur</h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('donor/donations*') ? 'active' : '' }}" href="{{ route('donor.donations.index') }}">
+                        <div
+                            class="border-radius-md text-center ms-3 me-2 align-items-center justify-content-center">
+                            <i class="fa fa-clipboard-list fa-sm text-warning" style="margin-left: -8px;"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">List Donasi</span>
+                    </a>
                 </li>
             @endif
             @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasRole('Donatur'))
