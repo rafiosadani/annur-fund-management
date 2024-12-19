@@ -200,21 +200,5 @@
             @endif
             @endif
         });
-
-        function previewImage(imageInputId, imagePreviewClass, defaultImageUrl) {
-            const imageUser = document.querySelector(#${imageInputId});
-            const userImgPreview = document.querySelector(.${imagePreviewClass});
-
-            if (imageUser.files && imageUser.files[0]) {
-                const oFReader = new FileReader();
-                oFReader.readAsDataURL(imageUser.files[0]);
-
-                oFReader.onload = function(oFREvent) {
-                    userImgPreview.src = oFREvent.target.result; // Update src to the selected image
-                }
-            } else {
-                userImgPreview.src = defaultImageUrl; // Set back to default if no file is chosen
-            }
-        }
     </script>
 @endsection

@@ -193,6 +193,20 @@
                     </div>
                 </li>
             @endif
+            @if(auth()->user()->hasRole('Donatur'))
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Transaksi Donatur</h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('donor/donations*') ? 'active' : '' }}" href="{{ route('donor.donations.index') }}">
+                        <div
+                            class="border-radius-md text-center ms-3 me-2 align-items-center justify-content-center">
+                            <i class="fa fa-clipboard-list fa-sm text-warning" style="margin-left: -8px;"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">List Donasi</span>
+                    </a>
+                </li>
+            @endif
             @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasRole('Donatur'))
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>

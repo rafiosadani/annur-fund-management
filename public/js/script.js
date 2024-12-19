@@ -42,6 +42,7 @@ function previewImage(imageInputId, imagePreviewClass, defaultImageUrl) {
         oFReader.readAsDataURL(imageUser.files[0]);
 
         oFReader.onload = function(oFREvent) {
+            console.log(oFREvent)
             userImgPreview.src = oFREvent.target.result; // Update src to the selected image
         }
     } else {
