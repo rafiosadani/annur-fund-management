@@ -114,6 +114,8 @@ Route::middleware(['web', 'auth'])->group(function () {
 
             Route::get('program-expenses', [ExpenseController::class, 'indexProgramExpenses'])->name('transaction.expenses.program-expenses.index');
             Route::post('program-expenses', [ExpenseController::class, 'storeProgramExpense'])->name('transaction.expenses.program-expenses.store');
+            Route::put('program-expenses/{id}', [ExpenseController::class, 'updateProgramExpense'])->name('transaction.expenses.program-expenses.update');
+            Route::delete('program-expenses/{id}', [ExpenseController::class, 'destroyProgramExpense'])->name('transaction.expenses.program-expenses.destroy');
         });
     });
 });

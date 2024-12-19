@@ -204,7 +204,6 @@
     </script>
     @if ($errors->any() || session('create_amount_error'))
         @php
-//            $sessionKey = session('create_error') ? 'create_error' : (session('edit_error') ? 'edit_error' : null);
             $sessionKey = session('create_error') ? 'create_error': (session('create_amount_error') ? 'create_amount_error' : (session('edit_error') ? 'edit_error' : null));
             $errorMessages = $errors->all();
             $modalId = null;
@@ -239,7 +238,6 @@
         @endif
 
         @php
-//            $sessionKey = session('create_error') ? 'create_error' : (session('edit_error') ? 'edit_error' : null);
             $sessionKey = session('create_error') ? 'create_error': (session('create_amount_error') ? 'create_amount_error' : (session('edit_error') ? 'edit_error' : null));
             if ($sessionKey) {
                 session()->forget($sessionKey);

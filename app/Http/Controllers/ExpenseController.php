@@ -132,6 +132,7 @@ class ExpenseController extends Controller
             $availableBalance = intval($generalExpense->amount + $infaqSummary['endingBalance']);
 
             if ($validatedData['amount'] > $availableBalance) {
+                session(['edit_general_expense_id' => $generalExpenseId]);
                 session(['create_amount_error' => 'create_amount_error']);
                 session()->flash('error_amount', 'Jumlah pengeluaran melebihi saldo yang tersedia (termasuk saldo transaksi sebelumnya).');
                 return redirect()->back()->withInput()->with('error', 'Jumlah pengeluaran melebihi saldo yang tersedia. Mohon periksa kembali jumlah pengeluaran dan saldo akhir yang tersedia.');
@@ -204,10 +205,6 @@ class ExpenseController extends Controller
             $paginatedExpenses = new LengthAwarePaginator($currentItems, $allExpenses->count(), $perPage, $currentPage, ['path' => url()->current(), 'pageName' => 'page_expenses']);
 
             $selectedFundraisingProgram->setRelation('expenses', $paginatedExpenses);
-
-//            $selectedFundraisingProgram->total_donated = $selectedFundraisingProgram->total_donated ?? 0;
-//            $selectedFundraisingProgram->total_expense = $selectedFundraisingProgram->total_expense ?? 0;
-//            $selectedFundraisingProgram->remaining_donations = ($selectedFundraisingProgram->total_donated ?? 0) - ($selectedFundraisingProgram->total_expense ?? 0) ?? 0;
         }
 
         $m_fundraising_program_id = $request->query('m_fundraising_program_id');
@@ -272,10 +269,95 @@ class ExpenseController extends Controller
                 }
             }
             DB::rollBack();
-            return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data transaksi pengeluaran program.');
+            return redirect()->back()->withInput()->with('error', 'Gagal mengedit data transaksi pengeluaran program.');
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
             return redirect()->back()->withInput()->withErrors($e->validator);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
+        }
+    }
+
+    public function updateProgramExpense(Request $request, $programExpenseId) {
+        $this->processRupiahInput($request, 'amount');
+
+        $rules = [
+            'title' => 'required|max:255',
+            'amount' => 'required|numeric|min:0',
+            'description' => 'required',
+        ];
+
+        $customMessage = [
+            'title.required' => 'Nama pengeluaran program harus diisi!',
+            'title.max' => 'Nama pengeluaran program tidak boleh lebih dari 255 karakter.',
+            'amount.required' => 'Jumlah pengeluaran harus diisi!',
+            'amount.numeric' => 'Jumlah pengeluaran harus berupa angka atau desimal.',
+            'amount.min' => 'Jumlah pengeluaran tidak boleh bernilai negatif.',
+            'description.required' => 'Keterangan harus diisi!',
+        ];
+
+        // Validasi input
+        try {
+            $validatedData = $request->validate($rules, $customMessage);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            session(['edit_program_expense_id' => $programExpenseId, 'edit_error' => 'edit_error']);
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $programExpense = Expense::where('type', 'program')->find($programExpenseId);
+
+            if (!$programExpense) {
+                return redirect()->back()->withInput()->with('error', 'Data Transaksi Pengeluaran Program tidak ditemukan.');
+            }
+
+            $selectedFundraisingProgram = FundraisingProgram::loadWithDetails($programExpense->m_fundraising_program_id);
+
+            $programAvailableBalance = intval($programExpense->amount + $selectedFundraisingProgram->remaining_donations);
+
+            if ($validatedData['amount'] > $programAvailableBalance) {
+                session(['edit_program_expense_id' => $programExpenseId]);
+                session(['create_amount_error' => 'create_amount_error']);
+                session()->flash('error_amount', 'Jumlah pengeluaran melebihi sisa donasi yang tersedia');
+                return redirect()->back()->withInput()->with('error', 'Jumlah pengeluaran melebihi saldo yang tersedia. Mohon periksa kembali jumlah pengeluaran dan sisa donasi yang tersedia.');
+            }
+
+            $updateProgramExpense = Expense::where('id', $programExpenseId)->update($validatedData);
+
+            if ($updateProgramExpense) {
+                DB::commit();
+                session()->forget('originalAmount');
+                return redirect()->route('transaction.expenses.program-expenses.index', [
+                    'm_fundraising_program_id' => $selectedFundraisingProgram->id
+                ])->with('success', 'Transaksi Pengeluaran Program berhasil diedit!');
+            }
+
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Gagal mengedit data transaksi pengeluaran program.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->withErrors($e->validator);
+        }
+    }
+
+    public function destroyProgramExpense($expenseProgramId) {
+        $programExpense = Expense::where('type', 'program')->find($expenseProgramId);
+
+        if (!$programExpense) {
+            return redirect()->back()->withInput()->with('error', 'Data Transaksi Pengeluaran Program tidak ditemukan.');
+        }
+
+        $delete = Expense::destroy($programExpense->id);
+
+        if ($delete) {
+            return redirect()->route('transaction.expenses.program-expenses.index', [
+                'm_fundraising_program_id' => $programExpense->m_fundraising_program_id
+            ])->with('success', 'Transaksi Pengeluaran Program berhasil dihapus!');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Gagal menghapus data transaksi pengeluaran program.');
         }
     }
 
@@ -283,9 +365,9 @@ class ExpenseController extends Controller
     {
         $lastKode = Expense::select("expense_code")
             ->whereDate("created_at", Carbon::today())
-            ->where("type", "program")
-            ->where(DB::raw("substr(expense_code, 1, 7)"), "=", "TRX/GNRL")
-            ->orderBy("expense_code", "desc")
+            ->where("type", "general")
+            ->where(DB::raw("substr(expense_code, 1, 8)"), "=", "TRX/GNRL")
+            ->orderBy("created_at", "desc")
             ->first();
 
         $prefix = "TRX/GNRL";
@@ -293,8 +375,8 @@ class ExpenseController extends Controller
 
         if ($lastKode) {
             $parts = explode("/", $lastKode->expense_code);
-            $lastDate = $parts[1];
-            $lastNumber = (int) $parts[2];
+            $lastDate = $parts[2];
+            $lastNumber = (int) $parts[3];
 
             // Jika tanggalnya sama, increment nomor urut
             if ($lastDate === $currentDate) {
@@ -321,8 +403,8 @@ class ExpenseController extends Controller
         $lastKode = Expense::select("expense_code")
             ->whereDate("created_at", Carbon::today())
             ->where("type", "program")
-            ->where(DB::raw("substr(expense_code, 1, 7)"), "=", "TRX/PROG")
-            ->orderBy("expense_code", "desc")
+            ->where(DB::raw("substr(expense_code, 1, 8)"), "=", "TRX/PROG")
+            ->orderBy("created_at", "desc")
             ->first();
 
         $prefix = "TRX/PROG";
@@ -330,8 +412,8 @@ class ExpenseController extends Controller
 
         if ($lastKode) {
             $parts = explode("/", $lastKode->expense_code);
-            $lastDate = $parts[1];
-            $lastNumber = (int) $parts[2];
+            $lastDate = $parts[2];
+            $lastNumber = (int) $parts[3];
 
             // Jika tanggalnya sama, increment nomor urut
             if ($lastDate === $currentDate) {
